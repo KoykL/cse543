@@ -7,6 +7,10 @@ class Node(object):
         pass
 
 
+class InformationSet:
+    def __init__(self, card_delt):
+        self.card_delt = card_delt
+
 class Tree(object):
     def __init__(self):
         self.root = Node()
