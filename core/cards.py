@@ -38,11 +38,9 @@ class Card(object):
 
 
 @total_ordering
-class Hand:
+class Hand(list):
     def __init__(self, it):
-        self.cards = set()
-        self.cards.update(it)
-        self.cards = list(sorted(self.cards, key=lambda x: x.seq()))
+        super().__init__(it)
         self.classify()
 
     def __eq__(self, other):
@@ -50,34 +48,47 @@ class Hand:
 
     def __lt__(self, other):
         return self.cmp(other) == -1
+
+    def __ne__(self, other):
+        return self.cmp(other) != 0
+
+    def __le__(self, other):
+        return self.cmp(other) <= 0
+
+    def __gt__(self, other):
+        return self.cmp(other) > 0
+
+    def __ge__(self, other):
+        return self.cmp(other) >= 0
+
     def classify(self):
-        counter = collections.Counter([n.number for n in self.cards])
+        counter = collections.Counter([n.number for n in self])
         numbers = set(counter.keys())
         seqs = [Card.static_seq(n) for n in numbers]
         counts = set(counter.values())
         sorted_seqs = list(sorted(seqs))
-        if len(self.cards) == 1:
+        if len(self) == 1:
             self.type = "single"
-        elif len(self.cards) == 2:
-            if self.cards[0] == self.cards[1]:
+        elif len(self) == 2:
+            if self[0] == self[1]:
                 self.type = "pair"
-            elif self.cards[0].is_joker() and self.cards[1].is_joker():
+            elif self[0].is_joker() and self[1].is_joker():
                 self.type = "bomb"
             else:
                 self.type = "invalid"
-        elif len(self.cards) == 3:
-            if self.cards[0] == self.cards[1] and self.cards[1] == self.cards[2]:
+        elif len(self) == 3:
+            if self[0] == self[1] and self[1] == self[2]:
                 self.type = "triple"
             else:
                 self.type = "invalid"
-        elif len(self.cards) == 4:
+        elif len(self) == 4:
             if 3 in counts and 1 in counts:
                 self.type = "threewithone"
             elif 4 in counts:
                 self.type = "bomb"
             else:
                 self.type = "invalid"
-        elif len(self.cards) == 5:
+        elif len(self) == 5:
             if 3 in counts and 2 in counts:
                 self.type = "threewithtwo"
             elif 4 in counts and 1 in counts:
@@ -86,7 +97,7 @@ class Hand:
                 self.type = "straight"
             else:
                 self.type = "invalid"
-        elif len(self.cards) == 6:
+        elif len(self) == 6:
             if 2 in counts and len(counts) == 1 and (
                         sorted_seqs[0] + 2 == sorted_seqs[1] + 1 and sorted_seqs[1] + 1 == sorted_seqs[2]) and \
                             sorted_seqs[2] < Card.MAX_VALID_SENITENIAL:
@@ -98,12 +109,12 @@ class Hand:
                 self.type = "fourwithtwo"
             else:
                 self.type = "invalid"
-        elif len(self.cards) == 7:
+        elif len(self) == 7:
             if 4 in counts and 2 in counts and 1 in counts:
                 self.type = "fourwithpairwithsingle"
             else:
                 self.type = "invalid"
-        elif len(self.cards) == 8:
+        elif len(self) == 8:
             if 4 in counts and 2 in counts and len(counts) == 2:
                 self.type = "fourwithtwopairs"
             elif 3 in counts and (1 in counts or 2 in counts) and len(counts) == 2:
@@ -115,7 +126,7 @@ class Hand:
                     self.type = "twotriplewithtwosingles"
                 else:
                     self.type = "invalid"
-        elif len(self.cards) == 10:
+        elif len(self) == 10:
             if 3 in counts and 2 in counts and len(counts) == 2:
                 two_triple = list(filter(lambda x: x[1] == 3, counter.items()))
                 triple_seq = [Card.static_seq(n) for n in two_triple]
@@ -134,8 +145,8 @@ class Hand:
         if self.type == "invalid" or other.type == "invalid":
             raise NotImplementedError("cannot compare invalid hands")
         elif self.type == other.type:
-            counter1 = collections.Counter([n.number for n in self.cards])
-            counter2 = collections.Counter([n.number for n in other.cards])
+            counter1 = collections.Counter([n.number for n in self])
+            counter2 = collections.Counter([n.number for n in other])
             numbers1 = set(counter1.keys())
             seqs1 = [Card.static_seq(n) for n in numbers1]
             numbers2 = set(counter2.keys())
@@ -143,24 +154,24 @@ class Hand:
             sorted_seqs1 = list(sorted(seqs1))
             sorted_seqs2 = list(sorted(seqs2))
             if self.type == "single" or self.type == "pair" or self.type == "triple":
-                return self.cards[0].cmp_number(other.cards[0])
+                return self[0].cmp_number(other[0])
             elif self.type == "threewithone" or self.type == "threewithtwo" or self.type == "twotriplewithtwosingles" or self.type == "twotriplewithtwopairs":
                 triple_part1 = set(filter(lambda x: x[1] == 3, counter1.items()))
                 triple_cards1 = list(
-                    sorted(filter(lambda x: x.number in triple_part1, self.cards), key=lambda x: x.seq()))
+                    sorted(filter(lambda x: x.number in triple_part1, self), key=lambda x: x.seq()))
 
                 triple_part2 = set(filter(lambda x: x[1] == 3, counter2.items()))
                 triple_cards2 = list(
-                    sorted(filter(lambda x: x.number in triple_part2, self.cards), key=lambda x: x.seq()))
+                    sorted(filter(lambda x: x.number in triple_part2, self), key=lambda x: x.seq()))
                 return triple_cards1[0].cmp_number(triple_cards2[0])
             elif self.type == "fourwithone" or self.type == "fourwithtwo" or self.type == "fourwithpairwithsingle" or self.type == "fourwithtwopairs":
                 triple_part1 = set(filter(lambda x: x[1] == 4, counter1.items()))
                 triple_cards1 = list(
-                    sorted(filter(lambda x: x.number in triple_part1, self.cards), key=lambda x: x.seq()))
+                    sorted(filter(lambda x: x.number in triple_part1, self), key=lambda x: x.seq()))
 
                 triple_part2 = set(filter(lambda x: x[1] == 4, counter2.items()))
                 triple_cards2 = list(
-                    sorted(filter(lambda x: x.number in triple_part2, self.cards), key=lambda x: x.seq()))
+                    sorted(filter(lambda x: x.number in triple_part2, self), key=lambda x: x.seq()))
                 return triple_cards1[0].cmp_number(triple_cards2[0])
             elif self.type == "threepairs" or self.type == "twotriple" or self.type == "straight":
                 if sorted_seqs1[0] == sorted_seqs2[0]:
@@ -170,7 +181,7 @@ class Hand:
                 else:
                     return 1
             elif self.type == "bomb":
-                return self.cards[0].cmp_number(other.cards[0])
+                return self[0].cmp_number(other[0])
             else:
                 raise NotImplementedError("self type: {}, other type: {}".format(self.type, other.type))
 
