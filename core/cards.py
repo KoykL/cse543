@@ -41,7 +41,7 @@ class Card(object):
 class Hand:
     def __init__(self, it):
         self.cards = set()
-        self.cards.extend(it)
+        self.cards.update(it)
         self.cards = list(sorted(self.cards, key=lambda x: x.seq()))
         self.classify()
 
