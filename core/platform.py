@@ -13,17 +13,9 @@ class Platform(object):
 
     # fa pai
     def deal(self):
-        all_numbers = [
-            "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2", "BJ", "RJ"
-        ]
-        MAX_VALID_SENITENIAL = 12
-        all_colors = [
-            "D", "S", "C", "H"
-        ]
-
         desk = []
-        for num in all_numbers:
-            for color in all_colors:
+        for num in Card.all_numbers:
+            for color in Card.all_colors:
                 card = Card(num,color)
                 desk.append(desk)
 
@@ -31,8 +23,8 @@ class Platform(object):
 
         de_pai = desk[:3]
         agent0 = desk[3:3+17]
-        agent1 = dest[20:37]
-        agent2 = dest[37:]
+        agent1 = desk[20:37]
+        agent2 = desk[37:]
 
         pass
 
@@ -44,6 +36,10 @@ class Platform(object):
     def end_game(self):
         pass
 
+
+class InformationSet:
+    def __init__(self, card_delt):
+        self.card_delt = card_delt
 #
 class GameState:
     def __init__(self, agents):
