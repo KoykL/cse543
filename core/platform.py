@@ -37,9 +37,6 @@ class Platform(object):
         pass
 
 
-class InformationSet:
-    def __init__(self, card_delt):
-        self.card_delt = card_delt
 #
 class GameState:
     def __init__(self, agents):
