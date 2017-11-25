@@ -19,6 +19,9 @@ class Card(object):
     def __eq__(self, other):
         return self.number == other.number and self.color == other.color
 
+    def __hash__(self):
+        return (self.number + self.color).__hash__()
+
     def seq(self):
         return Card.all_numbers.index(self.number)
 
