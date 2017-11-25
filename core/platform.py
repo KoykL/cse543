@@ -1,7 +1,6 @@
-from cards import Card
 import random
 
-
+from core.cards import Card
 
 
 class Platform(object):
