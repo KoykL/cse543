@@ -40,7 +40,7 @@ class Card(object):
 @total_ordering
 class Hand:
     def __init__(self, it):
-        self.cards = []
+        self.cards = set()
         self.cards.extend(it)
         self.cards = list(sorted(self.cards, key=lambda x: x.seq()))
         self.classify()
@@ -181,9 +181,9 @@ class CardDeck(list):
 
 
 if __name__ == "__main__":
-    cards1 = [Card("BJ", "D"), Card("RJ", "D")]
+    cards1 = set([Card("BJ", "D"), Card("RJ", "D")])
     hand1 = Hand(cards1)
-    cards2 = [Card("A", "D"), Card("A", "D"), Card("A", "D"), Card("A", "D")]
+    cards2 = set([Card("A", "D"), Card("A", "S"), Card("A", "C"), Card("A", "H")])
     hand2 = Hand(cards2)
     print(hand1.type)
     print(hand2.type)
