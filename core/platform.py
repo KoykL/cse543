@@ -12,7 +12,7 @@ class Platform(object):
         self.agents = agents
         agent_states = [AgentState([]) for _ in agents]
         self.game_state = GameState.new(agent_states)
-
+        self.round = 0
     @staticmethod
     def get_deck():
         deck = []
@@ -41,8 +41,8 @@ class Platform(object):
         private_state = self.game_state.getPrivateStateForAgentX(self.game_state.who_wins)
         action = self.agents[self.game_state.who_wins].getAction(private_state)
         self.game_state = self.game_state.getNewState(action)
-
-
+        self.round += 1
+        return action
 
 # I need
 # 1. getallactions(gamestate)
@@ -56,6 +56,12 @@ class Action(object):
     def __init__(self, hand, is_pass):
         self.is_pass = is_pass
         self.hand = hand
+
+    def __str__(self):
+        if self.is_pass:
+            return "[pass]"
+        else:
+            return "{}".format(self.hand)
 
 class PrivateGameState(object):
     def __init__(self, x, game_state):
@@ -325,12 +331,18 @@ class GameState(object):
     def getPrivateStateForAgentX(self, x):
         return PrivateGameState(self, x)
 
+
 class AgentState(object):
     def __init__(self, cards, isLandlord=False):
         self.cards = set(cards) #set()
         self.isLandlord = isLandlord
         #self.last_dealt_hand =
+
     def do_deal_cards(self, hand):
         return AgentState(self.cards - set(hand))
+
     def setLandlord(self):
         self.isLandlord = True
+
+    def get_cards_str(self):
+        return " ".join(sorted(self.cards, key=lambda x:x.seq()))

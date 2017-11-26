@@ -28,6 +28,7 @@ class Card(object):
     @staticmethod
     def static_seq(num):
         return Card.all_numbers.index(num)
+
     def cmp_number(self, other):
         if self.number == other.number:
             return 0
@@ -36,6 +37,8 @@ class Card(object):
         else:
             return 1
 
+    def __str__(self):
+        return "[{},{}]".format(self.color, self.number)
 
 class NotComparableError(RuntimeError):
     def __init__(self, *args, **kwargs):
@@ -191,7 +194,6 @@ class Hand(list):
                 return -1
             else:
                 raise NotComparableError("self type: {}, other type: {}".format(self.type, other.type))
-
 
 class CardDeck(list):
     def __init__(self):
