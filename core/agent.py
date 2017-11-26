@@ -1,5 +1,3 @@
-from cards import Card, Hand
-
 class Agent(object):
 
     def __init__(self):

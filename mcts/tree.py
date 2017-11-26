@@ -2,8 +2,6 @@ import math
 import random
 from copy import deepcopy
 
-import numpy as np
-
 from core.platform import Platform, AgentState
 
 
@@ -23,11 +21,11 @@ class InformationSet:
     def __init__(self, game_state):
         self.private_game_state = game_state.getPrivateStateForAgentX(game_state.whos_turn)
         all_cards = set(Platform.get_deck())
-        self.others_cards = all_cards - self.game_state.agents[self.game_state.whosturn].hand_cards
+        self.others_cards = all_cards - self.state.agents[self.state.whosturn].hand_cards
 
     def determinization(self):
         deck = deepcopy(self.others_cards)
-        np.shuffle(deck)
+        random.shuffle(deck)
         agent1 = AgentState(deck[:self.private_game_state.agent_num_cards[(self.private_game_state.whos_turn - 1) % 3]])
         agent3 = AgentState(deck[:self.private_game_state.agent_num_cards[(self.private_game_state.whos_turn + 1) % 3]])
         instatiations = [agent1, agent3]
@@ -45,11 +43,8 @@ class InformationSet:
         pass
 
 class Tree(object):
-    def __init__(self):
-        self.root = Node()
-
-    def choose(self):
-        pass
+    def __init__(self, game_state):
+        self.root = Node(InformationSet(game_state), None)
 
     @staticmethod
     def ucb_val(node):
