@@ -73,7 +73,7 @@ class Hand(list):
             if self[0] == self[1]:
                 self.type = "pair"
             elif self[0].is_joker() and self[1].is_joker():
-                self.type = "nuke"
+                self.type = "bomb"
             else:
                 self.type = "invalid"
         elif len(self) == 3:
@@ -180,7 +180,7 @@ class Hand(list):
                     return -1
                 else:
                     return 1
-            elif self.type == "bomb" or self.type == "nuke":
+            elif self.type == "bomb":
                 return self[0].cmp_number(other[0])
             else:
                 raise NotImplementedError("self type: {}, other type: {}".format(self.type, other.type))
