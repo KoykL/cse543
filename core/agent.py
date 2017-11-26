@@ -5,19 +5,19 @@ class Agent(object):
     def __init__(self):
         self.isLandlord = False
 
-    def setLandloard(self):
+    def setLandlord(self):
         self.isLandlord = True
 
-    def setHandcards(self, cards):
-        self.handcards = cards
+    @property
+    def cards(self):
+        return self.cards
 
-    def getHand(self, oldHand, isStart=False):
-        isEnd = False
-        if isStart:
-            legalHands = self.getLegalHand(oldHand)
-            hand = legalHands[0]
-            return hand, isEnd
+    @cards.setter
+    def cards(self, cards):
+        self.cards = sorted(cards, key=lambda x: x.seq())
+
+    def getAction(self, legalActions):
         pass
 
-    def isWinable(self, hand, oldHand):
-        return hand > oldHand
+    def isWinnable(self, hand):
+        return self.cards == hand
