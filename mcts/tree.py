@@ -28,8 +28,8 @@ class InformationSet:
         random.shuffle(deck)
         agent1 = AgentState(deck[:self.state.agent_num_cards[(self.state.whos_turn - 1) % 3]])
         agent3 = AgentState(deck[:self.state.agent_num_cards[(self.state.whos_turn + 1) % 3]])
-        instatiations = [agent1, agent3]
-        return self.state.getPublicInstantiation(instatiations)
+        instantiations = [agent1, agent3]
+        return self.state.getPublicInstantiation(instantiations)
 
     def is_terminal(self):  # fix it
         raise NotImplementedError()
