@@ -180,8 +180,11 @@ class Hand(list):
                     return -1
                 else:
                     return 1
-            elif self.type == "bomb":
-                return self[0].cmp_number(other[0])
+        else:
+            if self.type == "bomb":
+                return 1
+            elif other.type == "bomb":
+                return -1
             else:
                 raise NotImplementedError("self type: {}, other type: {}".format(self.type, other.type))
 
