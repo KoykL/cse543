@@ -1,16 +1,17 @@
 import random
+from contextlib import suppress
+from copy import deepcopy
 from itertools import combinations
 
-from core.cards import Card
-from agent import Agent
-from copy import deepcopy
+from core.cards import Card, Hand, NotComparableError
+
 
 class Platform(object):
 
     def __init__(self, agents):
         self.agents = agents
         agent_states = [AgentState([]) for _ in agents]
-        self.game_state = GameState.new(self.agent_states)
+        self.game_state = GameState.new(agent_states)
 
     @staticmethod
     def get_deck():
@@ -26,7 +27,7 @@ class Platform(object):
         self.game_state.agent_states[0].setLandlord()
 
         deck = Platform.get_deck()
-        random.shuffle(desk)
+        random.shuffle(deck)
 
         di_pai = deck[:3]
         self.game_state.agent_states[0].cards.update(deck[:3+17])
@@ -37,7 +38,8 @@ class Platform(object):
     def turn(self):
         if self.game_state.isTerminal():
             raise RuntimeError("Game has reached terminal state")
-        action = self.agents[self.game_state.who_wins].getAction(self.game_state.getPrivateStateForAgentX(self.game_state.who_wins))
+        private_state = self.game_state.getPrivateStateForAgentX(self.game_state.who_wins)
+        action = self.agents[self.game_state.who_wins].getAction(private_state)
         self.game_state = self.game_state.getNewState(action)
 
 
@@ -55,35 +57,24 @@ class Action(object):
         self.is_pass = is_pass
         self.hand = hand
 
-class GameState(object):
-    def __init__(self, agent_states, pass_count, whos_turn, last_dealt_hand, dealt_cards): #
-        self.agent_states = agent_states
-        self.pass_count = pass_count
-        self.whos_turn = whos_turn
-        self.last_dealt_hand = last_dealt_hand #Hand()
-        self.dealt_cards = dealt_cards#set()
-        self.who_wins = None
+class PrivateGameState(object):
+    def __init__(self, x, game_state):
+        self.x = x
+        self.agent_state = game_state.agent_state
+        self.pass_count = game_state.pass_count
+        self.whos_turn = game_state.whos_turn
+        self.last_dealt_hand = game_state.last_dealt_hand
+        self.dealt_cards = game_state.dealt_cards
+        self.agent_num_cards = [len(h) for h in game_state.agent_states.cards]
 
-    @staticmethod
-    def new(agent_states):
-        # agent_states = []
-        # for i in range(3):
-            # agent_states.append(AgentState(cards))
-        return GameState(agent_states, 0, 0, None, set())
+    def getPublicInstantiation(self, others_instantiation):
+        agents = list(others_instantiation)
+        agents.insert(self.x, self.agent_state)
+        return GameState(agents, self.pass_count, self.whos_turn, self.last_dealt_hand, self.dealt_cards)
 
-    def getNextActions(self, last_dealt_hand):
-        next_actions = []
-        actions = getLegalActions()
-        for hand in actions:
-            if hand.Hand.cmp(last_dealt_hand):
-                next_actions.append(hand)
-
-        return next_actions
-
-
-    def getLegalActions(self):
+    def getNextActions(self):
         cards_set = self.agent_states[self.whos_turn].cards
-        cards = sorted(cards_set, key=lambda x:x.seq())
+        cards = sorted(cards_set, key=lambda x: x.seq())
         # single card
         actions = [Hand([card]) for card in cards]
         pairs, triplets, bombs = [], [], []
@@ -94,17 +85,17 @@ class GameState(object):
         for card in cards:
             # pairs
             if card.cmp_number(last_card) == 0:
-                pairs.append([card,last_card])
-                #Triplet
+                pairs.append([card, last_card])
+                # Triplet
                 if last_card.cmp_number(last_last_card) == 0:
-                    triplets.append([card,last_card, last_last_card])
-                    #boom
+                    triplets.append([card, last_card, last_last_card])
+                    # boom
                     if last_last_card.cmp_number(last_last_last_card) == 0:
-                        bombs.append([card,last_card, last_last_card,last_last_last_card])
+                        bombs.append([card, last_card, last_last_card, last_last_last_card])
             last_card = card
             last_last_card = last_card
             last_last_last_card = last_last_card
-        two_triplets = list(map(lambda x:x[0]+x[1], combinations(triplets, 2)))
+        two_triplets = list(map(lambda x: x[0] + x[1], combinations(triplets, 2)))
 
         # straight
 
@@ -170,10 +161,10 @@ class GameState(object):
                 pass
             else:
                 index = 0
-                straight = [] # reinitialize
+                straight = []  # reinitialize
 
             if index >= 4:
-                actions.append(straight[index-4:index+1])
+                actions.append(straight[index - 4:index + 1])
 
             last_num = cur_num
 
@@ -194,18 +185,17 @@ class GameState(object):
                 pass
             else:
                 index = 0
-                straight = [] # reinitialize
+                straight = []  # reinitialize
 
             if index >= 2:
-                actions.append(straight[2*index-5:2*index+1])
+                actions.append(straight[2 * index - 5:2 * index + 1])
 
             last_num = cur_num
-
 
         # nuke
         bj = Card("BJ", "")
         rj = Card("RJ", "")
-        if bj in card_set and rj in card_set:
+        if bj in cards_set and rj in cards_set:
             actions.append(Hand([bj, rj]))
 
         # kickers
@@ -240,7 +230,7 @@ class GameState(object):
                     # hand = Hand(bomb + pair)
                     # actions.append(hand)
 
-                    #four with two pairs
+                    # four with two pairs
                     for another_pair in pairs:
                         if another_pair[0].cmp_number(pair[0]) != 0 and another_pair[0].cmp_number(bomb[0]) != 0:
                             hand = Hand(bomb + pair + another_pair)
@@ -265,12 +255,42 @@ class GameState(object):
             for pair in pairs:
                 if len(pair) == 2 and not pair[0].cmp_number(two_triplet[0]):
                     for another_pair in pairs:
-                        if len(another_pair) == 2 and not another_pair[0].cmp_number(pair[0]) and not another_pair[0].cmp_number(two_triplet[0]):
+                        if len(another_pair) == 2 and not another_pair[0].cmp_number(pair[0]) and not another_pair[
+                            0].cmp_number(two_triplet[0]):
                             hand = Hand(two_triplet + pair + another_pair)
                             actions.append(hand)
 
         actions = [Action(act, False) for act in actions]
         return actions
+
+    def getLegalActions(self):
+        actions = self.getNextActions()
+        if self.last_dealt_hand is None:
+            return actions
+        else:
+            next_actions = []
+            for hand in actions:
+                with suppress(NotComparableError):
+                    if hand > self.last_dealt_hand:
+                        next_actions.append(hand)
+            next_actions.append(Action([], True))
+        return next_actions
+
+
+class GameState(object):
+    def __init__(self, agent_states, pass_count, whos_turn, last_dealt_hand, dealt_cards):
+        self.agent_states = agent_states
+        self.pass_count = pass_count
+        self.whos_turn = whos_turn
+        self.last_dealt_hand = last_dealt_hand
+        self.dealt_cards = dealt_cards
+
+    @staticmethod
+    def new(agent_states):
+        # agent_states = []
+        # for i in range(3):
+        # agent_states.append(AgentState(cards))
+        return GameState(agent_states, 0, 0, None, set())
 
     def isTerminal(self):
         for agent_s in self.agent_states:
@@ -281,17 +301,17 @@ class GameState(object):
     def getNewState(self, action):
         new_agent_states = deepcopy(self.agent_states)
         new_agent_states[self.whos_turn] = new_agent_states[self.whos_turn].do_deal_cards(action)
-        new_dealt_hand = action if not action.is_pass else last_dealt_hand
+        new_dealt_hand = action if not action.is_pass else self.last_dealt_hand
         new_pass_count = self.pass_count + 1 if action.is_pass else self.pass_count
         if new_pass_count == 2:
             new_pass_count = 0
             new_dealt_hand = None
         true_action = action if not action.is_pass else []
         state = GameState(new_agent_states,
-            pass_count=new_pass_count,
-            whos_turn=(self.whos_turn + 1) % 3,
-            last_dealt_hand=new_dealt_hand,
-            dealt_cards=self.dealt_cards|true_action)
+                          pass_count=new_pass_count,
+                          whos_turn=(self.whos_turn + 1) % 3,
+                          last_dealt_hand=new_dealt_hand,
+                          dealt_cards=self.dealt_cards | true_action)
         return state
 
     def who_wins(self):
@@ -302,24 +322,8 @@ class GameState(object):
                 if len(agent_s.cards) == 0:
                     return i
 
-    def getPrivateStateForAgentX(x):
+    def getPrivateStateForAgentX(self, x):
         return PrivateGameState(self, x)
-
-
-class PrivateGameState(object):
-    def __init__(self, game_state, x):
-        self.x = x
-        self.agent_state = game_state.agent_states[x]
-        self.pass_count = game_state.pass_count
-        self.whos_turn = game_state.whos_turn
-        self.last_dealt_hand = game_state.last_dealt_hand
-        self.dealt_cards = game_state.delta_cards
-        self.agent_num_cards = [len(h) for h in game_state.agent_states.cards]
-
-    def getPublicInstantiation(self, others_instantiation):
-        agents = list(others_instantiation)
-        agents.insert(x, self.agent_state)
-        return GameState(agents, self.pass_count, self.whos_turn, self.last_dealt_hand, self.dealt_cards)
 
 class AgentState(object):
     def __init__(self, cards, isLandlord=False):

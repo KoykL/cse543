@@ -1,3 +1,4 @@
+from tree import Tree
 class Agent(object):
 
     def __init__(self):
@@ -16,8 +17,8 @@ class Agent(object):
     # def cards(self, cards):
     #     self.cards = sorted(cards, key=lambda x: x.seq())
 
-    def getAction(self, legalActions):
-        pass
+    def getAction(self, private_state):
+        t = Tree(private_state)
 
     # def isWinnable(self, hand):
     #     return self.cards == hand

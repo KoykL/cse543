@@ -18,18 +18,18 @@ class Node(object):
         self.availability_count = 1
 
 class InformationSet:
-    def __init__(self, game_state):
-        self.private_game_state = game_state.getPrivateStateForAgentX(game_state.whos_turn)
+    def __init__(self, private_state):
+        self.state = private_state
         all_cards = set(Platform.get_deck())
         self.others_cards = all_cards - self.state.agents[self.state.whosturn].hand_cards
 
     def determinization(self):
         deck = deepcopy(self.others_cards)
         random.shuffle(deck)
-        agent1 = AgentState(deck[:self.private_game_state.agent_num_cards[(self.private_game_state.whos_turn - 1) % 3]])
-        agent3 = AgentState(deck[:self.private_game_state.agent_num_cards[(self.private_game_state.whos_turn + 1) % 3]])
+        agent1 = AgentState(deck[:self.state.agent_num_cards[(self.state.whos_turn - 1) % 3]])
+        agent3 = AgentState(deck[:self.state.agent_num_cards[(self.state.whos_turn + 1) % 3]])
         instatiations = [agent1, agent3]
-        return self.private_game_state.getPublicInstantiation(instatiations)
+        return self.state.getPublicInstantiation(instatiations)
 
     def is_terminal(self):  # fix it
         raise NotImplementedError()
@@ -43,8 +43,8 @@ class InformationSet:
         pass
 
 class Tree(object):
-    def __init__(self, game_state):
-        self.root = Node(InformationSet(game_state), None)
+    def __init__(self, private_state):
+        self.root = Node(InformationSet(private_state), None)
 
     @staticmethod
     def ucb_val(node):

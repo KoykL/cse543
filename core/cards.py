@@ -37,6 +37,10 @@ class Card(object):
             return 1
 
 
+class NotComparableError(RuntimeError):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
 @total_ordering
 class Hand(list):
     def __init__(self, it):
@@ -186,7 +190,7 @@ class Hand(list):
             elif other.type == "bomb":
                 return -1
             else:
-                raise NotImplementedError("self type: {}, other type: {}".format(self.type, other.type))
+                raise NotComparableError("self type: {}, other type: {}".format(self.type, other.type))
 
 
 class CardDeck(list):
