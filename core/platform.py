@@ -9,6 +9,7 @@ class Platform(object):
     def __init__(self, agents):
         assert len(agents) == 3, "number of agents should be 3"
         self.agents = agents
+
         agent_states = [AgentState([]) for _ in agents]
         self.game_state = GameState.new(agent_states)
         self.round = 0
@@ -43,10 +44,12 @@ class Platform(object):
         if self.game_state.isTerminal():
             raise RuntimeError("Game has reached terminal state")
         private_state = self.game_state.getPrivateStateForAgentX(self.game_state.whos_turn)
-        action = self.agents[self.game_state.whos_turn].getAction(private_state, self.actions[-3:])
+        action = self.agents[self.game_state.whos_turn].getAction(private_state)
         self.game_state = self.game_state.getNewState(action)
         self.round += 1
         self.actions.append(action)
+        for agent in self.agents:
+            agent.postAction(action)
         return action
 
 # I need

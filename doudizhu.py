@@ -1,6 +1,6 @@
 import argparse
 
-from core.agent import MctsAgent, HumanAgent
+from core.agent import MctsAgent
 from core.platform import Platform
 
 if __name__ == "__main__":
@@ -9,8 +9,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # initialize
-    agents = [MctsAgent() for i in range(2)]
-    agents.insert(2, HumanAgent())
+    agents = [MctsAgent(i) for i in range(3)]
+    for agent in agents:
+        agent.start()
+    # agents.insert(2, HumanAgent(2))
     # agents.insert(2, RandomAgent())
     platform = Platform(agents)
 
@@ -25,3 +27,5 @@ if __name__ == "__main__":
         print("agent {} played: {}".format(agent_playing, action))
         for i, a_s in enumerate(platform.game_state.agent_states):
             print("agent {} has card: {}".format(i, a_s.get_cards_str()))
+    for agent in agents:
+        agent.terminate()

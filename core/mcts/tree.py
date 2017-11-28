@@ -1,5 +1,6 @@
 import math
 import random
+from copy import deepcopy
 
 from core.platform import AgentState
 
@@ -55,7 +56,8 @@ class InformationSet:
 class Tree(object):
     def __init__(self, private_state=None):
         self.root = Node(InformationSet(private_state), None)
-
+        self.iterations_per_determinization = 0
+        self.determinization = None
 
     @staticmethod
     def ucb_val(node):
@@ -64,7 +66,14 @@ class Tree(object):
             math.log(node.availability_count) / node.play_count)
     def run_iter(self):
         curr_node = self.root
-        curr_determined_state = curr_node.state.determinization()
+        if self.determinization is None or self.iterations_per_determinization >= 250:
+            curr_determined_state = curr_node.state.determinization()
+            self.determinization = deepcopy(curr_determined_state)
+            self.iterations_per_determinization = 0
+            # print("change determinization")
+        else:
+            curr_determined_state = deepcopy(self.determinization)
+            self.iterations_per_determinization += 1
 
         candidate_actions = []
         candidate_states = []
