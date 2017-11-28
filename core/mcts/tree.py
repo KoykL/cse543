@@ -1,9 +1,7 @@
 import math
 import random
-import functools
-from copy import deepcopy
 
-from core.platform import Platform, AgentState, PrivateGameState
+from core.platform import AgentState
 
 
 class Node(object):
@@ -27,8 +25,18 @@ class InformationSet:
     def determinization(self):
         deck = list(self.state.other_cards)
         random.shuffle(deck)
+        assert self.state.agent_num_cards[(self.state.x + 1) % 3] + self.state.agent_num_cards[
+            (self.state.x + 2) % 3] == len(deck)
         agent1 = AgentState(deck[:self.state.agent_num_cards[(self.state.x + 1) % 3]])
-        agent3 = AgentState(deck[:self.state.agent_num_cards[(self.state.x + 2) % 3]])
+        agent3 = AgentState(deck[self.state.agent_num_cards[(self.state.x + 1) % 3]:self.state.agent_num_cards[
+                                                                                        (self.state.x + 1) % 3] +
+                                                                                    self.state.agent_num_cards[
+                                                                                        (self.state.x + 2) % 3]])
+        # print("infoset")
+        # print(self.state.agent_num_cards[(self.state.x + 1) % 3])
+        # print(self.state.agent_num_cards[(self.state.x + 2) % 3])
+        # print(agent1.get_cards_str())
+        # print(agent3.get_cards_str())
         if self.state.x == 1:
             agent1, agent3 = agent3, agent1
         instantiations = [agent1, agent3]
@@ -79,6 +87,9 @@ class Tree(object):
             if curr_node.state.is_terminal():
                 break
             actions = curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn).getLegalActions()
+            # print("hand:", curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn).agent_state.get_cards_str())
+            # print("agent num:", curr_determined_state.whos_turn)
+            # print("\n".join(str(act) for act in actions))
             determined_states = [curr_determined_state.getNewState(act) for act in actions]
             states = [curr_node.state.getNewState(act) for act in actions]
             available_children_mask = list(map(lambda x: check_available_children(x, states), curr_node.children))

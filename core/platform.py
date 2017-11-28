@@ -1,14 +1,13 @@
 import random
-from contextlib import suppress
-from copy import deepcopy, copy
-from itertools import combinations
+from copy import copy
 
-from core.cards import Card, Hand, NotComparableError
+from core.cards import Card, Hand
 
 
 class Platform(object):
 
     def __init__(self, agents):
+        assert len(agents) == 3, "number of agents should be 3"
         self.agents = agents
         agent_states = [AgentState([]) for _ in agents]
         self.game_state = GameState.new(agent_states)
@@ -44,7 +43,7 @@ class Platform(object):
         if self.game_state.isTerminal():
             raise RuntimeError("Game has reached terminal state")
         private_state = self.game_state.getPrivateStateForAgentX(self.game_state.whos_turn)
-        action = self.agents[self.game_state.whos_turn].getAction(private_state, self.actions[-2: ])
+        action = self.agents[self.game_state.whos_turn].getAction(private_state, self.actions[-3:])
         self.game_state = self.game_state.getNewState(action)
         self.round += 1
         self.actions.append(action)
@@ -244,71 +243,72 @@ class PrivateGameState(object):
             actions.append(Hand([bj, rj]))
 
         # kickers
-        for triplet in triplets:
-            # 3 with 1
-            for card in cards:
-                if card not in triplet:
-                    hand = Hand(triplet + [card])
-                    actions.append(hand)
-            # 3 with 2
-            for pair in pairs:
-                if pair[0].cmp_number(triplet[0]):
-                    hand = Hand(triplet + pair)
-                    actions.append(hand)
+            # for triplet in triplets:
+            #     # 3 with 1
+            #     for card in cards:
+            #         if card not in triplet:
+            #             hand = Hand(triplet + [card])
+            #             actions.append(hand)
+            #     # 3 with 2
+            #     for pair in pairs:
+            #         if pair[0].cmp_number(triplet[0]):
+            #             hand = Hand(triplet + pair)
+            #             actions.append(hand)
 
-        for bomb in bombs:
-            # four with 1
-            for card in cards:
-                if card not in bomb:
-                    hand = Hand(bomb + [card])
-                    actions.append(hand)
+            # for bomb in bombs:
+            #     # four with 1
+            #     for card in cards:
+            #         if card not in bomb:
+            #             hand = Hand(bomb + [card])
+            #             actions.append(hand)
+            #
+            #             # four with 2 singles
+            #             for another_card in cards:
+            #                 if another_card != card and another_card not in bomb:
+            #                     hand = Hand(bomb + [card] + [another_card])
+            #                     actions.append(hand)
+            #
+            #     for pair in pairs:
+            #         if pair[0].cmp_number(bomb[0]):
+            #             # four with 1 pair
+            #             # hand = Hand(bomb + pair)
+            #             # actions.append(hand)
+            #
+            #             # four with two pairs
+            #             for another_pair in pairs:
+            #                 if another_pair[0].cmp_number(pair[0]) and another_pair[0].cmp_number(bomb[0]):
+            #                     hand = Hand(bomb + pair + another_pair)
+            #                     actions.append(hand)
+            #
+            #             # four with 1 and 2
+            #             for card in cards:
+            #                 if card.cmp_number(bomb[0]) and card.cmp_number(pair[0]):
+            #                     hand = Hand(bomb + pair + [card])
+            #                     actions.append(hand)
 
-                    # four with 2 singles
-                    for another_card in cards:
-                        if another_card != card and another_card not in bomb:
-                            hand = Hand(bomb + [card] + [another_card])
-                            actions.append(hand)
-
-            for pair in pairs:
-                if pair[0].cmp_number(bomb[0]):
-                    # four with 1 pair
-                    # hand = Hand(bomb + pair)
-                    # actions.append(hand)
-
-                    # four with two pairs
-                    for another_pair in pairs:
-                        if another_pair[0].cmp_number(pair[0]) and another_pair[0].cmp_number(bomb[0]):
-                            hand = Hand(bomb + pair + another_pair)
-                            actions.append(hand)
-
-                    # four with 1 and 2
-                    for card in cards:
-                        if card.cmp_number(bomb[0]) and card.cmp_number(pair[0]):
-                            hand = Hand(bomb + pair + [card])
-                            actions.append(hand)
-
-        for two_triplet in two_triplets:
-            # 2 triplets with 2 singles
-            for card in cards:
-                if card.cmp_number(two_triplet[0]) and card.cmp_number(two_triplet[-1]):
-                    for another_card in cards:
-                        if another_card.cmp_number(card) and another_card.cmp_number(two_triplet[0]) and another_card.cmp_number(two_triplet[-1]):
-                            hand = Hand(two_triplet + [card] + [another_card])
-                            actions.append(hand)
-
-            # 2 triplets with 2 pairs
-            for pair in pairs:
-                if pair[0].cmp_number(two_triplet[0]) and pair[0].cmp_number(two_triplet[-1]):
-                    for another_pair in pairs:
-                        if another_pair[0].cmp_number(pair[0]) and another_pair[0].cmp_number(two_triplet[0]) and another_pair[0].cmp_number(two_triplet[-1]):
-                            hand = Hand(two_triplet + pair + another_pair)
-                            actions.append(hand)
+            # for two_triplet in two_triplets:
+            #     # 2 triplets with 2 singles
+            #     for card in cards:
+            #         if card.cmp_number(two_triplet[0]) and card.cmp_number(two_triplet[-1]):
+            #             for another_card in cards:
+            #                 if another_card.cmp_number(card) and another_card.cmp_number(two_triplet[0]) and another_card.cmp_number(two_triplet[-1]):
+            #                     hand = Hand(two_triplet + [card] + [another_card])
+            #                     actions.append(hand)
+            #
+            #     # 2 triplets with 2 pairs
+            #     for pair in pairs:
+            #         if pair[0].cmp_number(two_triplet[0]) and pair[0].cmp_number(two_triplet[-1]):
+            #             for another_pair in pairs:
+            #                 if another_pair[0].cmp_number(pair[0]) and another_pair[0].cmp_number(two_triplet[0]) and another_pair[0].cmp_number(two_triplet[-1]):
+            #                     hand = Hand(two_triplet + pair + another_pair)
+            #                     actions.append(hand)
         # print("actions", len(actions))
         # for act in actions[0:100]:
             # print(" ".join(str(card) for card in act))
         actions = [Action(act, False) for act in actions]
         for act in actions:
             assert act.hand.type != "invalid", act
+        # print("branches: ", len(actions))
         return actions
 
     def getLegalActions(self):
@@ -330,6 +330,7 @@ class PrivateGameState(object):
 
     def isTerminal(self):
         for cards in self.agent_num_cards:
+            # print("cards: ", cards)
             assert cards >= 0, cards
             if cards == 0:
                 return True
@@ -343,6 +344,9 @@ class PrivateGameState(object):
             new_agent_state = new_agent_state.do_deal_cards(action)
         else:
             new_others_cards = self.other_cards - set(true_action)
+            if len(new_others_cards) != len(self.other_cards) - len(true_action):
+                raise RuntimeError("invalid hand: {}, with my hand: {}".format(str(action), " ".join(
+                    str(card) for card in sorted(self.other_cards, key=lambda x: x.seq()))))
         new_dealt_hand = action if not action.is_pass else self.last_dealt_hand
         new_pass_count = self.pass_count + 1 if action.is_pass else 0
         if new_pass_count == 2:
@@ -354,6 +358,7 @@ class PrivateGameState(object):
             print(action)
             print(who)
             exit(-1)
+        # print(new_agent_num_cards[who], len(action.hand))
         new_agent_num_cards[who] -= len(action.hand)
 
         return PrivateGameState(
@@ -430,7 +435,10 @@ class AgentState(object):
 
     def do_deal_cards(self, hand):
         if not hand.is_pass:
-            return AgentState(self.cards - set(hand.hand))
+            result = AgentState(self.cards - set(hand.hand))
+            if len(result.cards) != len(self.cards) - len(hand.hand):
+                raise RuntimeError("invalid hand: {}, with my hand: {}".format(hand, self.get_cards_str()))
+            return result
         else:
             return self
 

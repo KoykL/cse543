@@ -1,6 +1,7 @@
 import argparse
+
+from core.agent import MctsAgent, HumanAgent
 from core.platform import Platform
-from core.agent import Agent
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -8,7 +9,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # initialize
-    agents = [Agent() for i in range(3)]
+    agents = [MctsAgent() for i in range(2)]
+    agents.insert(2, HumanAgent())
     platform = Platform(agents)
 
     # start game
