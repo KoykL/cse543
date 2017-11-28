@@ -7,6 +7,8 @@ from core.mcts.tree import Tree
 from core.platform import Action
 
 
+# import cProfile, pstats, io
+
 class BaseAgent(Process):
     def __init__(self, id):
         super().__init__()
@@ -62,11 +64,21 @@ class MctsAgent(BaseAgent):
                         self.t = Tree(data)
                         print("agent {} recov".format(self.id))
             if self.t is not None:
+                # pr = cProfile.Profile()
+                # pr.enable()
                 for i in range(100):
                     # if i%100 == 0:
                     #     print("agent: ", i)
                     self.t.run_iter()
-                choice = max(self.t.root.children, key=lambda x: x.empirical_reward / x.play_count)
+                # pr.disable()
+                # sortby = 'cumulative'
+                # s = io.StringIO()
+                # ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+                # ps.print_stats()
+                # print(s.getvalue())
+                choice = max(self.t.root.children, key=lambda x: x.play_count)
+                print("agent {} count {}".format(str(self.id), ", ".join(
+                    repr(((c.play_count), Tree.ucb_val(c))) for c in self.t.root.children)))
                 action_idx = self.t.root.children.index(choice)
                 self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
 

@@ -116,7 +116,7 @@ class Tree(object):
                 # print("children len", len(curr_node.children), len(actions))
                 children_vals = [(i, Tree.ucb_val(c)) for i, c in
                                  filter(lambda c: available_children_mask[c[0]], enumerate(curr_node.children))]
-                chosen_child = min(children_vals, key=lambda x: x[1])
+                chosen_child = max(children_vals, key=lambda x: x[1])
                 chosen_child = chosen_child[0]
                 curr_determined_state = curr_determined_state.getNewState(curr_node.actions[chosen_child])
                 curr_node = curr_node.children[chosen_child]
@@ -153,10 +153,18 @@ class Tree(object):
         curr_available_children_idx = -1
         # print(cached_available_nodes)
         while curr_node != None:
+            other_player = -1
+            for i in range(3):
+                if i != curr_node.state.state.whos_turn and i != 0:
+                    other_player = i
+                    break
             #
-            if (self.root.state.state.agent_state.isLandlord and winner == self.root.state.state.whos_turn) or (not self.root.state.state.agent_state.isLandlord and (winner == 1 or winner == 2)):
+            if (curr_node.state.state.agent_state.isLandlord and winner == curr_node.state.state.whos_turn) or (
+                        not curr_node.state.state.agent_state.isLandlord and (
+                                    winner == curr_node.state.state.whos_turn or winner == other_player)):
                 # print("reward once")
                 curr_node.empirical_reward += 1
+
             curr_node.play_count += 1
             curr_node = curr_node.parent
             if curr_node != None:

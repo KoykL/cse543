@@ -1,3 +1,5 @@
+import functools
+import itertools
 import random
 from copy import copy
 
@@ -15,6 +17,7 @@ class Platform(object):
         self.round = 0
         self.actions = []
     @staticmethod
+    @functools.lru_cache(None)
     def get_deck():
         deck = []
         for num in Card.all_numbers[:-2]:
@@ -101,9 +104,30 @@ class PrivateGameState(object):
         agents.insert(self.x, self.agent_state)
         return GameState(agents, self.pass_count, self.whos_turn, self.last_dealt_hand, self.dealt_cards)
 
-    def getAllActions(self):
+    @staticmethod
+    @functools.lru_cache(None)
+    def max_combinations(max_length=20):
+        possibilities = []
+        l1 = itertools.combinations(range(max_length), 1)
+        l2 = itertools.combinations(range(max_length), 2)
+        l3 = itertools.combinations(range(max_length), 3)
+        l4 = itertools.combinations(range(max_length), 4)
+        l5 = itertools.combinations(range(max_length), 5)
+        l6 = itertools.combinations(range(max_length), 6)
+        return len(l1), len(l2), len(l3), len(l4), len(l5), len(l6)
 
-        pass
+    @staticmethod
+    @functools.lru_cache(None)
+    def getAllActions(length, max_length=20):
+        l1, l2, l3, l4, l5, l6 = PrivateGameState.max_combinations(max_length)
+        possibilities = [0] * (l1 + l2 + l3 + l4 + l5 + l6)
+        possibilities[0:l1] = itertools.combinations(length, 1)
+        possibilities[l1:l2] = itertools.combinations(length, 2)
+        possibilities[l2:l3] = itertools.combinations(length, 3)
+        possibilities[l3:l4] = itertools.combinations(length, 4)
+        possibilities[l4:l5] = itertools.combinations(length, 5)
+        possibilities[l5:l6] = itertools.combinations(length, 6)
+        return possibilities
     def getNextActions(self):
         cards_set = self.agent_state.cards
         cards = sorted(cards_set, key=lambda x: x.seq())
@@ -191,28 +215,40 @@ class PrivateGameState(object):
         #                                 actions.append(straight)
 
         # Johnny
-        length = 0
+        # length = 0
         straight = []
         cur_num = -10
         last_num = -10
+        suppress_new_cards = 0
         for card in cards:
             if card.seq() < Card.MAX_VALID_SENITENIAL:
                 cur_num = card.seq()
-                if length == 0:
-                    straight = [card]
-                    length = 1
-
+                if len(straight) == 0:
+                    suppress_new_cards = 0
+                    straight = [[card]]
                 if cur_num == last_num + 1:
-                    straight.append(card)
-                    length = length + 1
-                elif cur_num == last_num:
-                    pass
-                else:
-                    length = 1
-                    straight = [card]  # reinitialize
+                    suppress_new_cards = 0
+                    for s in straight:
+                        s.append(card)
+                        if len(s) >= 5:
+                            actions.append(Hand(s[len(s) - 5: len(s)]))
 
-                if length >= 5:
-                    actions.append(straight[length - 5: length])
+                elif cur_num == last_num:
+
+                    new = []
+                    for s in straight:
+                        new.append(copy(s))
+                    new_new = []
+                    for n in list(new[:-1 - suppress_new_cards] + [new[-1]]):
+                        n[-1] = card
+                        if len(n) >= 5:
+                            actions.append(Hand(n[len(n) - 5: len(n)]))
+                        new_new.append(n)
+                    straight.extend(new_new)
+                    suppress_new_cards += 1
+                else:
+                    suppress_new_cards = 0
+                    straight = [[card]]  # reinitialize
 
                 last_num = cur_num
 

@@ -25,6 +25,8 @@ class Card(object):
     def seq(self):
         return Card.all_numbers.index(self.number)
 
+    def color_seq(self):
+        return Card.all_colors.index(self.color)
     @staticmethod
     def static_seq(num):
         return Card.all_numbers.index(num)
@@ -48,6 +50,7 @@ class NotComparableError(RuntimeError):
 class Hand(list):
     def __init__(self, it):
         super().__init__(it)
+        self.sort(key=lambda x: x.seq())
         self.classify()
     def __eq__(self, other):
         if self.type != other.type:
