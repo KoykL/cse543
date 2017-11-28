@@ -98,6 +98,9 @@ class PrivateGameState(object):
         agents.insert(self.x, self.agent_state)
         return GameState(agents, self.pass_count, self.whos_turn, self.last_dealt_hand, self.dealt_cards)
 
+    def getAllActions(self):
+
+        pass
     def getNextActions(self):
         cards_set = self.agent_state.cards
         cards = sorted(cards_set, key=lambda x: x.seq())

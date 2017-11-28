@@ -1,3 +1,5 @@
+import random
+
 from core.cards import Hand
 from core.mcts.tree import Tree
 from core.platform import Action
@@ -90,3 +92,25 @@ class HumanAgent(BaseAgent):
             action = Action(Hand(list(map(lambda x: cards_list[int(x)], card_indices))), False)
             print("you played: {}".format(action))
             return action
+
+
+class RandomAgent(BaseAgent):
+    def __init__(self):
+        super().__init__()
+
+    #     self.isLandlord = False
+    #
+    # def setLandlord(self):
+    #     self.isLandlord = True
+    #
+    # @property
+    # def cards(self):
+    #     return self.cards
+    #
+    # @cards.setter
+    # def cards(self, cards):
+    #     self.cards = sorted(cards, key=lambda x: x.seq())
+
+    def getAction(self, private_state, past_actions):
+        actions = private_state.getLegalActions()
+        return random.choice(actions)

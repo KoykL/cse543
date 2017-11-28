@@ -11,6 +11,7 @@ if __name__ == "__main__":
     # initialize
     agents = [MctsAgent() for i in range(2)]
     agents.insert(2, HumanAgent())
+    # agents.insert(2, RandomAgent())
     platform = Platform(agents)
 
     # start game

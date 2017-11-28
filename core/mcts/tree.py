@@ -134,15 +134,19 @@ class Tree(object):
             actions = curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn).getLegalActions()
             chosen_child = random.randint(0, len(actions) - 1)
             curr_determined_state = curr_determined_state.getNewState(actions[chosen_child])
+        # print("simulation end: ")
+        # for agent in curr_determined_state.agent_states:
+        #     print(agent.get_cards_str())
         winner = curr_determined_state.who_wins()
         # run until termination
-
+        # print("winner", winner)
         # backpropagation
         curr_available_children_idx = -1
         # print(cached_available_nodes)
         while curr_node != None:
             #
             if (self.root.state.state.agent_state.isLandlord and winner == self.root.state.state.whos_turn) or (not self.root.state.state.agent_state.isLandlord and (winner == 1 or winner == 2)):
+                # print("reward once")
                 curr_node.empirical_reward += 1
             curr_node.play_count += 1
             curr_node = curr_node.parent
