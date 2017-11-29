@@ -9,7 +9,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # initialize
-    agents = [MctsAgent(i) for i in range(2)]
+    agents = [MctsAgent(i) for i in range(1, 3)]
     for agent in agents:
         agent.start()
     agents.insert(0, HumanAgent(0))

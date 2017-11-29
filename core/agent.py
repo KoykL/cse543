@@ -89,9 +89,9 @@ class MctsAgent(BaseAgent):
         # print(past_actions)
         counter = 0
         self.input_status.put((0, private_state))
-        actions = private_state.getLegalActions()
-        for act in actions:
-            print(act)
+        # actions = private_state.getLegalActions()
+        # for act in actions:
+        #     print(act)
         while True:
             state, decision = self.decision.get()
             if state == private_state:
