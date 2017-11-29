@@ -11,28 +11,7 @@ LongTensor = torch.cuda.LongTensor if use_cuda else torch.LongTensor
 ByteTensor = torch.cuda.ByteTensor if use_cuda else torch.ByteTensor
 Tensor = FloatTensor
 
-Transition = namedtuple('Transition',
-                        ('state', 'action', 'next_state', 'reward'))
 
-
-class ReplayMemory(object):
-    def __init__(self, capacity):
-        self.capacity = capacity
-        self.memory = []
-        self.position = 0
-
-    def push(self, *args):
-        """Saves a transition."""
-        if len(self.memory) < self.capacity:
-            self.memory.append(None)
-        self.memory[self.position] = Transition(*args)
-        self.position = (self.position + 1) % self.capacity
-
-    def sample(self, batch_size):
-        return random.sample(self.memory, batch_size)
-
-    def __len__(self):
-        return len(self.memory)
 
 
 class DQN(nn.Module):
@@ -229,3 +208,4 @@ class DeepLearner(object):
         net_in = self._gen_input(private_state)
         prior, value = self.model(net_in)
         return prior, value
+

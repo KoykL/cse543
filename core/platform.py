@@ -140,7 +140,7 @@ class PrivateGameState(object):
     @functools.lru_cache(None)
     def getAllActionsReverseMap(length, max_length=20):
         pos = {}
-        actions = PrivateGameState.getAllActions()
+        actions = PrivateGameState.getAllActions(length)
         for i, p in enumerate(actions):
             pos[p] = i
         if -1 in pos:
