@@ -7,8 +7,6 @@ from core.mcts.tree import Tree
 from core.platform import Action
 
 
-# import cProfile, pstats, io
-
 class BaseAgent(Process):
     def __init__(self, id):
         super().__init__()
@@ -71,14 +69,15 @@ class MctsAgent(BaseAgent):
                     #     print("agent: ", i)
                     self.t.run_iter()
                 # pr.disable()
-                # sortby = 'cumulative'
+                # sortby = 'tottime'
                 # s = io.StringIO()
                 # ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
                 # ps.print_stats()
                 # print(s.getvalue())
                 choice = max(self.t.root.children, key=lambda x: x.play_count)
                 print("agent {} count {}".format(str(self.id), ", ".join(
-                    repr(((c.play_count), Tree.ucb_val(c))) for c in self.t.root.children)))
+                    repr(((c.play_count), Tree.ucb_val(c), str(c.state.state.last_dealt_hand))) for c in
+                    self.t.root.children)))
                 action_idx = self.t.root.children.index(choice)
                 self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
 
@@ -135,10 +134,11 @@ class HumanAgent(BaseAgent):
         print(" ".join("{}:{}".format(i, c) for i, c in enumerate(cards_list)))
         option = input("what do you want to play?")
         if option == "":
-            return Action(Hand([]), True)
+            return Action(Hand([]), True, [])
         else:
             card_indices = option.split(" ")
-            action = Action(Hand(list(map(lambda x: cards_list[int(x)], card_indices))), False)
+            action = Action(Hand(list(map(lambda x: cards_list[int(x)], card_indices))), False,
+                            list(map(lambda x: int(x), card_indices)))
             print("you played: {}".format(action))
             return action
 

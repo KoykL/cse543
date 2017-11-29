@@ -1,7 +1,9 @@
 import functools
 import itertools
 import random
+from contextlib import suppress
 from copy import copy
+from itertools import combinations
 
 from core.cards import Card, Hand
 
@@ -38,9 +40,9 @@ class Platform(object):
         random.shuffle(deck)
 
         di_pai = deck[:3]
-        self.game_state.agent_states[0].cards.update(deck[:3+17])
-        self.game_state.agent_states[1].cards.update(deck[20:37])
-        self.game_state.agent_states[2].cards.update(deck[37:])
+        self.game_state.agent_states[0].append_hand(deck[:3 + 17])
+        self.game_state.agent_states[1].append_hand(deck[20:37])
+        self.game_state.agent_states[2].append_hand(deck[37:])
 
     # da pai
     def turn(self):
@@ -64,20 +66,25 @@ class Platform(object):
 
 #implement gamestate equality check
 class Action(object):
-    def __init__(self, hand, is_pass):
+    def __init__(self, hand, is_pass, idx):
         self.is_pass = is_pass
+        # if type(idx) == type(tuple()):
+        #     raise RuntimeError("who the fuck passed a tuple?")
+        self.idx = list(idx)
         # assert(type(hand) == type(Hand))
         self.hand = Hand(list(hand))
 
     def __eq__(self, other):
         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
     def __str__(self):
+        # print(self.idx)
         if self.is_pass:
             return "[pass]"
         else:
-            return "{}".format(" ".join(str(card) for card in self.hand))
+            return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))
 
-
+    def __add__(self, other):
+        return Action(self.hand + other.hand, self.is_pass and other.is_pass, self.idx + other.idx)
 class PrivateGameState(object):
     def __init__(self, x, agent_state, pass_count, whos_turn, last_dealt_hand, dealt_cards, agent_num_cards, other_cards):
         self.x = x
@@ -96,7 +103,7 @@ class PrivateGameState(object):
     @staticmethod
     def from_game_state(x, game_state):
         all_cards = set(Platform.get_deck())
-        others_cards = all_cards - game_state.agent_states[x].cards - game_state.dealt_cards
+        others_cards = all_cards - set(game_state.agent_states[x].cards) - game_state.dealt_cards
         return PrivateGameState(x, game_state.agent_states[x], game_state.pass_count, game_state.whos_turn, game_state.last_dealt_hand, game_state.dealt_cards, [len(h.cards) for h in game_state.agent_states], others_cards)
 
     def getPublicInstantiation(self, others_instantiation):
@@ -108,12 +115,12 @@ class PrivateGameState(object):
     @functools.lru_cache(None)
     def max_combinations(max_length=20):
         possibilities = []
-        l1 = itertools.combinations(range(max_length), 1)
-        l2 = itertools.combinations(range(max_length), 2)
-        l3 = itertools.combinations(range(max_length), 3)
-        l4 = itertools.combinations(range(max_length), 4)
-        l5 = itertools.combinations(range(max_length), 5)
-        l6 = itertools.combinations(range(max_length), 6)
+        l1 = list(itertools.combinations(range(max_length), 1))
+        l2 = list(itertools.combinations(range(max_length), 2))
+        l3 = list(itertools.combinations(range(max_length), 3))
+        l4 = list(itertools.combinations(range(max_length), 4))
+        l5 = list(itertools.combinations(range(max_length), 5))
+        l6 = list(itertools.combinations(range(max_length), 6))
         return len(l1), len(l2), len(l3), len(l4), len(l5), len(l6)
 
     @staticmethod
@@ -121,51 +128,106 @@ class PrivateGameState(object):
     def getAllActions(length, max_length=20):
         l1, l2, l3, l4, l5, l6 = PrivateGameState.max_combinations(max_length)
         possibilities = [-1] * (l1 + l2 + l3 + l4 + l5 + l6)
-        possibilities[0:l1] = itertools.combinations(length, 1)
-        possibilities[l1:l2] = itertools.combinations(length, 2)
-        possibilities[l2:l3] = itertools.combinations(length, 3)
-        possibilities[l3:l4] = itertools.combinations(length, 4)
-        possibilities[l4:l5] = itertools.combinations(length, 5)
-        possibilities[l5:l6] = itertools.combinations(length, 6)
+        possibilities[0:l1] = list(itertools.combinations(range(length), 1))
+        possibilities[l1:l2] = list(itertools.combinations(range(length), 2))
+        possibilities[l2:l3] = list(itertools.combinations(range(length), 3))
+        possibilities[l3:l4] = list(itertools.combinations(range(length), 4))
+        possibilities[l4:l5] = list(itertools.combinations(range(length), 5))
+        possibilities[l5:l6] = list(itertools.combinations(range(length), 6))
         return possibilities
 
+    @staticmethod
+    @functools.lru_cache(None)
+    def getAllActionsReverseMap(length, max_length=20):
+        pos = {}
+        actions = PrivateGameState.getAllActions()
+        for i, p in enumerate(actions):
+            pos[p] = i
+        if -1 in pos:
+            del pos[-1]
+        return pos
     def getNextActions(self):
-        cards_set = self.agent_state.cards
-        cards = sorted(cards_set, key=lambda x: x.seq())
+        cards = self.agent_state.cards
         # single card
-        numbers_set = set()
+        # numbers_set = set()
         actions = []
-        for card in cards:
-            if card.number not in numbers_set:
-                actions.append(Hand([card]))
-            numbers_set.add(card.number)
-        pairs, triplets, bombs = [], [], []
-        index = 0
-        last_card = None
-        last_last_card = None
-        last_last_last_card = None
-        for card in cards:
-            # pairs
-            if last_card is not None and card.cmp_number(last_card) == 0 :
-                pairs.append([card, last_card])
-                # Triplet
-                if last_last_card is not None and last_card.cmp_number(last_last_card) == 0:
-                    triplets.append([card, last_card, last_last_card])
-                    # boom
-                    if last_last_last_card is not None and last_last_card.cmp_number(last_last_last_card) == 0:
-                        bombs.append([card, last_card, last_last_card, last_last_last_card])
+        for i, card in enumerate(cards):
+            actions.append(Action(Hand([card]), False, [i]))
+            # numbers_set.add(card.number)
 
-            last_last_last_card = last_last_card
-            last_last_card = last_card
-            last_card = card
+        set_of_number = []
+        set_of_current_number = []
+        for i, card in enumerate(cards):
+            if len(set_of_current_number) == 0:
+                set_of_current_number.append((i, card))
+            elif card.number == set_of_current_number[0][1].number:
+                set_of_current_number.append((i, card))
+            else:
+                set_of_number.append(set_of_current_number)
+                set_of_current_number = [(i, card)]
+
+        pairs, triplets, bombs = [], [], []
+        for set_of_current_number in set_of_number:
+            if len(set_of_current_number) > 1:
+                for p in list(combinations(set_of_current_number, 2)):
+                    pair = []
+                    for i, c in p:
+                        pair.append((i, c))
+                    indices, hand_pair = zip(*pair)
+                    pairs.append(Action(Hand(hand_pair), False, indices))
+            if len(set_of_current_number) > 2:
+                for t in list(combinations(set_of_current_number, 3)):
+                    triplet = []
+                    for i, c in t:
+                        triplet.append((i, c))
+                    indices, hand_triplet = zip(*triplet)
+                    triplets.append(Action(Hand(hand_triplet), False, indices))
+            if len(set_of_current_number) > 3:
+                indices, hand_bomb = zip(*set_of_current_number)
+                bombs.append(Action(Hand(hand_bomb), False, indices))
+        # pairs, triplets, bombs = [], [], []
+        # index = 0
+        # last_card = None
+        # last_card_index = -1
+        # last_last_card = None
+        # last_last_card_index = -1
+        # last_last_last_card = None
+        # last_last_last_card_index = -1
+        # for i, card in enumerate(cards):
+        #     # pairs
+        #     if last_card is not None and card.cmp_number(last_card) == 0 :
+        #         pairs.append(Action(Hand([card, last_card]), False, [i, last_card_index]))
+        #         # Triplet
+        #         if last_last_card is not None and last_card.cmp_number(last_last_card) == 0:
+        #             triplets.append(Action(Hand([card, last_card, last_last_card]), False, [i, last_card_index, last_last_card_index]))
+        #             # boom
+        #             if last_last_last_card is not None and last_last_card.cmp_number(last_last_last_card) == 0:
+        #                 bombs.append(Action(Hand([card, last_card, last_last_card, last_last_last_card]), False, [i, last_card_index, last_last_card_index, last_last_last_card_index]))
+        #
+        #     last_last_last_card_index = last_last_card_index
+        #     last_last_last_card = last_last_card
+        #     last_last_card_index = last_card_index
+        #     last_last_card = last_card
+        #     last_card_index = i
+        #     last_card = card
 
         two_triplets = []
         for triplet in triplets:
             for another_triplet in triplets:
-                if triplet[0].seq() == another_triplet[0].seq() - 1 and another_triplet[0].number != "2":
-                    two_triplets.append(triplet + another_triplet)
+                if triplet.hand[0].seq() == another_triplet.hand[0].seq() - 1 and another_triplet.hand[0].number != "2":
+                    two_triplets.append(
+                        Action(triplet.hand + another_triplet.hand, False, triplet.idx + another_triplet.idx))
 
-        actions += pairs + triplets + bombs + two_triplets
+        three_pairs = []
+        for pair1 in pairs:
+            for pair2 in pairs:
+                for pair3 in pairs:
+                    if pair1.hand[0].seq() == pair2.hand[0].seq() - 1 and pair2.hand[0].seq() == pair3.hand[
+                        0].seq() - 1 and pair3.hand[0].number != "2":
+                        three_pairs.append(
+                            Action(pair1.hand + pair2.hand + pair3.hand, False, pair1.idx + pair2.idx + pair3.idx))
+
+        actions += pairs + triplets + bombs + two_triplets + three_pairs
         # two_triplets = list(map(lambda x: x[0] + x[1], combinations(triplets, 2)))
 
         # straight
@@ -217,73 +279,107 @@ class PrivateGameState(object):
 
         # Johnny
         # length = 0
+        straight_actions = []
         straight = []
+        straight_indices = []
         cur_num = -10
         last_num = -10
         suppress_new_cards = 0
-        for card in cards:
+        for i, card in enumerate(cards):
             if card.seq() < Card.MAX_VALID_SENITENIAL:
                 cur_num = card.seq()
                 if len(straight) == 0:
                     suppress_new_cards = 0
                     straight = [[card]]
+                    straight_indices = [[i]]
                 if cur_num == last_num + 1:
                     suppress_new_cards = 0
-                    for s in straight:
+                    for s, ids in zip(straight, straight_indices):
                         s.append(card)
+                        ids.append(i)
                         if len(s) >= 5:
-                            actions.append(Hand(s[len(s) - 5: len(s)]))
-
+                            straight_actions.append(Action(Hand(s[len(s) - 5: len(s)]), False, ids[len(s) - 5: len(s)]))
                 elif cur_num == last_num:
-
                     new = []
-                    for s in straight:
+                    new_ids = []
+                    for s, ids in zip(straight, straight_indices):
                         new.append(copy(s))
+                        new_ids.append(copy(ids))
                     new_new = []
-                    for n in list(new[:-1 - suppress_new_cards] + [new[-1]]):
+                    new_new_ids = []
+                    for n, ns in zip(list(new[:-1 - suppress_new_cards] + [new[-1]]),
+                                     new_ids[:-1 - suppress_new_cards] + [new_ids[-1]]):
                         n[-1] = card
+                        ns[-1] = i
                         if len(n) >= 5:
-                            actions.append(Hand(n[len(n) - 5: len(n)]))
+                            straight_actions.append(Action(Hand(n[len(n) - 5: len(n)]), False, ns[len(n) - 5: len(n)]))
+
                         new_new.append(n)
+                        new_new_ids.append(ns)
+                        suppress_new_cards += 1
                     straight.extend(new_new)
-                    suppress_new_cards += 1
+                    straight_indices.extend(new_new_ids)
+
                 else:
                     suppress_new_cards = 0
                     straight = [[card]]  # reinitialize
-
+                    straight_indices = [[i]]
                 last_num = cur_num
 
-        # three pairs
-        length = 0
-        straight = []
-        cur_num = -10
-        last_num = -10
-        for pair in pairs:
-            if pair[0].seq() < Card.MAX_VALID_SENITENIAL:
-                if length == 0:
-                    straight = pair
-                    length = 1
-                cur_num = pair[0].seq()
-
-                if cur_num == last_num + 1:
-                    length = length + 1
-                    straight = straight + pair
-                elif cur_num == last_num:
-                    pass
-                else:
-                    length = 1
-                    straight = pair  # reinitialize
-
-                if length >= 3:
-                    actions.append(straight[2 * length - 6:2 * length])
-
-                last_num = cur_num
+        real_straight_actions = []
+        for i, action1 in enumerate(straight_actions):
+            unique = True
+            for j, action2 in enumerate(straight_actions):
+                if j == i:
+                    continue
+                if action1 == action2:
+                    unique = False
+            if unique:
+                real_straight_actions.append(action1)
+        # print(straight_actions, real_straight_actions)
+        actions.extend(real_straight_actions)
+        # three pairs (by Kengdie Johnny)
+        # three_pair = []
+        # cur_num = -10
+        # last_num = -10
+        # for pair in pairs:
+        #     if pair.hand[0].seq() < Card.MAX_VALID_SENITENIAL:
+        #         if len(three_pair) == 0:
+        #             three_pair = [pair]
+        #             length = 1
+        #         cur_num = pair.hand[0].seq()
+        #         if cur_num == last_num + 1:
+        #             for tp in three_pair:
+        #                 tp += pair
+        #                 print(tp)
+        #                 if len(tp.hand) >= 6:
+        #                     actions.append(Action(tp.hand[2 * length - 6:2 * length], False, tp.idx[2 * length - 6:2 * length]))
+        #         elif cur_num == last_num:
+        #             new = []
+        #             for tp in three_pair:
+        #                 new.append(Action(copy(tp.hand), False, copy(tp.idx)))
+        #             new_new = []
+        #             for n in list(new):
+        #                 n_hand = copy(n.hand)
+        #                 n_idx = copy(n.idx)
+        #                 n_hand[-2:] = pair.hand
+        #                 n_idx[-2:] = pair.idx
+        #                 n = Action(n_hand, False, n_idx)
+        #                 if len(n.hand) >= 6:
+        #                     actions.append(Action(n.hand[-6: len(n.hand)], False, n.idx[-6: len(n.hand)]))
+        #                 new_new.append(n)
+        #             three_pair.extend(new_new)
+        #         else:
+        #             three_pair = [pair]  # reinitialize
+        #         last_num = cur_num
 
         # nuke
         bj = Card("BJ", "")
         rj = Card("RJ", "")
-        if bj in cards_set and rj in cards_set:
-            actions.append(Hand([bj, rj]))
+        with suppress(ValueError):
+            i = cards.index(bj)
+            j = cards.index(rj)
+            actions.append(Action(Hand([bj, rj]), False, [i, j]))
 
         # kickers
             # for triplet in triplets:
@@ -346,9 +442,13 @@ class PrivateGameState(object):
             #                     hand = Hand(two_triplet + pair + another_pair)
             #                     actions.append(hand)
         # print("actions", len(actions))
-        # for act in actions[0:100]:
-            # print(" ".join(str(card) for card in act))
-        actions = [Action(act, False) for act in actions]
+        # for act in actions:
+        #     print(act)
+        # print("exit")
+        # exit(-1)
+        # actions = [Action(act, False) for act in actions]
+        for act in actions:
+            act.hand.classify()
         for act in actions:
             assert act.hand.type != "invalid", act
         # print("branches: ", len(actions))
@@ -368,7 +468,7 @@ class PrivateGameState(object):
                 # print( str(self.last_dealt_hand))
                 if action.hand > self.last_dealt_hand.hand:
                     next_actions.append(action)
-            next_actions.append(Action(Hand([]), True))
+            next_actions.append(Action(Hand([]), True, []))
         return next_actions
 
     def isTerminal(self):
@@ -469,7 +569,7 @@ class GameState(object):
 
 class AgentState(object):
     def __init__(self, cards, isLandlord=False):
-        self.cards = set(cards) #set()
+        self.cards = sorted(cards, key=lambda x: x.seq())  # list()
         self.isLandlord = isLandlord
         #self.last_dealt_hand =
 
@@ -478,13 +578,16 @@ class AgentState(object):
 
     def do_deal_cards(self, hand):
         if not hand.is_pass:
-            result = AgentState(self.cards - set(hand.hand))
+            result = AgentState(set(self.cards) - set(hand.hand))
             if len(result.cards) != len(self.cards) - len(hand.hand):
                 raise RuntimeError("invalid hand: {}, with my hand: {}".format(hand, self.get_cards_str()))
             return result
         else:
             return self
 
+    def append_hand(self, cards):
+        self.cards.extend(cards)
+        self.cards = sorted(self.cards, key=lambda x: x.seq())
     def setLandlord(self):
         self.isLandlord = True
 

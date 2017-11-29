@@ -1,5 +1,5 @@
 import collections
-from functools import total_ordering
+
 
 class Card(object):
     all_numbers = [
@@ -46,28 +46,35 @@ class NotComparableError(RuntimeError):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-@total_ordering
 class Hand(list):
+    cache = dict()
     def __init__(self, it):
         super().__init__(it)
         self.sort(key=lambda x: x.seq())
-        self.classify()
-    def __eq__(self, other):
-        if self.type != other.type:
-            return False
-        else:
-            return self.cmp(other) == 0
+        self.type = "unclassified"
+        # self.classify()
 
+    def append(self, it):
+        super().append(it)
+        # if tuple(self) in Hand.cache:
+        #     del Hand.cache[tuple(self)]
+        self.sort(key=lambda x: x.seq())
+
+    def __add__(self, it):
+        res = super().__add__(it)
+        # if tuple(self) in Hand.cache:
+        #     del Hand.cache[tuple(self)]
+        res.sort(key=lambda x: x.seq())
+        return res
+    def __eq__(self, other):
+        return super().__eq__(other)
     def __lt__(self, other):
         return self.cmp(other) == -1
-
     def __ne__(self, other):
         if self.type != other.type:
             return True
-
         else:
             return self.cmp(other) != 0
-
     def __le__(self, other):
         return self.cmp(other) <= 0
 
@@ -78,6 +85,13 @@ class Hand(list):
         return self.cmp(other) >= 0
 
     def classify(self):
+        # self_tuple = tuple(self)
+        # if self_tuple in Hand.cache:
+        # print("hit")
+        # print(len(Hand.cache))
+        # self.type = Hand.cache[self_tuple]
+        # return
+        # print("miss")
         counter = collections.Counter([n.number for n in self])
         numbers = set(counter.keys())
         seqs = [Card.static_seq(n) for n in numbers]
@@ -167,6 +181,7 @@ class Hand(list):
                 self.type = "invalid"
         else:
             self.type = "invalid"
+            # Hand.cache[self_tuple] = self.type
 
     def cmp(self, other):
         if self.type == "invalid" or other.type == "invalid":

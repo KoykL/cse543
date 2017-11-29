@@ -1,8 +1,9 @@
-import math
 import random
 from copy import deepcopy
 
-from core.platform import AgentState
+import numpy as np
+
+from core.platform import AgentState, PrivateGameState
 
 
 class Node(object):
@@ -16,8 +17,9 @@ class Node(object):
         self.play_count = 1
 
         # self.availability_count = 1
-        self.priors = 0
 
+        # self.children_prior = None
+        self.prior = 0
 
 class InformationSet:
     def __init__(self, private_state):
@@ -66,10 +68,8 @@ class Tree(object):
         self.determinization = None
 
     @staticmethod
-    def ucb_val(node):
-        k = 1
-        return (node.empirical_reward / node.play_count) + k * math.sqrt(
-            math.log(node.prior) / node.play_count)
+    def net_val(node):
+        return node.empirical_reward + node.prior / node.play_count
 
     def run_iter(self):
         curr_node = self.root
@@ -84,7 +84,6 @@ class Tree(object):
 
         candidate_actions = []
         candidate_states = []
-        candidate_determined_states = []
 
         def check_available_children(c, states):
             for state in states:
@@ -106,7 +105,6 @@ class Tree(object):
             # print("hand:", curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn).agent_state.get_cards_str())
             # print("agent num:", curr_determined_state.whos_turn)
             # print("\n".join(str(act) for act in actions))
-            determined_states = [curr_determined_state.getNewState(act) for act in actions]
             states = [curr_node.state.getNewState(act) for act in actions]
             available_children_mask = list(map(lambda x: check_available_children(x, states), curr_node.children))
             # info_states = [InformationSet(s) for s in states]
@@ -116,11 +114,10 @@ class Tree(object):
             if len(new_states) > 0:
                 candidate_actions = new_actions
                 candidate_states = new_states
-                candidate_determined_states = determined_states
                 break
             else:
                 # print("children len", len(curr_node.children), len(actions))
-                children_vals = [(i, Tree.ucb_val(c)) for i, c in
+                children_vals = [(i, Tree.net_val(c)) for i, c in
                                  filter(lambda c: available_children_mask[c[0]], enumerate(curr_node.children))]
                 chosen_child = max(children_vals, key=lambda x: x[1])
                 chosen_child = chosen_child[0]
@@ -129,53 +126,23 @@ class Tree(object):
 
         # expansion
         if not curr_node.state.is_terminal():
-            # chosen_child = random.randint(0, len(candidate_actions) - 1)
-            # print("fix this")
-            priors, value = self.learner.estimate_leaf_prior_value(curr_node.state)
-
-            # TODO: fix this
-            raise NotImplementedError("fix here")
-
-            # all_cards_indices = PrivateGameState.getAllActions(len(curr_node.state.agent_state.cards))
-
-            # all_prior_indices = zip(priors, all_cards_indices)
-            all_usable_prior_actions = []
-            # for prior, indices in all_prior_indices:
-            #     if indices[0] < 0:
-            #         continue
-            # action = []
-            # for idx in indices:
-            # action.append(curr_node.state.agent_state.cards[idx])
-            # fix last action: pass
-            # all_usable_prior_actions.append((prior, Action(Hand(action), False)))
-
-            # all_usable_prior_actions.append((priors[-1], Action(Hand([]), True)))
-
-
+            priors, net_value = self.learner.estimate_leaf_prior_value(curr_node.state)
+            reverse_map = PrivateGameState.getAllActionsReverseMap(len(curr_node.state.agent_state.cards))
+            candidate_priors = []
             for i, action in enumerate(zip(candidate_actions)):
-                new_s = candidate_states[i]
-                new_c = Node(new_s, curr_node)
-                curr_node.actions.append(action)
-                curr_node.children.append(new_c)
-                curr_node = new_c
-                curr_determined_state = candidate_determined_states[i]
-                # TODO: fix this
-        # run until termination
-        # print("winner", winner)
-        # backpropagation
-        # print(cached_available_nodes)
-        while curr_node != None:
-            other_player = -1
-            for i in range(3):
-                if i != curr_node.state.state.whos_turn and i != 0:
-                    other_player = i
-                    break
-            #
-            if (curr_node.state.state.agent_state.isLandlord and winner == curr_node.state.state.whos_turn) or (
-                        not curr_node.state.state.agent_state.isLandlord and (
-                                    winner == curr_node.state.state.whos_turn or winner == other_player)):
-                # print("reward once")
-                curr_node.empirical_reward += 1
+                action_tuple = tuple(sorted(action.idx))
+                prior = priors[reverse_map[action_tuple]]
+                candidate_priors.append(prior)
+            chosen_child = np.random.choice(range(len(candidate_actions)), p=candidate_priors)
+            new_s = candidate_states[chosen_child]
+            new_c = Node(new_s, curr_node)
+            new_c.prior = candidate_priors[chosen_child]
+            curr_node.actions.append(candidate_actions[chosen_child])
+            curr_node.children.append(new_c)
+            curr_node = new_c
 
+        # bp
+        while curr_node != None:
+            curr_node.empirical_reward += net_value
             curr_node.play_count += 1
             curr_node = curr_node.parent
