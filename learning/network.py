@@ -5,8 +5,6 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.autograd import Variable
 
-from core.platform import PrivateGameState
-
 use_cuda = torch.cuda.is_available()
 FloatTensor = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
 LongTensor = torch.cuda.LongTensor if use_cuda else torch.LongTensor
@@ -217,13 +215,17 @@ class DeepLearner(object):
         return np.concatenate(
             (last_dealt_hand, last_hand, other_hand, landload, landload_guard, last_pass, other_cards), axis=0)
 
-    def get_action(self, net_out):
-        indices = np.array(PrivateGameState.getAllActions())
-        vals, sel_indices = torch.max(net_out, 0)
-        return indices[sel_indices[0]]
-
-    def estimate_actions(self, private_state):
+    # def get_action(self, net_out):
+    #     indices = np.array(PrivateGameState.getAllActions())
+    #     vals, sel_indices = torch.max(net_out, 0)
+    #     return indices[sel_indices[0]]
+    #
+    # def estimate_actions(self, private_state):
+    #     net_in = self._gen_input(private_state)
+    #     net_out = self.model(net_in)
+    #     card_indices = self.get_action(net_out)
+    #     return card_indices
+    def estimate_leaf_prior_value(self, private_state):
         net_in = self._gen_input(private_state)
-        net_out = self.model(net_in)
-        card_indices = self.get_action(net_out)
-        return card_indices
+        prior, value = self.model(net_in)
+        return prior, value

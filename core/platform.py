@@ -120,7 +120,7 @@ class PrivateGameState(object):
     @functools.lru_cache(None)
     def getAllActions(length, max_length=20):
         l1, l2, l3, l4, l5, l6 = PrivateGameState.max_combinations(max_length)
-        possibilities = [0] * (l1 + l2 + l3 + l4 + l5 + l6)
+        possibilities = [-1] * (l1 + l2 + l3 + l4 + l5 + l6)
         possibilities[0:l1] = itertools.combinations(length, 1)
         possibilities[l1:l2] = itertools.combinations(length, 2)
         possibilities[l2:l3] = itertools.combinations(length, 3)
@@ -128,6 +128,7 @@ class PrivateGameState(object):
         possibilities[l4:l5] = itertools.combinations(length, 5)
         possibilities[l5:l6] = itertools.combinations(length, 6)
         return possibilities
+
     def getNextActions(self):
         cards_set = self.agent_state.cards
         cards = sorted(cards_set, key=lambda x: x.seq())
