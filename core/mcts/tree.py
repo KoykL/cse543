@@ -11,7 +11,7 @@ class Node(object):
         self.children = []
         self.parent = parent
         self.state = info_set
-
+        self.policy = None
         self.empirical_reward = 0
         self.play_count = 1
 
@@ -58,6 +58,7 @@ class Tree(object):
         self.root = Node(InformationSet(private_state), None)
         self.iterations_per_determinization = 0
         self.determinization = None
+        self.path = [self.root]
 
     @staticmethod
     def ucb_val(node):
