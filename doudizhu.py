@@ -1,26 +1,25 @@
 import argparse
+import logging
 import os
 
 from core.agent import MctsAgent, HumanAgent
 from core.platform import Platform
-from learning.trainer import *
+from learning.trainer import DQLTrainer
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-a", "--agent", default=0)
-    parser.add_argument("-t", "--train", default=0, type=int)
+    # parser.add_argument("-a", "--agent", default=0)
+    parser.add_argument("-t", "--train", default=False, action='store_true')
     args = parser.parse_args()
-
-    if args.train > 0:
-        output_path = 'data/history/'
+    logger = logging.getLogger(None)
+    if args.train:
+        output_path = 'data/'
         if not os.path.isdir(output_path):
             os.makedirs(output_path)
-        # initialize
-        agents = [MctsAgent(i) for i in range(3)]
-        for agent in agents:
-            agent.start()
-        platform = Platform(agents)
-        playOnce(platform, True)
+        trainer = DQLTrainer(os.path.join(output_path, "model.pth"))
+        while True:
+            logger.info("DQLTrainer: run an iteration")
+            trainer.run_iter()
     else:
         # initialize
         agents = [MctsAgent(i) for i in range(1, 3)]

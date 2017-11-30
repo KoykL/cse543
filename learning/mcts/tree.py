@@ -126,13 +126,20 @@ class Tree(object):
 
         # expansion
         if not curr_node.state.is_terminal():
-            priors, net_value = self.learner.estimate_leaf_prior_value(curr_node.state)
-            reverse_map = PrivateGameState.getAllActionsReverseMap(len(curr_node.state.agent_state.cards))
+            priors, net_value = self.learner.estimate_leaf_prior_value(curr_node.state.state)
+            # print(priors, net_value)
+            reverse_map = PrivateGameState.getAllActionsReverseMap(len(curr_node.state.state.agent_state.cards))
             candidate_priors = []
-            for i, action in enumerate(zip(candidate_actions)):
-                action_tuple = tuple(sorted(action.idx))
-                prior = priors[reverse_map[action_tuple]]
-                candidate_priors.append(prior)
+            for i, action in enumerate(candidate_actions):
+                if not action.is_pass:
+                    action_tuple = tuple(sorted(action.idx))
+                    prior = priors[reverse_map[action_tuple]]
+                    candidate_priors.append(prior)
+                else:
+                    prior = priors[-1]
+                    candidate_priors.append(prior)
+            candidate_priors = np.array(candidate_priors)
+            candidate_priors /= candidate_priors.sum()
             chosen_child = np.random.choice(range(len(candidate_actions)), p=candidate_priors)
             new_s = candidate_states[chosen_child]
             new_c = Node(new_s, curr_node)
@@ -140,9 +147,8 @@ class Tree(object):
             curr_node.actions.append(candidate_actions[chosen_child])
             curr_node.children.append(new_c)
             curr_node = new_c
-
         # bp
-        while curr_node != None:
-            curr_node.empirical_reward += net_value
-            curr_node.play_count += 1
-            curr_node = curr_node.parent
+            while curr_node != None:
+                curr_node.empirical_reward += net_value
+                curr_node.play_count += 1
+                curr_node = curr_node.parent

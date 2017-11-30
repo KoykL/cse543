@@ -2,9 +2,13 @@ import queue
 import random
 from multiprocessing import Process, Queue
 
+import numpy as np
+
+import core.mcts.tree
+import learning.mcts.tree
 from core.cards import Hand
-from core.mcts.tree import Tree
 from core.platform import Action
+from learning.network import DeepLearner, get_model
 
 
 class BaseAgent(Process):
@@ -46,7 +50,7 @@ class MctsAgent(BaseAgent):
                 if self.t is None:
                     if event == 0:
                         print("initialize tree")
-                        self.t = Tree(data)  # private_state
+                        self.t = core.mcts.tree.Tree(data)  # private_state
                 else:
                     info_set = self.t.root.state
                     if event == 1:
@@ -54,12 +58,12 @@ class MctsAgent(BaseAgent):
                         for n in self.t.root.children:
                             if info_set == n.state:
                                 print("agent {} reuse".format(self.id))
-                                self.t = Tree()
+                                self.t = core.mcts.tree.Tree()
                                 self.t.root = n
                                 self.t.root.parent = None
                                 break
                     elif event == 0 and self.t.root.state.state != data:
-                        self.t = Tree(data)
+                        self.t = core.mcts.tree.Tree(data)
                         print("agent {} recov".format(self.id))
             if self.t is not None:
                 # pr = cProfile.Profile()
@@ -76,7 +80,7 @@ class MctsAgent(BaseAgent):
                 # print(s.getvalue())
                 choice = max(self.t.root.children, key=lambda x: x.play_count)
                 print("agent {} count {}".format(str(self.id), ", ".join(
-                    repr(((c.play_count), Tree.ucb_val(c), str(c.state.state.last_dealt_hand))) for c in
+                    repr(((c.play_count), core.mcts.tree.Tree.ucb_val(c), str(c.state.state.last_dealt_hand))) for c in
                     self.t.root.children)))
                 action_idx = self.t.root.children.index(choice)
                 self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
@@ -112,23 +116,72 @@ class MctsAgent(BaseAgent):
     #     return self.cards == hand
 
 
+class DQLAgent(BaseAgent):
+    def __init__(self, id, model_path, is_training=False):
+        super().__init__(id)
+        self.decision = Queue()
+        self.input_status = Queue()
+        self.t = None
+        self.learner = DeepLearner(get_model(model_path))
+        self.is_training = is_training
+
+    def run(self):
+        while True:
+            try:
+                event, data = self.input_status.get(False)
+            except queue.Empty as e:
+                pass
+            else:
+                if self.t is None:
+                    if event == 0:
+                        print("initialize tree")
+                        self.t = learning.mcts.tree.Tree(self.learner, data)  # private_state
+                else:
+                    info_set = self.t.root.state
+                    if event == 1:
+                        info_set = info_set.getNewState(data)
+                        for n in self.t.root.children:
+                            if info_set == n.state:
+                                print("agent {} reuse".format(self.id))
+                                self.t = learning.mcts.tree.Tree(self.learner)
+                                self.t.root = n
+                                self.t.root.parent = None
+                                break
+                    elif event == 0 and self.t.root.state.state != data:
+                        self.t = learning.mcts.tree.Tree(self.learner, data)
+                        print("agent {} recov".format(self.id))
+            if self.t is not None:
+                for i in range(100):
+                    self.t.run_iter()
+                if self.is_training:
+                    play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
+                    play_counts /= play_counts.sum()
+                    choice = np.random.choice(self.t.root.children, p=play_counts)
+                    action_idx = self.t.root.children.index(choice)
+                    self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
+
+    def postAction(self, past_action):
+        self.input_status.put((1, past_action))
+
+    def getAction(self, private_state):
+        counter = 0
+        self.input_status.put((0, private_state))
+        while True:
+            state, decision = self.decision.get()
+            if state == private_state:
+                print("agent {} got {} rounds of thought".format(self.id, counter))
+                counter += 1
+                if counter > 60:
+                    break
+                    # else:
+                    # print("old thougts")
+        print("agent {} returned after {} rounds of thought".format(self.id, counter))
+        return decision
+
 class HumanAgent(BaseAgent):
     def __init__(self, id):
         super().__init__(id)
         self.t = None
-
-    #     self.isLandlord = False
-    #
-    # def setLandlord(self):
-    #     self.isLandlord = True
-    #
-    # @property
-    # def cards(self):
-    #     return self.cards
-    #
-    # @cards.setter
-    # def cards(self, cards):
-    #     self.cards = sorted(cards, key=lambda x: x.seq())
     def getAction(self, private_state):
         cards_list = sorted(private_state.agent_state.cards, key=lambda x: x.seq())
         print(" ".join("{}:{}".format(i, c) for i, c in enumerate(cards_list)))

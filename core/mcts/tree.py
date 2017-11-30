@@ -159,7 +159,6 @@ class Tree(object):
                 if i != curr_node.state.state.whos_turn and i != 0:
                     other_player = i
                     break
-            #
             if (curr_node.state.state.agent_state.isLandlord and winner == curr_node.state.state.whos_turn) or (
                         not curr_node.state.state.agent_state.isLandlord and (
                                     winner == curr_node.state.state.whos_turn or winner == other_player)):

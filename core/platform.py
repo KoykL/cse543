@@ -129,11 +129,12 @@ class PrivateGameState(object):
         l1, l2, l3, l4, l5, l6 = PrivateGameState.max_combinations(max_length)
         possibilities = [-1] * (l1 + l2 + l3 + l4 + l5 + l6)
         possibilities[0:l1] = list(itertools.combinations(range(length), 1))
-        possibilities[l1:l2] = list(itertools.combinations(range(length), 2))
-        possibilities[l2:l3] = list(itertools.combinations(range(length), 3))
-        possibilities[l3:l4] = list(itertools.combinations(range(length), 4))
-        possibilities[l4:l5] = list(itertools.combinations(range(length), 5))
-        possibilities[l5:l6] = list(itertools.combinations(range(length), 6))
+        possibilities[l1:l1 + l2] = list(itertools.combinations(range(length), 2))
+        possibilities[l1 + l2:l1 + l2 + l3] = list(itertools.combinations(range(length), 3))
+        possibilities[l1 + l2 + l3:l1 + l2 + l3 + l4] = list(itertools.combinations(range(length), 4))
+        possibilities[l1 + l2 + l3 + l4:l1 + l2 + l3 + l4 + l5] = list(itertools.combinations(range(length), 5))
+        possibilities[l1 + l2 + l3 + l4 + l5:l1 + l2 + l3 + l4 + l5 + l6] = list(
+            itertools.combinations(range(length), 6))
         return possibilities
 
     @staticmethod
