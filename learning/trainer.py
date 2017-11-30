@@ -94,7 +94,7 @@ class DQLOptimizer(object):
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
-
+        return loss
 
 class DQLTrainer(object):
     def __init__(self, model_path):
@@ -102,6 +102,7 @@ class DQLTrainer(object):
         self.model_path = model_path
 
     def run_iter(self):
+        print("running one iteration")
         agents = [DQLAgent(i, self.model_path, True) for i in range(3)]
         for agent in agents:
             agent.start()
@@ -137,5 +138,7 @@ class DQLTrainer(object):
         model = get_model(self.model_path)
         optimizer = DQLOptimizer(model)
         for i in range(100):
-            optimizer.run_iter(self.memory)
+            print("optimization iteration", i)
+            loss = optimizer.run_iter(self.memory)
+            print("loss", loss)
         save_model(model, self.model_path)
