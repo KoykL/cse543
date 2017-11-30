@@ -5,6 +5,12 @@ import os
 from core.agent import MctsAgent, HumanAgent
 from core.platform import Platform
 from learning.trainer import DQLTrainer
+from multiprocessing import set_start_method
+try:
+    set_start_method('spawn')
+except RuntimeError:
+    pass
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -104,7 +104,6 @@ class Tree(object):
             actions = curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn).getLegalActions()
             # print("hand:", curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn).agent_state.get_cards_str())
             # print("agent num:", curr_determined_state.whos_turn)
-            # print("\n".join(str(act) for act in actions))
             states = [curr_node.state.getNewState(act) for act in actions]
             available_children_mask = list(map(lambda x: check_available_children(x, states), curr_node.children))
             # info_states = [InformationSet(s) for s in states]
@@ -128,7 +127,7 @@ class Tree(object):
         if not curr_node.state.is_terminal():
             priors, net_value = self.learner.estimate_leaf_prior_value(curr_node.state.state)
             # print(priors, net_value)
-            reverse_map = PrivateGameState.getAllActionsReverseMap(len(curr_node.state.state.agent_state.cards))
+            reverse_map = PrivateGameState.getAllActionsReverseMap(curr_node.state.state.agent_num_cards[curr_node.state.state.whos_turn])
             candidate_priors = []
             for i, action in enumerate(candidate_actions):
                 if not action.is_pass:

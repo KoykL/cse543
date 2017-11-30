@@ -1,7 +1,7 @@
 import queue
 import random
-from multiprocessing import Process, Queue
-
+from torch.multiprocessing import Process, Queue
+import torch.multiprocessing as mp
 import numpy as np
 
 import core.mcts.tree
