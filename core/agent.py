@@ -117,14 +117,15 @@ class MctsAgent(BaseAgent):
 
 
 class DQLAgent(BaseAgent):
-    def __init__(self, id, model_path, is_training=False):
+    def __init__(self, id, model_path, is_training=False, turns=20):
         super().__init__(id)
         self.decision = Queue()
         self.input_status = Queue()
         self.t = None
         self.learner = DeepLearner(get_model(model_path))
         self.is_training = is_training
-
+        self.turns = turns
+        
     def run(self):
         while True:
             try:
@@ -171,7 +172,7 @@ class DQLAgent(BaseAgent):
             if state == private_state:
                 print("agent {} got {} rounds of thought".format(self.id, counter))
                 counter += 1
-                if counter > 60:
+                if counter > self.turns:
                     break
                     # else:
                     # print("old thougts")
