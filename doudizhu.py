@@ -24,7 +24,8 @@ if __name__ == "__main__":
         output_path = 'data/'
         if not os.path.isdir(output_path):
             os.makedirs(output_path)
-        trainer = DQLTrainer(os.path.join(output_path, "model.pth"))
+        trainer = DQLTrainer(os.path.join(output_path, "model.pth"), os.path.join(output_path, "optimizer.pth"),
+                             os.path.join(output_path, "memory.pkl"))
         for i in count():
             print("DQLTrainer: run an iteration")
             print("running iteration", i)
