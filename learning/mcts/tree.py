@@ -145,6 +145,7 @@ class Tree(object):
             new_c.prior = candidate_priors[chosen_child]
             curr_node.actions.append(candidate_actions[chosen_child])
             curr_node.children.append(new_c)
+            curr_node = new_c
         # bp
             while curr_node != None:
                 curr_node.empirical_reward += net_value
