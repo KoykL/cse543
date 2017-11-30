@@ -117,7 +117,7 @@ class DQLTrainer(object):
         self.model_path = model_path
         self.optimizer_path = optimizer_path
         self.optimizer = DQLOptimizer(get_model(self.model_path), self.optimizer_path)
-        
+
     def save_memory(self):
         with open(self.memory_path, "wb") as f:
             print("save memory")
@@ -141,6 +141,7 @@ class DQLTrainer(object):
             agent_playing = platform.game_state.whos_turn
             state = platform.game_state.getPrivateStateForAgentX(platform.game_state.whos_turn).agent_state
             agent = platform.agents[platform.game_state.whos_turn]
+
             if agent.t is not None:
                 reverse_map = PrivateGameState.getAllActionsReverseMap(len(agent.t.root.state.state.agent_state.cards))
                 all_action_nums = PrivateGameState.max_combinations(len(agent.t.root.state.state.agent_state.cards))
@@ -156,7 +157,9 @@ class DQLTrainer(object):
                 all_actions /= all_actions.sum()
                 history.append_step(state, all_actions)
             action = platform.turn()
-
+            print("agent {} played: {}".format(agent_playing, action))
+            for i, a_s in enumerate(platform.game_state.agent_states):
+                print("agent {} has card: {}".format(i, a_s.get_cards_str()))
         history.winner = platform.game_state.who_wins()
         history.append_memories(self.memory)
         for agent in agents:
