@@ -155,13 +155,16 @@ class DQLAgent(BaseAgent):
                 for i in range(100):
                     self.t.run_iter()
                 if self.is_training:
+                    print("agent {} count {}".format(str(self.id), "-".join(repr((c.play_count, c.empirical_reward, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children)))
                     play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
                     play_counts /= play_counts.sum()
                     choice = np.random.choice(self.t.root.children, p=play_counts)
                     action_idx = self.t.root.children.index(choice)
                     self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
-
+                else:
+                    raise NotImplementedError()
     def postAction(self, past_action):
+        print("post")
         self.input_status.put((1, past_action))
 
     def getAction(self, private_state):

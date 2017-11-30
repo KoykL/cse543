@@ -69,7 +69,7 @@ class Tree(object):
 
     @staticmethod
     def net_val(node):
-        return node.empirical_reward + node.prior / node.play_count
+        return node.empirical_reward / node.play_count + node.prior / node.play_count
 
     def run_iter(self):
         curr_node = self.root

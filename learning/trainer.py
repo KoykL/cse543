@@ -115,7 +115,8 @@ class DQLTrainer(object):
             agent = platform.agents[platform.game_state.whos_turn]
             if agent.t is not None:
                 reverse_map = PrivateGameState.getAllActionsReverseMap(len(agent.t.root.state.state.agent_state.cards))
-                all_actions = PrivateGameState.getAllActions(len(agent.t.root.state.state.agent_state.cards))
+                all_action_nums = PrivateGameState.max_combinations(len(agent.t.root.state.state.agent_state.cards))
+                all_actions = np.zeros(all_action_nums)
                 for a, c in zip(agent.t.root.actions, agent.t.root.children):
                     if not a.is_pass:
                         action_tuple = tuple(sorted(a.idx))
