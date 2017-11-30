@@ -1,11 +1,13 @@
 import argparse
 import logging
 import os
+from itertools import count
+from multiprocessing import set_start_method
 
 from core.agent import MctsAgent, HumanAgent
 from core.platform import Platform
 from learning.trainer import DQLTrainer
-from multiprocessing import set_start_method
+
 try:
     set_start_method('spawn')
 except RuntimeError:
@@ -23,8 +25,9 @@ if __name__ == "__main__":
         if not os.path.isdir(output_path):
             os.makedirs(output_path)
         trainer = DQLTrainer(os.path.join(output_path, "model.pth"))
-        while True:
-            logger.info("DQLTrainer: run an iteration")
+        for i in count():
+            print("DQLTrainer: run an iteration")
+            print("running iteration", i)
             trainer.run_iter()
     else:
         # initialize
