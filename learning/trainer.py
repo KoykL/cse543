@@ -130,7 +130,7 @@ class DQLTrainer(object):
                 self.memory = pickle.load(f)
     def run_iter(self):
         print("running one iteration")
-        agents = [DQLAgent(i, self.model_path, True) for i in range(3)]
+        agents = [DQLAgent(i, self.model_path, True, turns=3) for i in range(3)]
         for agent in agents:
             agent.start()
         platform = Platform(agents)
@@ -162,6 +162,7 @@ class DQLTrainer(object):
                 print("agent {} has card: {}".format(i, a_s.get_cards_str()))
         history.winner = platform.game_state.who_wins()
         history.append_memories(self.memory)
+        print(len(self.memory))
         for agent in agents:
             agent.terminate()
 
