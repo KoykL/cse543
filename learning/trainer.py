@@ -13,6 +13,11 @@ from learning.network import get_model, save_model
 Transition = namedtuple('Transition',
                         ('state', 'priors', 'reward'))
 BATCH_SIZE = 32
+use_cuda = torch.cuda.is_available()
+FloatTensor = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
+LongTensor = torch.cuda.LongTensor if use_cuda else torch.LongTensor
+ByteTensor = torch.cuda.ByteTensor if use_cuda else torch.ByteTensor
+Tensor = FloatTensor
 
 class ReplayMemory(object):
     def __init__(self, capacity):

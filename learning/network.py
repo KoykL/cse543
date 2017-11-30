@@ -108,5 +108,11 @@ class DeepLearner(object):
     def estimate_leaf_prior_value(self, private_state):
         net_in = self._gen_input(private_state)
         net_in = np.expand_dims(net_in, axis=0)
-        prior, value = self.model(Variable(torch.from_numpy(net_in).float(), volatile=True))
-        return prior.data.numpy()[0], value.data.numpy()[0]
+        net_in = Variable(torch.from_numpy(net_in).float(), volatile=True)
+        if use_cuda:
+            net_in = net_in.cuda()
+        prior, value = self.model(net_in)
+        prior, value = prior.data, value.data
+        if use_cuda:
+            prior, value = prior.cpu(), value.cpu()
+        return prior.numpy()[0], value.numpy()[0]
