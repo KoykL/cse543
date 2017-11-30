@@ -1,3 +1,5 @@
+import os.path
+import pickle
 import random
 from collections import namedtuple
 
@@ -68,11 +70,21 @@ class GameHistoryFactory(object):
 
 
 class DQLOptimizer(object):
-    def __init__(self, model):
+    def __init__(self, model, optimizer_path):
         self.model = model
+        self.optimizer_path = optimizer_path
         self.model.train(True)
         self.optimizer = Adam(self.model.parameters())
+        self.load_optimizer()
 
+    def save_optimizer(self):
+        print("save optimizer")
+        torch.save(self.optimizer.state_dict(), self.optimizer_path)
+
+    def load_optimizer(self):
+        if os.path.exists(self.optimizer_path):
+            self.optimizer.load_state_dict(torch.load(self.optimizer_path))
+            print("load optimizer info")
     def run_iter(self, memory):
         if len(memory) < BATCH_SIZE:
             return
@@ -97,10 +109,25 @@ class DQLOptimizer(object):
         return loss
 
 class DQLTrainer(object):
-    def __init__(self, model_path):
+    def __init__(self, model_path, optimizer_path, memory_path):
+        self.memory_path = memory_path
         self.memory = ReplayMemory(1000)
-        self.model_path = model_path
+        self.load_memory()
 
+        self.model_path = model_path
+        self.optimizer_path = optimizer_path
+        self.optimizer = DQLOptimizer(get_model(self.model_path), self.optimizer_path)
+        
+    def save_memory(self):
+        with open(self.memory_path, "wb") as f:
+            print("save memory")
+            pickle.dump(self.memory, f)
+
+    def load_memory(self):
+        if os.path.exists(self.memory_path):
+            print("load memory")
+            with open(self.memory_path, "rb") as f:
+                self.memory = pickle.load(f)
     def run_iter(self):
         print("running one iteration")
         agents = [DQLAgent(i, self.model_path, True) for i in range(3)]
@@ -135,10 +162,11 @@ class DQLTrainer(object):
         for agent in agents:
             agent.terminate()
 
-        model = get_model(self.model_path)
-        optimizer = DQLOptimizer(model)
         for i in range(100):
             print("optimization iteration", i)
-            loss = optimizer.run_iter(self.memory)
+            loss = self.optimizer.run_iter(self.memory)
             print("loss", loss)
-        save_model(model, self.model_path)
+
+        save_model(self.optimizer.model, self.model_path)
+        self.optimizer.save_optimizer()
+        self.save_memory()
