@@ -2,7 +2,7 @@ import os.path
 import pickle
 import random
 from collections import namedtuple
-
+import queue
 import numpy as np
 import torch
 from torch.autograd import Variable
@@ -10,7 +10,7 @@ from torch.optim import Adam
 
 from core.agent import DQLAgent
 from core.platform import PrivateGameState, Platform
-from learning.network import get_model, save_model
+from learning.network import get_model, save_model, DeepLearner
 
 Transition = namedtuple('Transition',
                         ('state', 'priors', 'reward'))
@@ -55,7 +55,7 @@ class GameHistoryFactory(object):
         self.winner = winner
 
     def append_memories(self, memory):
-        for state, prior in zip(self.priors, self.states):
+        for prior, state in zip(self.priors, self.states):
             other_player = -1
             for i in range(3):
                 if i != state.whos_turn and i != 0:
@@ -74,7 +74,7 @@ class DQLOptimizer(object):
         self.model = model
         self.optimizer_path = optimizer_path
         self.model.train(True)
-        self.optimizer = Adam(self.model.parameters())
+        self.optimizer = Adam(self.model.parameters(), 0.0001)
         self.load_optimizer()
 
     def save_optimizer(self):
@@ -92,19 +92,26 @@ class DQLOptimizer(object):
         # Transpose the batch (see http://stackoverflow.com/a/19343/3343043 for
         # detailed explanation).
         batch = Transition(*zip(*transitions))
-
-        state_batch = Variable(torch.cat(batch.state))
-        priors_batch = Variable(torch.cat(batch.priors))
-        reward_batch = Variable(torch.cat(batch.reward))
+        learner = DeepLearner(self.model)
+        states = []
+        for state in batch.state:
+            states.append(learner._gen_input(state))
+        states_raw = FloatTensor(states)
+        priors_raw = FloatTensor(list(batch.priors))
+        rewards_raw = FloatTensor(list(batch.reward))
+        state_batch = Variable(states_raw)
+        priors_batch = Variable(priors_raw)
+        reward_batch = Variable(rewards_raw)
 
         priors, value = self.model(state_batch)
-        # Compute Huber loss
-
-        loss = (value - reward_batch) ^ 2 - priors_batch * torch.log(priors)
-
+        # Compute loss
+#        print(batch.priors)
+#        print(priors.data.cpu().numpy())
+        loss = torch.sum(torch.pow((torch.squeeze(value) - reward_batch), 2)) - torch.sum(priors_batch * torch.log(priors))
         # Optimize the model
         self.optimizer.zero_grad()
         loss.backward()
+        torch.nn.utils.clip_grad_norm(self.model.parameters(), 0.5)
         self.optimizer.step()
         return loss
 
@@ -130,7 +137,7 @@ class DQLTrainer(object):
                 self.memory = pickle.load(f)
     def run_iter(self):
         print("running one iteration")
-        agents = [DQLAgent(i, self.model_path, True, turns=3) for i in range(3)]
+        agents = [DQLAgent(i, self.model_path, True, turns=2) for i in range(3)]
         for agent in agents:
             agent.start()
         platform = Platform(agents)
@@ -139,24 +146,45 @@ class DQLTrainer(object):
         history = GameHistoryFactory()
         while not platform.game_state.isTerminal():
             agent_playing = platform.game_state.whos_turn
-            state = platform.game_state.getPrivateStateForAgentX(platform.game_state.whos_turn).agent_state
+            state = platform.game_state.getPrivateStateForAgentX(platform.game_state.whos_turn)
             agent = platform.agents[platform.game_state.whos_turn]
-
-            if agent.t is not None:
-                reverse_map = PrivateGameState.getAllActionsReverseMap(len(agent.t.root.state.state.agent_state.cards))
-                all_action_nums = PrivateGameState.max_combinations(len(agent.t.root.state.state.agent_state.cards))
-                all_actions = np.zeros(all_action_nums)
-                for a, c in zip(agent.t.root.actions, agent.t.root.children):
+            action = platform.agents[platform.game_state.whos_turn].getAction(state)
+            while True:
+                root = agent.states.get()
+                #print("back", " ".join(str(c) for c in root.state.state.agent_state.cards))
+                if root.state.state == state:
+                    while True:
+                        try:
+                            root2 = agent.states.get(False)
+                        except queue.Empty:
+                            break
+                        else:
+                            if root.state.state == state:
+                                root = root2
+                    break
+                
+            #print(" ".join(str(c) for c in root.state.state.agent_state.cards))
+            #print(" ".join(str(c) for c in state.agent_state.cards))
+            
+            if root.state.state == state:
+                reverse_map = PrivateGameState.getAllActionsReverseMap(len(root.state.state.agent_state.cards))
+                all_action_nums = sum(PrivateGameState.max_combinations())
+                print(all_action_nums)
+                all_actions = np.zeros(all_action_nums + 1)
+                for a, c in zip(root.actions, root.children):
                     if not a.is_pass:
                         action_tuple = tuple(sorted(a.idx))
                         all_actions[reverse_map[action_tuple]] = c.play_count
                     else:
                         all_actions[-1] = c.play_count
-
+                            
                 all_actions = np.array(all_actions)
                 all_actions /= all_actions.sum()
                 history.append_step(state, all_actions)
-            action = platform.turn()
+                print("apend, state", state)
+            platform.game_state = platform.game_state.getNewState(action)
+            for agent in platform.agents:
+                agent.postAction(action)
             print("agent {} played: {}".format(agent_playing, action))
             for i, a_s in enumerate(platform.game_state.agent_states):
                 print("agent {} has card: {}".format(i, a_s.get_cards_str()))
@@ -165,7 +193,8 @@ class DQLTrainer(object):
         print(len(self.memory))
         for agent in agents:
             agent.terminate()
-
+        
+        self.save_memory()
         for i in range(100):
             print("optimization iteration", i)
             loss = self.optimizer.run_iter(self.memory)
@@ -173,4 +202,4 @@ class DQLTrainer(object):
 
         save_model(self.optimizer.model, self.model_path)
         self.optimizer.save_optimizer()
-        self.save_memory()
+

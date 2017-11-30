@@ -117,10 +117,11 @@ class MctsAgent(BaseAgent):
 
 
 class DQLAgent(BaseAgent):
-    def __init__(self, id, model_path, is_training=False, turns=20):
+    def __init__(self, id, model_path, is_training=False, turns=2):
         super().__init__(id)
         self.decision = Queue()
         self.input_status = Queue()
+        self.states = Queue()
         self.t = None
         self.learner = DeepLearner(get_model(model_path))
         self.is_training = is_training
@@ -130,7 +131,8 @@ class DQLAgent(BaseAgent):
         while True:
             try:
                 event, data = self.input_status.get(False)
-            except queue.Empty as e:
+                print("agent {} event {}".format(self.id, event))
+            except queue.Empty:
                 pass
             else:
                 if self.t is None:
@@ -138,28 +140,38 @@ class DQLAgent(BaseAgent):
                         print("initialize tree")
                         self.t = learning.mcts.tree.Tree(self.learner, data)  # private_state
                 else:
+                        
                     info_set = self.t.root.state
                     if event == 1:
+                        #print("agent {} trying to reusing".format(self.id), data)
                         info_set = info_set.getNewState(data)
                         for n in self.t.root.children:
                             if info_set == n.state:
-                                print("agent {} reuse".format(self.id))
                                 self.t = learning.mcts.tree.Tree(self.learner)
                                 self.t.root = n
                                 self.t.root.parent = None
+                                print("agent {} reuse".format(self.id))
+                                print(self.id, "reusing", self.t.root.state.state.last_dealt_hand)
+                                
                                 break
                     elif event == 0 and self.t.root.state.state != data:
-                        self.t = learning.mcts.tree.Tree(self.learner, data)
                         print("agent {} recov".format(self.id))
+                        # print("r1", data.last_dealt_hand)
+                        # print("r2", self.t.root.state.state.last_dealt_hand)
+                        # print("r", " ".join(str(c) for c in data.agent_state.cards))
+                        # print("r", " ".join(str(c) for c in self.t.root.state.state.agent_state.cards))
+                        self.t = learning.mcts.tree.Tree(self.learner, data)
+                        
             if self.t is not None:
-                for i in range(100):
+                for i in range(1000):
                     self.t.run_iter()
                 if self.is_training:
-                    print("agent {} count {}".format(str(self.id), "-".join(repr((c.play_count, c.empirical_reward, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children)))
+#                    print("agent {} count {}".format(str(self.id), "-".join(repr((c.play_count, c.empirical_reward, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children)))
                     play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
                     play_counts /= play_counts.sum()
                     choice = np.random.choice(self.t.root.children, p=play_counts)
                     action_idx = self.t.root.children.index(choice)
+                    self.states.put(self.t.root)
                     self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
                 else:
                     raise NotImplementedError()
@@ -175,7 +187,7 @@ class DQLAgent(BaseAgent):
             if state == private_state:
                 print("agent {} got {} rounds of thought".format(self.id, counter))
                 counter += 1
-                if counter > self.turns:
+                if counter >= self.turns:
                     break
                     # else:
                     # print("old thougts")
