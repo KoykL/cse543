@@ -21,6 +21,7 @@ def get_model(recover_path=None):
     if use_cuda:
         model.cuda()
     if recover_path is not None and os.path.exists(recover_path):
+        print("loading model", recover_path)
         model.load_state_dict(torch.load(recover_path))
     return model
 
