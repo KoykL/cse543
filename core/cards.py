@@ -46,26 +46,20 @@ class NotComparableError(RuntimeError):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-class Hand(list):
-    cache = dict()
+
+class Hand(tuple):
+    def __new__(cls, it):
+        return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))
     def __init__(self, it):
-        super().__init__(it)
-        self.sort(key=lambda x: x.seq())
+        super().__init__()
         self.type = "unclassified"
         # self.classify()
-
-    def append(self, it):
-        super().append(it)
-        # if tuple(self) in Hand.cache:
-        #     del Hand.cache[tuple(self)]
-        self.sort(key=lambda x: x.seq())
 
     def __add__(self, it):
         res = super().__add__(it)
         # if tuple(self) in Hand.cache:
         #     del Hand.cache[tuple(self)]
-        res.sort(key=lambda x: x.seq())
-        return res
+        return Hand(sorted(res, key=lambda x: x.seq()))
     def __eq__(self, other):
         return super().__eq__(other)
     def __lt__(self, other):
@@ -182,7 +176,6 @@ class Hand(list):
         else:
             self.type = "invalid"
             # Hand.cache[self_tuple] = self.type
-
     def cmp(self, other):
         if self.type == "invalid" or other.type == "invalid":
             raise NotImplementedError("cannot compare invalid hands")

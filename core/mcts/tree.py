@@ -97,6 +97,7 @@ class Tree(object):
             if curr_node.state.is_terminal():
                 break
             actions = curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn).getLegalActions()
+            # print(curr_determined_state.whos_turn, len(actions))
             # print("hand:", curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn).agent_state.get_cards_str())
             # print("agent num:", curr_determined_state.whos_turn)
             # print("\n".join(str(act) for act in actions))

@@ -1,8 +1,8 @@
 import queue
 import random
-from torch.multiprocessing import Process, Queue
-import torch.multiprocessing as mp
+
 import numpy as np
+from torch.multiprocessing import Process, Queue
 
 import core.mcts.tree
 import learning.mcts.tree
@@ -192,6 +192,7 @@ class HumanAgent(BaseAgent):
             card_indices = option.split(" ")
             action = Action(Hand(list(map(lambda x: cards_list[int(x)], card_indices))), False,
                             list(map(lambda x: int(x), card_indices)))
+            action.hand.classify()
             print("you played: {}".format(action))
             return action
 

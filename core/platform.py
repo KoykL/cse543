@@ -72,7 +72,7 @@ class Action(object):
         #     raise RuntimeError("who the fuck passed a tuple?")
         self.idx = list(idx)
         # assert(type(hand) == type(Hand))
-        self.hand = Hand(list(hand))
+        self.hand = Hand(hand)
 
     def __eq__(self, other):
         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
@@ -99,7 +99,6 @@ class PrivateGameState(object):
     def __eq__(self, other):
         # print('private comp')
         return self.x == other.x and self.agent_state == other.agent_state and self.pass_count == other.pass_count and self.whos_turn == other.whos_turn and self.last_dealt_hand == other.last_dealt_hand and self.dealt_cards == other.dealt_cards and self.agent_num_cards == other.agent_num_cards and self.other_cards == other.other_cards
-
     @staticmethod
     def from_game_state(x, game_state):
         all_cards = set(Platform.get_deck())
@@ -469,7 +468,9 @@ class PrivateGameState(object):
                 # print( str(self.last_dealt_hand))
                 if action.hand > self.last_dealt_hand.hand:
                     next_actions.append(action)
-            next_actions.append(Action(Hand([]), True, []))
+            pass_act = Action(Hand([]), True, [])
+            pass_act.hand.classify()
+            next_actions.append(pass_act)
         return next_actions
 
     def isTerminal(self):
@@ -481,6 +482,7 @@ class PrivateGameState(object):
         return False
 
     def getNewState(self, action, who):
+        assert action.hand.type != "unclassified", action.hand.type
         true_action = action.hand if not action.is_pass else []
         new_agent_state = self.agent_state
         new_others_cards = self.other_cards
@@ -535,6 +537,7 @@ class GameState(object):
         return GameState(agent_states, 0, 0, None, set())
 
     def getNewState(self, action):
+        assert action.hand.type != "unclassified", action.hand.type
         new_agent_states = copy(self.agent_states)
         new_agent_states[self.whos_turn] = new_agent_states[self.whos_turn].do_deal_cards(action)
         new_dealt_hand = action if not action.is_pass else self.last_dealt_hand

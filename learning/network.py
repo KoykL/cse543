@@ -1,4 +1,5 @@
 import os.path
+from collections import deque
 
 import numpy as np
 import torch
@@ -31,6 +32,8 @@ class DeepLearner(object):
     def __init__(self, model):
         self.model = model
         self.model = self.model.train(False)
+        self.cache = deque(maxlen=100)
+        self.keys = deque(maxlen=100)
     def _gen_last_dealt_hand(self, private_state):
         dealt_hand = np.zeros((1, 54))
         if private_state.last_dealt_hand is not None:
@@ -106,13 +109,21 @@ class DeepLearner(object):
     #     card_indices = self.get_action(net_out)
     #     return card_indices
     def estimate_leaf_prior_value(self, private_state):
-        net_in = self._gen_input(private_state)
-        net_in = np.expand_dims(net_in, axis=0)
-        net_in = Variable(torch.from_numpy(net_in).float(), volatile=True)
-        if use_cuda:
-            net_in = net_in.cuda()
-        prior, value = self.model(net_in)
-        prior, value = prior.data, value.data
-        if use_cuda:
-            prior, value = prior.cpu(), value.cpu()
-        return prior.numpy()[0], value.numpy()[0]
+        try:
+            idx = self.keys.index(private_state)
+        except:
+            net_in = self._gen_input(private_state)
+            net_in = np.expand_dims(net_in, axis=0)
+            net_in = Variable(torch.from_numpy(net_in).float(), volatile=True)
+            if use_cuda:
+                net_in = net_in.cuda()
+            prior, value = self.model(net_in)
+            prior, value = prior.data, value.data
+            if use_cuda:
+                prior, value = prior.cpu(), value.cpu()
+            res = (prior.numpy()[0], value.numpy()[0])
+            self.keys.append(private_state)
+            self.cache.append(res)
+            return res
+        else:
+            return self.cache[idx]
