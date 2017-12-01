@@ -48,6 +48,7 @@ class Platform(object):
     def turn(self):
         if self.game_state.isTerminal():
             raise RuntimeError("Game has reached terminal state")
+        assert self.game_state.agent_states[0].isLandlord
         private_state = self.game_state.getPrivateStateForAgentX(self.game_state.whos_turn)
         action = self.agents[self.game_state.whos_turn].getAction(private_state)
         self.game_state = self.game_state.getNewState(action)
@@ -148,6 +149,10 @@ class PrivateGameState(object):
         return pos
     def getNextActions(self):
         cards = self.agent_state.cards
+        return PrivateGameState.getNextActionsStatic(cards)
+    @staticmethod
+    @functools.lru_cache(50000)
+    def getNextActionsStatic(cards):
         # single card
         # numbers_set = set()
         actions = []
@@ -573,7 +578,7 @@ class GameState(object):
 
 class AgentState(object):
     def __init__(self, cards, isLandlord=False):
-        self.cards = sorted(cards, key=lambda x: x.seq())  # list()
+        self.cards = tuple(sorted(cards, key=lambda x: x.seq()))  # list()
         self.isLandlord = isLandlord
         #self.last_dealt_hand =
 
@@ -582,7 +587,7 @@ class AgentState(object):
 
     def do_deal_cards(self, hand):
         if not hand.is_pass:
-            result = AgentState(set(self.cards) - set(hand.hand))
+            result = AgentState(set(self.cards) - set(hand.hand), self.isLandlord)
             if len(result.cards) != len(self.cards) - len(hand.hand):
                 raise RuntimeError("invalid hand: {}, with my hand: {}".format(hand, self.get_cards_str()))
             return result
@@ -590,8 +595,8 @@ class AgentState(object):
             return self
 
     def append_hand(self, cards):
-        self.cards.extend(cards)
-        self.cards = sorted(self.cards, key=lambda x: x.seq())
+        new_cards = self.cards + tuple(cards)
+        self.cards = tuple(sorted(new_cards, key=lambda x: x.seq()))
     def setLandlord(self):
         self.isLandlord = True
 

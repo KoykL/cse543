@@ -118,7 +118,7 @@ class DQLOptimizer(object):
 class DQLTrainer(object):
     def __init__(self, model_path, optimizer_path, memory_path):
         self.memory_path = memory_path
-        self.memory = ReplayMemory(1000)
+        self.memory = ReplayMemory(10000)
         self.load_memory()
 
         self.model_path = model_path
@@ -137,7 +137,7 @@ class DQLTrainer(object):
                 self.memory = pickle.load(f)
     def run_iter(self):
         print("running one iteration")
-        agents = [DQLAgent(i, self.model_path, True, turns=2) for i in range(3)]
+        agents = [DQLAgent(i, self.model_path, True, turns=1) for i in range(3)]
         for agent in agents:
             agent.start()
         platform = Platform(agents)
@@ -195,7 +195,7 @@ class DQLTrainer(object):
             agent.terminate()
         
         self.save_memory()
-        for i in range(100):
+        for i in range(1000):
             print("optimization iteration", i)
             loss = self.optimizer.run_iter(self.memory)
             print("loss", loss)

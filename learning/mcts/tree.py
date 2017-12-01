@@ -1,6 +1,6 @@
 import random
 from copy import deepcopy
-
+import math
 import numpy as np
 
 from core.platform import AgentState, PrivateGameState
@@ -16,7 +16,7 @@ class Node(object):
         self.empirical_reward = 0
         self.play_count = 1
 
-        # self.availability_count = 1
+        self.availability_count = 0
 
         # self.children_prior = None
         self.prior = 0
@@ -69,7 +69,7 @@ class Tree(object):
 
     @staticmethod
     def net_val(node):
-        return node.empirical_reward / node.play_count + node.prior / node.play_count
+        return node.empirical_reward / node.play_count + node.prior * math.sqrt(node.availability_count) / node.play_count
 
     def run_iter(self):
         curr_node = self.root
@@ -96,7 +96,7 @@ class Tree(object):
                 if child.state == state:
                     return True
             return False
-
+        cached_available_nodes = []
         while True:
             # print("descend")
             if curr_node.state.is_terminal():
@@ -106,6 +106,7 @@ class Tree(object):
             # print("agent num:", curr_determined_state.whos_turn)
             states = [curr_node.state.getNewState(act) for act in actions]
             available_children_mask = list(map(lambda x: check_available_children(x, states), curr_node.children))
+            cached_available_nodes.append(available_children_mask)
             # info_states = [InformationSet(s) for s in states]
             states_mask = list(map(lambda x: not check_in_children(x, curr_node), states))
             new_states = list(map(lambda c: c[1], filter(lambda c: states_mask[c[0]], enumerate(states))))
@@ -124,10 +125,12 @@ class Tree(object):
                 curr_node = curr_node.children[chosen_child]
 
         # expansion
+        leaf_node_player = curr_node.state.state.x
         if not curr_node.state.is_terminal():
-            priors, net_value = self.learner.estimate_leaf_prior_value(curr_node.state.state)
+            curr_player_states = curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn)
+            priors, net_value = self.learner.estimate_leaf_prior_value(curr_player_states)
             # print(priors, net_value)
-            reverse_map = PrivateGameState.getAllActionsReverseMap(curr_node.state.state.agent_num_cards[curr_node.state.state.whos_turn])
+            reverse_map = PrivateGameState.getAllActionsReverseMap(curr_player_states.agent_num_cards[curr_player_states.whos_turn])
             candidate_priors = []
             for i, action in enumerate(candidate_actions):
                 if not action.is_pass:
@@ -145,9 +148,24 @@ class Tree(object):
             new_c.prior = candidate_priors[chosen_child]
             curr_node.actions.append(candidate_actions[chosen_child])
             curr_node.children.append(new_c)
+            states = [curr_node.state.getNewState(act) for act in actions]
+            available_children_mask = list(map(lambda x: check_available_children(x, states), curr_node.children))
+            cached_available_nodes[-1] = available_children_mask
             curr_node = new_c
-        # bp
+            # bp
+            curr_available_children_idx = -1
             while curr_node != None:
-                curr_node.empirical_reward += net_value
+                #not correct
+                if curr_node.state.state.x == leaf_node_player:
+                    curr_node.empirical_reward += net_value
                 curr_node.play_count += 1
+                #print(len(cached_available_nodes))
                 curr_node = curr_node.parent
+                if curr_node is not None:
+                    for i, child in enumerate(curr_node.children):
+                        # print("len2", len(cached_available_nodes[curr_available_children_idx]),i )
+                        # print("curr", curr_available_children_idx)
+                        if cached_available_nodes[curr_available_children_idx][i]:
+                            child.availability_count += 1
+                    curr_available_children_idx -= 1
+                

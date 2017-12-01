@@ -1,5 +1,5 @@
 import collections
-
+import functools
 
 class Card(object):
     all_numbers = [
@@ -52,8 +52,7 @@ class Hand(tuple):
         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))
     def __init__(self, it):
         super().__init__()
-        self.type = "unclassified"
-        # self.classify()
+        self.classify()
 
     def __add__(self, it):
         res = super().__add__(it)
@@ -77,8 +76,11 @@ class Hand(tuple):
 
     def __ge__(self, other):
         return self.cmp(other) >= 0
-
-    def classify(self):
+    def __hash__(self):
+        return super().__hash__()
+    
+    @functools.lru_cache(None)
+    def get_class(self):
         # self_tuple = tuple(self)
         # if self_tuple in Hand.cache:
         # print("hit")
@@ -92,75 +94,75 @@ class Hand(tuple):
         counts = set(counter.values())
         sorted_seqs = list(sorted(seqs))
         if len(self) == 1:
-            self.type = "single"
+            return "single"
         elif len(self) == 2:
             if self[0].seq() == self[1].seq():
-                self.type = "pair"
+                return "pair"
             elif self[0].is_joker() and self[1].is_joker():
-                self.type = "bomb"
+                return "bomb"
             else:
-                self.type = "invalid"
+                return "invalid"
         elif len(self) == 3:
             if self[0].seq() == self[1].seq() and self[1].seq() == self[2].seq():
-                self.type = "triple"
+                return "triple"
             else:
-                self.type = "invalid"
+                return "invalid"
         elif len(self) == 4:
             if 3 in counts and 1 in counts:
-                self.type = "threewithone"
+                return "threewithone"
             elif 4 in counts:
-                self.type = "bomb"
+                return "bomb"
             else:
-                self.type = "invalid"
+                return "invalid"
         elif len(self) == 5:
             if 3 in counts and 2 in counts:
-                self.type = "threewithtwo"
+                return "threewithtwo"
             elif 4 in counts and 1 in counts:
-                self.type = "fourwithone"
+                return "fourwithone"
             elif 1 in counts and sorted_seqs[0] + 4 == sorted_seqs[-1] and sorted_seqs[-1] < Card.MAX_VALID_SENITENIAL:
-                self.type = "straight"
+                return "straight"
             else:
-                self.type = "invalid"
+                return "invalid"
         elif len(self) == 6:
             if 2 in counts and len(counts) == 1 and (
                         sorted_seqs[0] + 2 == sorted_seqs[1] + 1 and sorted_seqs[1] + 1 == sorted_seqs[2]) and \
                             sorted_seqs[2] < Card.MAX_VALID_SENITENIAL:
-                self.type = "threepairs"
+                return "threepairs"
             elif 3 in counts and len(counts) == 1 and sorted_seqs[0] + 2 == sorted_seqs[1] + 1 and sorted_seqs[
                 1] < Card.MAX_VALID_SENITENIAL:
-                self.type = "twotriple"
+                return "twotriple"
             elif 4 in counts and len(counts) == 2:
-                self.type = "fourwithtwo"
+                return "fourwithtwo"
             else:
-                self.type = "invalid"
+                return "invalid"
         elif len(self) == 7:
             if 4 in counts and (2 in counts and 1 in counts) or (3 in counts):
-                self.type = "fourwithpairwithsingle"
+                return "fourwithpairwithsingle"
             else:
-                self.type = "invalid"
+                return "invalid"
         elif len(self) == 8:
             if 4 in counts and 2 in counts and len(counts) == 2:
-                self.type = "fourwithtwopairs"
+                return "fourwithtwopairs"
             elif (3 in counts and (1 in counts or 2 in counts) and len(counts) == 2)  :
                 two_triple = list(filter(lambda x: x[1] == 3, counter.items()))
                 triple_seq = [Card.static_seq(n[0]) for n in two_triple]
                 triple_sorted_seqs = list(sorted(triple_seq))
                 if triple_sorted_seqs[0] + 1 == triple_sorted_seqs[1] and triple_sorted_seqs[
                     1] < Card.MAX_VALID_SENITENIAL:
-                    self.type = "twotriplewithtwosingles"
+                    return "twotriplewithtwosingles"
                 else:
-                    self.type = "invalid"
+                    return "invalid"
             elif (4 in counts and 3 in counts and 1 in counts):
                 triple = list(filter(lambda x: x[1] == 3, counter.items()))[0][0]
                 quad = list(filter(lambda x: x[1] == 4, counter.items()))[0][0]
                 triple_seq = Card.static_seq(triple)
                 quad_seq = Card.static_seq(quad)
                 if triple_seq == quad_seq + 1 or triple_seq + 1 == quad_seq:
-                    self.type = "twotriplewithtwosingles"
+                    return "twotriplewithtwosingles"
                 else:
-                    self.type = "invalid"
+                    return "invalid"
             else:
-                self.type = "invalid"
+                return "invalid"
         elif len(self) == 10:
             if 3 in counts and 2 in counts and len(counts) == 2:
                 two_triple = list(map(lambda x: x[0], filter(lambda x: x[1] == 3, counter.items())))
@@ -168,14 +170,19 @@ class Hand(tuple):
                 triple_sorted_seqs = list(sorted(triple_seq))
                 if triple_sorted_seqs[0] + 1 == triple_sorted_seqs[1] and triple_sorted_seqs[
                     1] < Card.MAX_VALID_SENITENIAL:
-                    self.type = "twotriplewithtwopairs"
+                    return "twotriplewithtwopairs"
                 else:
-                    self.type = "invalid"
+                    return "invalid"
             else:
-                self.type = "invalid"
+                return "invalid"
         else:
-            self.type = "invalid"
-            # Hand.cache[self_tuple] = self.type
+            return "invalid"
+
+
+    def classify(self):
+        self.type = self.get_class()
+        # Hand.cache[self_tuple] = self.type
+    @functools.lru_cache(200000)
     def cmp(self, other):
         if self.type == "invalid" or other.type == "invalid":
             raise NotImplementedError("cannot compare invalid hands")
