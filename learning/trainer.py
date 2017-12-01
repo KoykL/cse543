@@ -6,8 +6,8 @@ import queue
 import numpy as np
 import torch
 from torch.autograd import Variable
-from torch.optim import Adam
-
+from torch.optim import Adam, LBFGS, SGD
+import torch.nn.functional
 from core.agent import DQLAgent
 from core.platform import PrivateGameState, Platform
 from learning.network import get_model, save_model, DeepLearner
@@ -62,7 +62,7 @@ class GameHistoryFactory(object):
                     other_player = i
                     break
             if state.whos_turn == self.winner or (
-                    (not state.agent_state.isLandlord) and state.whos_turn == other_player):
+                    (not state.x == 0) and self.winner == other_player):
                 reward = 1
             else:
                 reward = -1
@@ -74,9 +74,10 @@ class DQLOptimizer(object):
         self.model = model
         self.optimizer_path = optimizer_path
         self.model.train(True)
-        self.optimizer = Adam(self.model.parameters(), 0.0001)
+        self.optimizer = Adam(self.model.parameters(), weight_decay=1e-5)
+#        self.optimizer = SGD(self.model.parameters(), lr = 0.0001, momentum=0.9, weight_decay=1e-5)
         self.load_optimizer()
-
+#        self.optimizer = LBFGS(self.model.parameters())
     def save_optimizer(self):
         print("save optimizer")
         torch.save(self.optimizer.state_dict(), self.optimizer_path)
@@ -102,17 +103,18 @@ class DQLOptimizer(object):
         state_batch = Variable(states_raw)
         priors_batch = Variable(priors_raw)
         reward_batch = Variable(rewards_raw)
-
+        def closure():
+            self.optimizer.zero_grad()
+            priors, value = self.model(state_batch)
+            priors = torch.nn.functional.log_softmax(priors)
+            loss = torch.sum(torch.pow((torch.squeeze(value) - reward_batch), 2)) - torch.sum(priors_batch * priors)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm(self.model.parameters(), 0.5)
+            return loss
+        self.optimizer.step(closure)
         priors, value = self.model(state_batch)
-        # Compute loss
-#        print(batch.priors)
-#        print(priors.data.cpu().numpy())
-        loss = torch.sum(torch.pow((torch.squeeze(value) - reward_batch), 2)) - torch.sum(priors_batch * torch.log(priors))
-        # Optimize the model
-        self.optimizer.zero_grad()
-        loss.backward()
-        torch.nn.utils.clip_grad_norm(self.model.parameters(), 0.5)
-        self.optimizer.step()
+        priors = torch.nn.functional.log_softmax(priors)
+        loss = torch.sum(torch.pow((torch.squeeze(value) - reward_batch), 2)) - torch.sum(priors_batch * priors)
         return loss
 
 class DQLTrainer(object):
@@ -124,7 +126,7 @@ class DQLTrainer(object):
         self.model_path = model_path
         self.optimizer_path = optimizer_path
         self.optimizer = DQLOptimizer(get_model(self.model_path), self.optimizer_path)
-
+        #self.optimizer.load_optimizer()
     def save_memory(self):
         with open(self.memory_path, "wb") as f:
             print("save memory")

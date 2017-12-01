@@ -168,7 +168,6 @@ class VDCNN(nn.Module):
 
         fc_layers.extend([nn.Linear(n_fc_neurons, n_fc_neurons), nn.ReLU()])
         fc_layers.extend([nn.Linear(n_fc_neurons, n_classes)])
-        fc_layers.extend([nn.Softmax()])
 
         fc_layers2 = []
 

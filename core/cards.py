@@ -27,6 +27,14 @@ class Card(object):
 
     def color_seq(self):
         return Card.all_colors.index(self.color)
+    def total_seq(self):
+        seq = self.seq()
+        if seq < 13:
+            color_seq = self.color_seq()
+            return seq * 4 + color_seq
+        else:
+            return 52 + seq - 13
+
     @staticmethod
     def static_seq(num):
         return Card.all_numbers.index(num)

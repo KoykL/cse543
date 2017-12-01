@@ -5,7 +5,7 @@ from contextlib import suppress
 from copy import copy
 from itertools import combinations
 
-from core.cards import Card, Hand
+from core.cards import Card, Hand, NotComparableError
 
 
 class Platform(object):
@@ -34,7 +34,7 @@ class Platform(object):
 
     # fa pai
     def deal(self):
-        self.game_state.agent_states[0].setLandlord()
+#        self.game_state.agent_states[0].setLandlord()
 
         deck = Platform.get_deck()
         random.shuffle(deck)
@@ -48,7 +48,7 @@ class Platform(object):
     def turn(self):
         if self.game_state.isTerminal():
             raise RuntimeError("Game has reached terminal state")
-        assert self.game_state.agent_states[0].isLandlord
+#        assert self.game_state.agent_states[0].isLandlord
         private_state = self.game_state.getPrivateStateForAgentX(self.game_state.whos_turn)
         action = self.agents[self.game_state.whos_turn].getAction(private_state)
         self.game_state = self.game_state.getNewState(action)
@@ -465,14 +465,15 @@ class PrivateGameState(object):
             return actions
         else:
             next_actions = []
-            for action in filter(lambda x: x.hand.type == self.last_dealt_hand.hand.type, actions):
+            for action in actions:
                 # print("legal hand1", " ".join(str(c) for c in action.hand), action.hand.type)
                 # print("legal hand2", " ".join(str(c) for c in self.last_dealt_hand.hand), action.hand.type)
 
                 # print( str(action))
                 # print( str(self.last_dealt_hand))
-                if action.hand > self.last_dealt_hand.hand:
-                    next_actions.append(action)
+                with suppress(NotComparableError):
+                    if action.hand > self.last_dealt_hand.hand:
+                        next_actions.append(action)
             pass_act = Action(Hand([]), True, [])
             pass_act.hand.classify()
             next_actions.append(pass_act)
@@ -577,17 +578,16 @@ class GameState(object):
 
 
 class AgentState(object):
-    def __init__(self, cards, isLandlord=False):
-        self.cards = tuple(sorted(cards, key=lambda x: x.seq()))  # list()
-        self.isLandlord = isLandlord
+    def __init__(self, cards):
+        self.cards = tuple(sorted(cards, key=lambda x: x.total_seq()))  # list()
         #self.last_dealt_hand =
 
     def __eq__(self, other):
-        return self.cards == other.cards and self.isLandlord == other.isLandlord
+        return self.cards == other.cards 
 
     def do_deal_cards(self, hand):
         if not hand.is_pass:
-            result = AgentState(set(self.cards) - set(hand.hand), self.isLandlord)
+            result = AgentState(set(self.cards) - set(hand.hand))
             if len(result.cards) != len(self.cards) - len(hand.hand):
                 raise RuntimeError("invalid hand: {}, with my hand: {}".format(hand, self.get_cards_str()))
             return result
@@ -596,9 +596,9 @@ class AgentState(object):
 
     def append_hand(self, cards):
         new_cards = self.cards + tuple(cards)
-        self.cards = tuple(sorted(new_cards, key=lambda x: x.seq()))
-    def setLandlord(self):
-        self.isLandlord = True
+        self.cards = tuple(sorted(new_cards, key=lambda x: x.total_seq()))
+    # def setLandlord(self):
+    #     self.isLandlord = True
 
     def get_cards_str(self):
-        return " ".join(map(str,sorted(self.cards, key=lambda x:x.seq())))
+        return " ".join(map(str,sorted(self.cards, key=lambda x:x.total_seq())))

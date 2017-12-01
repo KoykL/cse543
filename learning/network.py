@@ -3,6 +3,7 @@ from collections import deque
 
 import numpy as np
 import torch
+import torch.nn.functional
 from torch.autograd import Variable
 
 from core.platform import PrivateGameState
@@ -70,7 +71,7 @@ class DeepLearner(object):
         return cards
 
     def _gen_landlord(self, private_state):
-        landlord = private_state.agent_state.isLandlord
+        landlord = private_state.x == 0
         land_tensor = np.full((1, 54), landlord)
         return land_tensor
 
@@ -119,6 +120,7 @@ class DeepLearner(object):
             if use_cuda:
                 net_in = net_in.cuda()
             prior, value = self.model(net_in)
+            prior = torch.nn.functional.softmax(prior)
             prior, value = prior.data, value.data
             if use_cuda:
                 prior, value = prior.cpu(), value.cpu()

@@ -156,17 +156,18 @@ class DQLAgent(BaseAgent):
                                 break
                     elif event == 0 and self.t.root.state.state != data:
                         print("agent {} recov".format(self.id))
-                        # print("r1", data.last_dealt_hand)
-                        # print("r2", self.t.root.state.state.last_dealt_hand)
-                        # print("r", " ".join(str(c) for c in data.agent_state.cards))
-                        # print("r", " ".join(str(c) for c in self.t.root.state.state.agent_state.cards))
+                        print("r1", data.last_dealt_hand)
+                        print("r2", self.t.root.state.state.last_dealt_hand)
+                        print("r", " ".join(str(c) for c in data.agent_state.cards))
+                        print("r", " ".join(str(c) for c in self.t.root.state.state.agent_state.cards))
                         self.t = learning.mcts.tree.Tree(self.learner, data)
                         
             if self.t is not None:
                 for i in range(1000):
                     self.t.run_iter()
                 if self.is_training:
-#                    print("agent {} count {}".format(str(self.id), "-".join(repr((c.play_count, c.empirical_reward, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children)))
+                    if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
+                        print("agent {} count {}".format(str(self.id), "-".join(repr((c.play_count, c.empirical_reward[0], learning.mcts.tree.Tree.net_val(c)[0], str(c.state.state.last_dealt_hand))) for c in self.t.root.children)))
                     play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
                     play_counts /= play_counts.sum()
                     choice = np.random.choice(self.t.root.children, p=play_counts)
@@ -199,7 +200,7 @@ class HumanAgent(BaseAgent):
         super().__init__(id)
         self.t = None
     def getAction(self, private_state):
-        cards_list = sorted(private_state.agent_state.cards, key=lambda x: x.seq())
+        cards_list = sorted(private_state.agent_state.cards, key=lambda x: x.total_seq())
         print(" ".join("{}:{}".format(i, c) for i, c in enumerate(cards_list)))
         option = input("what do you want to play?")
         if option == "":
