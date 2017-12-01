@@ -232,6 +232,21 @@ class Hand(tuple):
                     return 1
             else:
                 raise NotComparableError("self type: {}, other type: {}".format(self.type, other.type))
+        elif self.type == other.type and self.type == "bomb":
+            counter1 = collections.Counter([n.number for n in self])
+            counter2 = collections.Counter([n.number for n in other])
+            numbers1 = set(counter1.keys())
+            seqs1 = [Card.static_seq(n) for n in numbers1]
+            numbers2 = set(counter2.keys())
+            seqs2 = [Card.static_seq(n) for n in numbers2]
+            sorted_seqs1 = list(sorted(seqs1))
+            sorted_seqs2 = list(sorted(seqs2))
+            if sorted_seqs1[0] == sorted_seqs2[0]:
+                return 0
+            elif sorted_seqs1[0] < sorted_seqs2[0]:
+                return -1
+            else:
+                return 1
         else:
             if self.type == "bomb":
                 return 1
