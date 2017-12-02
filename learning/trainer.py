@@ -1,13 +1,15 @@
 import os.path
 import pickle
+import queue
 import random
 from collections import namedtuple
-import queue
+
 import numpy as np
 import torch
-from torch.autograd import Variable
-from torch.optim import Adam, LBFGS, SGD
 import torch.nn.functional
+from torch.autograd import Variable
+from torch.optim import Adam
+
 from core.agent import DQLAgent
 from core.platform import PrivateGameState, Platform
 from learning.network import get_model, save_model, DeepLearner
@@ -139,7 +141,7 @@ class DQLTrainer(object):
                 self.memory = pickle.load(f)
     def run_iter(self):
         print("running one iteration")
-        agents = [DQLAgent(i, self.model_path, True, turns=1) for i in range(3)]
+        agents = [DQLAgent(i, self.model_path, True, turns=5) for i in range(3)]
         for agent in agents:
             agent.start()
         platform = Platform(agents)

@@ -117,7 +117,7 @@ class MctsAgent(BaseAgent):
 
 
 class DQLAgent(BaseAgent):
-    def __init__(self, id, model_path, is_training=False, turns=2):
+    def __init__(self, id, model_path, is_training=False, turns=5):
         super().__init__(id)
         self.decision = Queue()
         self.input_status = Queue()
@@ -163,7 +163,7 @@ class DQLAgent(BaseAgent):
                         self.t = learning.mcts.tree.Tree(self.learner, data)
                         
             if self.t is not None:
-                for i in range(1000):
+                for i in range(200):
                     self.t.run_iter()
                 if self.is_training:
                     if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
