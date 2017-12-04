@@ -9,7 +9,7 @@ import learning.mcts.tree
 from core.cards import Hand
 from core.platform import Action
 from learning.network import DeepLearner, get_model
-
+import sys
 
 class BaseAgent(Process):
     def __init__(self, id):
@@ -126,14 +126,15 @@ class DQLAgent(BaseAgent):
         self.learner = DeepLearner(get_model(model_path))
         self.is_training = is_training
         self.turns = turns
-        
+        self.use_optimal = True
+        self.actions_played = 0
     def run(self):
         while True:
             try:
                 event, data = self.input_status.get(False)
                 print("agent {} event {}".format(self.id, event))
             except queue.Empty:
-                pass
+                event = None
             else:
                 if self.t is None:
                     if event == 0:
@@ -145,6 +146,9 @@ class DQLAgent(BaseAgent):
                     if event == 1:
                         #print("agent {} trying to reusing".format(self.id), data)
                         info_set = info_set.getNewState(data)
+                        self.actions_played += 1
+                        if self.actions_played >= 0:
+                            self.use_optimal = True
                         for n in self.t.root.children:
                             if info_set == n.state:
                                 self.t = learning.mcts.tree.Tree(self.learner)
@@ -152,7 +156,6 @@ class DQLAgent(BaseAgent):
                                 self.t.root.parent = None
                                 print("agent {} reuse".format(self.id))
                                 print(self.id, "reusing", self.t.root.state.state.last_dealt_hand)
-                                
                                 break
                     elif event == 0 and self.t.root.state.state != data:
                         print("agent {} recov".format(self.id))
@@ -161,29 +164,44 @@ class DQLAgent(BaseAgent):
                         print("r", " ".join(str(c) for c in data.agent_state.cards))
                         print("r", " ".join(str(c) for c in self.t.root.state.state.agent_state.cards))
                         self.t = learning.mcts.tree.Tree(self.learner, data)
-                        
             if self.t is not None:
                 for i in range(200):
                     self.t.run_iter()
-                if self.is_training:
-                    if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
-                        print("agent {} count {}".format(str(self.id), "-".join(repr((c.play_count, c.empirical_reward[0], learning.mcts.tree.Tree.net_val(c)[0], str(c.state.state.last_dealt_hand))) for c in self.t.root.children)))
-                    play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
-                    play_counts /= play_counts.sum()
-                    choice = np.random.choice(self.t.root.children, p=play_counts)
-                    action_idx = self.t.root.children.index(choice)
-                    self.states.put(self.t.root)
-                    self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
-                else:
-                    raise NotImplementedError()
+                if event is not None and event == 0:
+                    if self.is_training:
+                        if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
+                            print("using optimal: ", self.use_optimal)
+                            print("agent {} count {}".format(str(self.id), "-".join(repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children)))
+                        if not self.use_optimal:
+                            play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
+                            play_counts /= play_counts.sum()
+                            choice = np.random.choice(self.t.root.children, p=play_counts)
+                            action_idx = self.t.root.children.index(choice)
+                            self.states.put(self.t.root)
+                            self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
+                        else:
+                            play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
+                            play_counts /= play_counts.sum()
+                            action_idx = np.argmax(play_counts)
+                            self.states.put(self.t.root)
+                            print("agent {} played because of these children: ".format(str(self.id)))
+                            print("-".join(repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children[action_idx].children))
+                            self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
+                    else:
+                        play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
+                        play_counts /= play_counts.sum()
+                        action_idx = np.argmax(play_counts)
+                        self.states.put(self.t.root)
+                        self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
+            sys.stdout.flush()
     def postAction(self, past_action):
         print("post")
         self.input_status.put((1, past_action))
 
     def getAction(self, private_state):
         counter = 0
-        self.input_status.put((0, private_state))
         while True:
+            self.input_status.put((0, private_state))
             state, decision = self.decision.get()
             if state == private_state:
                 print("agent {} got {} rounds of thought".format(self.id, counter))

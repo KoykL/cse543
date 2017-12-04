@@ -87,7 +87,7 @@ class Hand(tuple):
     def __hash__(self):
         return super().__hash__()
     
-    @functools.lru_cache(None)
+    @functools.lru_cache(10000)
     def get_class(self):
         # self_tuple = tuple(self)
         # if self_tuple in Hand.cache:
@@ -190,7 +190,7 @@ class Hand(tuple):
     def classify(self):
         self.type = self.get_class()
         # Hand.cache[self_tuple] = self.type
-    @functools.lru_cache(200000)
+    @functools.lru_cache(10000)
     def cmp(self, other):
         if self.type == "invalid" or other.type == "invalid":
             raise NotImplementedError("cannot compare invalid hands")

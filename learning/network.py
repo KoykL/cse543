@@ -110,7 +110,7 @@ class DeepLearner(object):
     #     net_out = self.model(net_in)
     #     card_indices = self.get_action(net_out)
     #     return card_indices
-    def estimate_leaf_prior_value(self, private_state):
+    def estimate_leaf_prior_value(self, private_state, required_mask):
         try:
             idx = self.keys.index(private_state)
         except:
@@ -120,13 +120,20 @@ class DeepLearner(object):
             if use_cuda:
                 net_in = net_in.cuda()
             prior, value = self.model(net_in)
-            prior = torch.nn.functional.softmax(prior)
-            prior, value = prior.data, value.data
+            mask = np.array(required_mask, dtype="uint8")
+            mask = torch.from_numpy(mask).cuda().nonzero().squeeze()
+            sub_prior = prior.index_select(1, mask)
+            sub_prior = torch.nn.functional.softmax(sub_prior)
+            sub_prior, value = sub_prior.data, value.data
             if use_cuda:
-                prior, value = prior.cpu(), value.cpu()
-            res = (prior.numpy()[0], value.numpy()[0])
+                sub_prior, value = sub_prior.cpu(), value.cpu()
+            res = (sub_prior.numpy()[0], value.numpy()[0])
+            res_0 = np.zeros(prior.size()[1])
+            res_0[required_mask] = res[0]
+            res = (res_0, res[1])
             self.keys.append(private_state)
             self.cache.append(res)
+            #print(res[0].shape)
             return res
         else:
             return self.cache[idx]

@@ -151,7 +151,7 @@ class PrivateGameState(object):
         cards = self.agent_state.cards
         return PrivateGameState.getNextActionsStatic(cards)
     @staticmethod
-    @functools.lru_cache(50000)
+    @functools.lru_cache(10000)
     def getNextActionsStatic(cards):
         # single card
         # numbers_set = set()
@@ -170,7 +170,7 @@ class PrivateGameState(object):
             else:
                 set_of_number.append(set_of_current_number)
                 set_of_current_number = [(i, card)]
-
+        set_of_number.append(set_of_current_number)
         pairs, triplets, bombs = [], [], []
         for set_of_current_number in set_of_number:
             if len(set_of_current_number) > 1:

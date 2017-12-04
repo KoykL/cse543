@@ -153,19 +153,16 @@ class DQLTrainer(object):
             state = platform.game_state.getPrivateStateForAgentX(platform.game_state.whos_turn)
             agent = platform.agents[platform.game_state.whos_turn]
             action = platform.agents[platform.game_state.whos_turn].getAction(state)
+            counter = 0
             while True:
-                root = agent.states.get()
+                newroot = agent.states.get()
                 #print("back", " ".join(str(c) for c in root.state.state.agent_state.cards))
-                if root.state.state == state:
-                    while True:
-                        try:
-                            root2 = agent.states.get(False)
-                        except queue.Empty:
-                            break
-                        else:
-                            if root.state.state == state:
-                                root = root2
-                    break
+                print(counter)
+                if newroot.state.state == state:
+                    root = newroot
+                    counter += 1
+                    if counter >= 5:
+                        break
                 
             #print(" ".join(str(c) for c in root.state.state.agent_state.cards))
             #print(" ".join(str(c) for c in state.agent_state.cards))
