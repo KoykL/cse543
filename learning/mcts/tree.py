@@ -227,7 +227,7 @@ class Tree(object):
                     other_player = i
                     break
             while curr_node != None:
-                if (curr_node.state.state.whos_turn == 1 and winner == 0) or (not curr_node.state.state.whos_turn == 1 and (winner == 0 or winner == 2)):
+                if (curr_node.state.state.whos_turn == 1 and winner == 0) or (not curr_node.state.state.whos_turn == 1 and (winner == 1 or winner == 2)):
                     curr_node.empirical_reward += 1
                 else:
                     curr_node.empirical_reward -= 1

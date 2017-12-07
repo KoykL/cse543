@@ -141,7 +141,8 @@ class DQLTrainer(object):
                 self.memory = pickle.load(f)
     def run_iter(self):
         print("running one iteration")
-        agents = [DQLAgent(i, self.model_path, True, turns=5) for i in range(3)]
+        turns = 15
+        agents = [DQLAgent(i, self.model_path, True, turns=turns) for i in range(3)]
         for agent in agents:
             agent.start()
         platform = Platform(agents)
@@ -161,7 +162,7 @@ class DQLTrainer(object):
                 if newroot.state.state == state:
                     root = newroot
                     counter += 1
-                    if counter >= 5:
+                    if counter >= turns:
                         break
                 
             #print(" ".join(str(c) for c in root.state.state.agent_state.cards))
