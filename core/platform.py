@@ -241,7 +241,7 @@ class PrivateGameState(object):
         # nums = sorted(set(map(lambda x:x.number, cards)), key=lambda x:Card.all_numbers.index(x))
         # for start in range(len(nums) - 4):
         #     if Card.all_numbers.index(nums[start + 4]) == Card.all_numbers.index(nums[start]) + 4:
-        #         straight_nums.append(nums[start:start + 5]
+        #         straight_nums.append(nums[start:start + 5])
         # for straight_num in straight_nums:
         #     for c in cards:
         #         if card.number == straight_num[0]:
@@ -335,13 +335,14 @@ class PrivateGameState(object):
         for i, action1 in enumerate(straight_actions):
             unique = True
             for j, action2 in enumerate(straight_actions):
-                if j == i:
+                if j == i or j < i:
                     continue
                 if action1 == action2:
                     unique = False
             if unique:
                 real_straight_actions.append(action1)
-        # print(straight_actions, real_straight_actions)
+        # for a in straight_actions: print(a)
+        # for a in real_straight_actions: print(a)
         actions.extend(real_straight_actions)
         # three pairs (by Kengdie Johnny)
         # three_pair = []
@@ -583,7 +584,7 @@ class AgentState(object):
         #self.last_dealt_hand =
 
     def __eq__(self, other):
-        return self.cards == other.cards 
+        return self.cards == other.cards
 
     def do_deal_cards(self, hand):
         if not hand.is_pass:
