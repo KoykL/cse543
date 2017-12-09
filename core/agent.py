@@ -6,8 +6,7 @@ from torch.multiprocessing import Process, Queue
 
 import core.mcts.tree
 import learning.mcts.tree
-from core.cards import Hand
-from core.platform import Action
+from core.cards_cython import Hand, Action
 from learning.network import DeepLearner, get_model
 import sys
 
@@ -80,7 +79,7 @@ class MctsAgent(BaseAgent):
                 # print(s.getvalue())
                 choice = max(self.t.root.children, key=lambda x: x.play_count)
                 print("agent {} count {}".format(str(self.id), ", ".join(
-                    repr(((c.play_count), core.mcts.tree.Tree.ucb_val(c), str(c.state.state.last_dealt_hand))) for c in
+                    repr(((c.play_count), str(core.mcts.tree.Tree.ucb_val(c))[:6], str(c.state.state.last_dealt_hand))) for c in
                     self.t.root.children)))
                 action_idx = self.t.root.children.index(choice)
                 self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
@@ -96,7 +95,10 @@ class MctsAgent(BaseAgent):
         # for act in actions:
         #     print(act)
         while True:
+            import time
+            t = time.time()
             state, decision = self.decision.get()
+            print(time.time() - t)
             if state == private_state:
                 print("agent {} got {} rounds of thought".format(self.id, counter))
                 counter += 1
@@ -141,7 +143,6 @@ class DQLAgent(BaseAgent):
                         print("initialize tree")
                         self.t = learning.mcts.tree.Tree(self.learner, data)  # private_state
                 else:
-                        
                     info_set = self.t.root.state
                     if event == 1:
                         #print("agent {} trying to reusing".format(self.id), data)

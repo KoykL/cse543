@@ -5,7 +5,7 @@ from contextlib import suppress
 from copy import copy
 from itertools import combinations
 
-from core.cards import Card, Hand, NotComparableError
+from core.cards_cython import Card, Hand, Action, NotComparableError, get_action_cwrapper
 
 
 class Platform(object):
@@ -66,26 +66,6 @@ class Platform(object):
 # All methods should be as fast as possible. If needed, change the API
 
 #implement gamestate equality check
-class Action(object):
-    def __init__(self, hand, is_pass, idx):
-        self.is_pass = is_pass
-        # if type(idx) == type(tuple()):
-        #     raise RuntimeError("who the fuck passed a tuple?")
-        self.idx = list(idx)
-        # assert(type(hand) == type(Hand))
-        self.hand = Hand(hand)
-
-    def __eq__(self, other):
-        return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
-    def __str__(self):
-        # print(self.idx)
-        if self.is_pass:
-            return "[pass]"
-        else:
-            return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))
-
-    def __add__(self, other):
-        return Action(self.hand + other.hand, self.is_pass and other.is_pass, self.idx + other.idx)
 class PrivateGameState(object):
     def __init__(self, x, agent_state, pass_count, whos_turn, last_dealt_hand, dealt_cards, agent_num_cards, other_cards):
         self.x = x
@@ -149,7 +129,14 @@ class PrivateGameState(object):
         return pos
     def getNextActions(self):
         cards = self.agent_state.cards
-        return PrivateGameState.getNextActionsStatic(cards)
+        # return PrivateGameState.getNextActionsStatic(cards)
+        return PrivateGameState.get_action_wrapper(cards)
+
+    @staticmethod
+    @functools.lru_cache(10000)
+    def get_action_wrapper(cards):
+        return get_action_cwrapper(cards)
+
     @staticmethod
     @functools.lru_cache(10000)
     def getNextActionsStatic(cards):

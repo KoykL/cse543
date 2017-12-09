@@ -160,8 +160,8 @@ class Tree(object):
                 if i != curr_node.state.state.whos_turn and i != 0:
                     other_player = i
                     break
-            if (curr_node.state.state.agent_state.x == 0 and winner == curr_node.state.state.whos_turn) or (
-                        not curr_node.state.state.agent_state.x == 0 and (
+            if (curr_node.state.state.x == 0 and winner == curr_node.state.state.whos_turn) or (
+                        not curr_node.state.state.x == 0 and (
                                     winner == curr_node.state.state.whos_turn or winner == other_player)):
                 # print("reward once")
                 curr_node.empirical_reward += 1
