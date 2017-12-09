@@ -9,7 +9,9 @@ import learning.mcts.tree
 from core.cards_cython import Hand, Action
 from learning.network import DeepLearner, get_model
 import sys
-
+import cProfile
+import io
+import pstats
 class BaseAgent(Process):
     def __init__(self, id):
         super().__init__()
@@ -65,22 +67,22 @@ class MctsAgent(BaseAgent):
                         self.t = core.mcts.tree.Tree(data)
                         print("agent {} recov".format(self.id))
             if self.t is not None:
-                # pr = cProfile.Profile()
-                # pr.enable()
-                for i in range(100):
+                #pr = cProfile.Profile()
+                #pr.enable()
+                for i in range(200):
                     # if i%100 == 0:
                     #     print("agent: ", i)
                     self.t.run_iter()
-                # pr.disable()
-                # sortby = 'tottime'
-                # s = io.StringIO()
-                # ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-                # ps.print_stats()
-                # print(s.getvalue())
+                #pr.disable()
+                #sortby = 'tottime'
+                #s = io.StringIO()
+                #ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+                #ps.print_stats()
+                #print(s.getvalue())
                 choice = max(self.t.root.children, key=lambda x: x.play_count)
-                print("agent {} count {}".format(str(self.id), ", ".join(
-                    repr(((c.play_count), str(core.mcts.tree.Tree.ucb_val(c))[:6], str(c.state.state.last_dealt_hand))) for c in
-                    self.t.root.children)))
+                #print("agent {} count {}".format(str(self.id), ", ".join(
+                #    repr(((c.play_count), str(core.mcts.tree.Tree.ucb_val(c))[:6], str(c.state.state.last_dealt_hand))) for c in
+                #    self.t.root.children)))
                 action_idx = self.t.root.children.index(choice)
                 self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
 
@@ -166,8 +168,15 @@ class DQLAgent(BaseAgent):
                         print("r", " ".join(str(c) for c in self.t.root.state.state.agent_state.cards))
                         self.t = learning.mcts.tree.Tree(self.learner, data)
             if self.t is not None:
+#                pr = cProfile.Profile()
+#                pr.enable()
                 for i in range(200):
                     self.t.run_iter()
+#                sortby = 'tottime'
+#                s = io.StringIO()
+#                ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+#                ps.print_stats()
+#                print(s.getvalue())
                 if event is not None and event == 0:
                     if self.is_training:
                         if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
@@ -192,8 +201,8 @@ class DQLAgent(BaseAgent):
                             play_counts /= play_counts.sum()
                             action_idx = np.argmax(play_counts)
                             self.states.put(self.t.root)
-                            print("agent {} played because of these children: ".format(str(self.id)))
-                            print("-".join(repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children[action_idx].children))
+                            #print("agent {} played because of these children: ".format(str(self.id)))
+                            #print("-".join(repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children[action_idx].children))
                             self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
                     else:
                         play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")

@@ -571,6 +571,8 @@ class AgentState(object):
         #self.last_dealt_hand =
 
     def __eq__(self, other):
+        if self.cards.__hash__ == other.cards.__hash__:
+            return True
         return self.cards == other.cards
 
     def do_deal_cards(self, hand):

@@ -1,4 +1,7 @@
 # distutils: language=c++
+# cython: profile=True
+
+#remove later
 import collections
 import functools
 from libcpp.map cimport map as cppmap

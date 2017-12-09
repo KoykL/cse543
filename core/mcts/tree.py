@@ -157,12 +157,10 @@ class Tree(object):
         while curr_node != None:
             other_player = -1
             for i in range(3):
-                if i != curr_node.state.state.whos_turn and i != 0:
+                if i != curr_node.state.state.whos_turn and i != 1:
                     other_player = i
                     break
-            if (curr_node.state.state.x == 0 and winner == curr_node.state.state.whos_turn) or (
-                        not curr_node.state.state.x == 0 and (
-                                    winner == curr_node.state.state.whos_turn or winner == other_player)):
+            if (curr_node.state.state.whos_turn == 1 and winner == 0 ) or (curr_node.state.state.whos_turn != 1 and (winner == 1 or winner == 2)):
                 # print("reward once")
                 curr_node.empirical_reward += 1
 

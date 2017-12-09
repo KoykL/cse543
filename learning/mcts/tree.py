@@ -1,5 +1,5 @@
 import random
-from copy import deepcopy
+from copy import deepcopy, copy
 import math
 import numpy as np
 
@@ -86,11 +86,11 @@ class Tree(object):
 #        print("run iter")
         if self.determinization is None or self.iterations_per_determinization >= 100:
             curr_determined_state = curr_node.state.determinization()
-            self.determinization = deepcopy(curr_determined_state)
+            self.determinization = copy(curr_determined_state)
             self.iterations_per_determinization = 0
             # print("change determinization")
         else:
-            curr_determined_state = deepcopy(self.determinization)
+            curr_determined_state = copy(self.determinization)
             self.iterations_per_determinization += 1
 
         candidate_actions = []
@@ -146,7 +146,6 @@ class Tree(object):
                         mask[reverse_map[action_tuple]] = True
                     else:
                         mask[-1] = True
-                             
                 priors, net_value = self.learner.estimate_leaf_prior_value(curr_player_states, mask)
                 #curr_node.net_value = net_value
                 reverse_map = PrivateGameState.getAllActionsReverseMap(curr_player_states.agent_num_cards[curr_player_states.whos_turn])
@@ -208,7 +207,8 @@ class Tree(object):
             mask_length = sum(PrivateGameState.max_combinations())+1
             mask = np.zeros(mask_length, dtype=np.bool)
             mask[0] = True
-            priors, net_value = self.learner.estimate_leaf_prior_value(curr_node.state.state, mask)
+            curr_player_states = curr_determined_state.getPrivateStateForAgentX(curr_determined_state.whos_turn)
+            priors, net_value = self.learner.estimate_leaf_prior_value(curr_player_states, mask)
             curr_node.net_value = net_value
             
             # bp

@@ -777,7 +777,7 @@ struct __pyx_obj_4core_12cards_cython_Card;
 struct __pyx_obj_4core_12cards_cython___pyx_scope_struct____str__;
 struct __pyx_obj_4core_12cards_cython___pyx_scope_struct_1_genexpr;
 
-/* "core/cards_cython.pyx":7
+/* "core/cards_cython.pyx":10
  * from libcpp.vector cimport vector
  * 
  * cdef class Card(object):             # <<<<<<<<<<<<<<
@@ -793,7 +793,7 @@ struct __pyx_obj_4core_12cards_cython_Card {
 };
 
 
-/* "core/cards_cython.pyx":217
+/* "core/cards_cython.pyx":220
  *     def __eq__(self, other):
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -806,7 +806,7 @@ struct __pyx_obj_4core_12cards_cython___pyx_scope_struct____str__ {
 };
 
 
-/* "core/cards_cython.pyx":222
+/* "core/cards_cython.pyx":225
  *             return "[pass]"
  *         else:
  *             return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))             # <<<<<<<<<<<<<<
@@ -825,7 +825,7 @@ struct __pyx_obj_4core_12cards_cython___pyx_scope_struct_1_genexpr {
 
 
 
-/* "core/cards_cython.pyx":7
+/* "core/cards_cython.pyx":10
  * from libcpp.vector cimport vector
  * 
  * cdef class Card(object):             # <<<<<<<<<<<<<<
@@ -937,6 +937,208 @@ static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_n
 static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
+
+/* Profile.proto */
+#ifndef CYTHON_PROFILE
+#if CYTHON_COMPILING_IN_PYPY || CYTHON_COMPILING_IN_PYSTON
+  #define CYTHON_PROFILE 0
+#else
+  #define CYTHON_PROFILE 1
+#endif
+#endif
+#ifndef CYTHON_TRACE_NOGIL
+  #define CYTHON_TRACE_NOGIL 0
+#else
+  #if CYTHON_TRACE_NOGIL && !defined(CYTHON_TRACE)
+    #define CYTHON_TRACE 1
+  #endif
+#endif
+#ifndef CYTHON_TRACE
+  #define CYTHON_TRACE 0
+#endif
+#if CYTHON_TRACE
+  #undef CYTHON_PROFILE_REUSE_FRAME
+#endif
+#ifndef CYTHON_PROFILE_REUSE_FRAME
+  #define CYTHON_PROFILE_REUSE_FRAME 0
+#endif
+#if CYTHON_PROFILE || CYTHON_TRACE
+  #include "compile.h"
+  #include "frameobject.h"
+  #include "traceback.h"
+  #if CYTHON_PROFILE_REUSE_FRAME
+    #define CYTHON_FRAME_MODIFIER static
+    #define CYTHON_FRAME_DEL(frame)
+  #else
+    #define CYTHON_FRAME_MODIFIER
+    #define CYTHON_FRAME_DEL(frame) Py_CLEAR(frame)
+  #endif
+  #define __Pyx_TraceDeclarations\
+  static PyCodeObject *__pyx_frame_code = NULL;\
+  CYTHON_FRAME_MODIFIER PyFrameObject *__pyx_frame = NULL;\
+  int __Pyx_use_tracing = 0;
+  #define __Pyx_TraceFrameInit(codeobj)\
+  if (codeobj) __pyx_frame_code = (PyCodeObject*) codeobj;
+  #ifdef WITH_THREAD
+  #define __Pyx_TraceCall(funcname, srcfile, firstlineno, nogil, goto_error)\
+  if (nogil) {\
+      if (CYTHON_TRACE_NOGIL) {\
+          PyThreadState *tstate;\
+          PyGILState_STATE state = PyGILState_Ensure();\
+          tstate = __Pyx_PyThreadState_Current;\
+          if (unlikely(tstate->use_tracing) && !tstate->tracing &&\
+                  (tstate->c_profilefunc || (CYTHON_TRACE && tstate->c_tracefunc))) {\
+              __Pyx_use_tracing = __Pyx_TraceSetupAndCall(&__pyx_frame_code, &__pyx_frame, tstate, funcname, srcfile, firstlineno);\
+          }\
+          PyGILState_Release(state);\
+          if (unlikely(__Pyx_use_tracing < 0)) goto_error;\
+      }\
+  } else {\
+      PyThreadState* tstate = PyThreadState_GET();\
+      if (unlikely(tstate->use_tracing) && !tstate->tracing &&\
+              (tstate->c_profilefunc || (CYTHON_TRACE && tstate->c_tracefunc))) {\
+          __Pyx_use_tracing = __Pyx_TraceSetupAndCall(&__pyx_frame_code, &__pyx_frame, tstate, funcname, srcfile, firstlineno);\
+          if (unlikely(__Pyx_use_tracing < 0)) goto_error;\
+      }\
+  }
+  #else
+  #define __Pyx_TraceCall(funcname, srcfile, firstlineno, nogil, goto_error)\
+  {   PyThreadState* tstate = PyThreadState_GET();\
+      if (unlikely(tstate->use_tracing) && !tstate->tracing &&\
+              (tstate->c_profilefunc || (CYTHON_TRACE && tstate->c_tracefunc))) {\
+          __Pyx_use_tracing = __Pyx_TraceSetupAndCall(&__pyx_frame_code, &__pyx_frame, tstate, funcname, srcfile, firstlineno);\
+          if (unlikely(__Pyx_use_tracing < 0)) goto_error;\
+      }\
+  }
+  #endif
+  #define __Pyx_TraceException()\
+  if (likely(!__Pyx_use_tracing)); else {\
+      PyThreadState* tstate = __Pyx_PyThreadState_Current;\
+      if (tstate->use_tracing &&\
+              (tstate->c_profilefunc || (CYTHON_TRACE && tstate->c_tracefunc))) {\
+          tstate->tracing++;\
+          tstate->use_tracing = 0;\
+          PyObject *exc_info = __Pyx_GetExceptionTuple(tstate);\
+          if (exc_info) {\
+              if (CYTHON_TRACE && tstate->c_tracefunc)\
+                  tstate->c_tracefunc(\
+                      tstate->c_traceobj, __pyx_frame, PyTrace_EXCEPTION, exc_info);\
+              tstate->c_profilefunc(\
+                  tstate->c_profileobj, __pyx_frame, PyTrace_EXCEPTION, exc_info);\
+              Py_DECREF(exc_info);\
+          }\
+          tstate->use_tracing = 1;\
+          tstate->tracing--;\
+      }\
+  }
+  static void __Pyx_call_return_trace_func(PyThreadState *tstate, PyFrameObject *frame, PyObject *result) {
+      PyObject *type, *value, *traceback;
+      PyErr_Fetch(&type, &value, &traceback);
+      tstate->tracing++;
+      tstate->use_tracing = 0;
+      if (CYTHON_TRACE && tstate->c_tracefunc)
+          tstate->c_tracefunc(tstate->c_traceobj, frame, PyTrace_RETURN, result);
+      if (tstate->c_profilefunc)
+          tstate->c_profilefunc(tstate->c_profileobj, frame, PyTrace_RETURN, result);
+      CYTHON_FRAME_DEL(frame);
+      tstate->use_tracing = 1;
+      tstate->tracing--;
+      PyErr_Restore(type, value, traceback);
+  }
+  #ifdef WITH_THREAD
+  #define __Pyx_TraceReturn(result, nogil)\
+  if (likely(!__Pyx_use_tracing)); else {\
+      if (nogil) {\
+          if (CYTHON_TRACE_NOGIL) {\
+              PyThreadState *tstate;\
+              PyGILState_STATE state = PyGILState_Ensure();\
+              tstate = __Pyx_PyThreadState_Current;\
+              if (tstate->use_tracing) {\
+                  __Pyx_call_return_trace_func(tstate, __pyx_frame, (PyObject*)result);\
+              }\
+              PyGILState_Release(state);\
+          }\
+      } else {\
+          PyThreadState* tstate = __Pyx_PyThreadState_Current;\
+          if (tstate->use_tracing) {\
+              __Pyx_call_return_trace_func(tstate, __pyx_frame, (PyObject*)result);\
+          }\
+      }\
+  }
+  #else
+  #define __Pyx_TraceReturn(result, nogil)\
+  if (likely(!__Pyx_use_tracing)); else {\
+      PyThreadState* tstate = __Pyx_PyThreadState_Current;\
+      if (tstate->use_tracing) {\
+          __Pyx_call_return_trace_func(tstate, __pyx_frame, (PyObject*)result);\
+      }\
+  }
+  #endif
+  static PyCodeObject *__Pyx_createFrameCodeObject(const char *funcname, const char *srcfile, int firstlineno);
+  static int __Pyx_TraceSetupAndCall(PyCodeObject** code, PyFrameObject** frame, PyThreadState* tstate, const char *funcname, const char *srcfile, int firstlineno);
+#else
+  #define __Pyx_TraceDeclarations
+  #define __Pyx_TraceFrameInit(codeobj)
+  #define __Pyx_TraceCall(funcname, srcfile, firstlineno, nogil, goto_error)   if ((1)); else goto_error;
+  #define __Pyx_TraceException()
+  #define __Pyx_TraceReturn(result, nogil)
+#endif
+#if CYTHON_TRACE
+  static int __Pyx_call_line_trace_func(PyThreadState *tstate, PyFrameObject *frame, int lineno) {
+      int ret;
+      PyObject *type, *value, *traceback;
+      PyErr_Fetch(&type, &value, &traceback);
+      __Pyx_PyFrame_SetLineNumber(frame, lineno);
+      tstate->tracing++;
+      tstate->use_tracing = 0;
+      ret = tstate->c_tracefunc(tstate->c_traceobj, frame, PyTrace_LINE, NULL);
+      tstate->use_tracing = 1;
+      tstate->tracing--;
+      if (likely(!ret)) {
+          PyErr_Restore(type, value, traceback);
+      } else {
+          Py_XDECREF(type);
+          Py_XDECREF(value);
+          Py_XDECREF(traceback);
+      }
+      return ret;
+  }
+  #ifdef WITH_THREAD
+  #define __Pyx_TraceLine(lineno, nogil, goto_error)\
+  if (likely(!__Pyx_use_tracing)); else {\
+      if (nogil) {\
+          if (CYTHON_TRACE_NOGIL) {\
+              int ret = 0;\
+              PyThreadState *tstate;\
+              PyGILState_STATE state = PyGILState_Ensure();\
+              tstate = __Pyx_PyThreadState_Current;\
+              if (unlikely(tstate->use_tracing && tstate->c_tracefunc && __pyx_frame->f_trace)) {\
+                  ret = __Pyx_call_line_trace_func(tstate, __pyx_frame, lineno);\
+              }\
+              PyGILState_Release(state);\
+              if (unlikely(ret)) goto_error;\
+          }\
+      } else {\
+          PyThreadState* tstate = __Pyx_PyThreadState_Current;\
+          if (unlikely(tstate->use_tracing && tstate->c_tracefunc && __pyx_frame->f_trace)) {\
+              int ret = __Pyx_call_line_trace_func(tstate, __pyx_frame, lineno);\
+              if (unlikely(ret)) goto_error;\
+          }\
+      }\
+  }
+  #else
+  #define __Pyx_TraceLine(lineno, nogil, goto_error)\
+  if (likely(!__Pyx_use_tracing)); else {\
+      PyThreadState* tstate = __Pyx_PyThreadState_Current;\
+      if (unlikely(tstate->use_tracing && tstate->c_tracefunc && __pyx_frame->f_trace)) {\
+          int ret = __Pyx_call_line_trace_func(tstate, __pyx_frame, lineno);\
+          if (unlikely(ret)) goto_error;\
+      }\
+  }
+  #endif
+#else
+  #define __Pyx_TraceLine(lineno, nogil, goto_error)   if ((1)); else goto_error;
+#endif
 
 /* IncludeStringH.proto */
 #include <string.h>
@@ -1225,6 +1427,11 @@ static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
 #else
 #define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
 #endif
+
+/* WriteUnraisableException.proto */
+static void __Pyx_WriteUnraisable(const char *name, int clineno,
+                                  int lineno, const char *filename,
+                                  int full_traceback, int nogil);
 
 /* PyIntBinop.proto */
 #if !CYTHON_COMPILING_IN_PYPY
@@ -1532,7 +1739,6 @@ static PyObject *__pyx_builtin_sorted;
 static PyObject *__pyx_builtin_NotImplementedError;
 static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_zip;
-static const char __pyx_k_[] = "[{}{}]";
 static const char __pyx_k_2[] = "2";
 static const char __pyx_k_3[] = "3";
 static const char __pyx_k_4[] = "4";
@@ -1553,9 +1759,7 @@ static const char __pyx_k_c[] = "c";
 static const char __pyx_k_10[] = "10";
 static const char __pyx_k_BJ[] = "BJ";
 static const char __pyx_k_RJ[] = "RJ";
-static const char __pyx_k__3[] = "";
-static const char __pyx_k__4[] = "{}";
-static const char __pyx_k__5[] = " ";
+static const char __pyx_k__2[] = "[{}{}]";
 static const char __pyx_k_eq[] = "__eq__";
 static const char __pyx_k_ge[] = "__ge__";
 static const char __pyx_k_gt[] = "__gt__";
@@ -1563,6 +1767,9 @@ static const char __pyx_k_it[] = "it";
 static const char __pyx_k_le[] = "__le__";
 static const char __pyx_k_lt[] = "__lt__";
 static const char __pyx_k_ne[] = "__ne__";
+static const char __pyx_k__18[] = "";
+static const char __pyx_k__22[] = "{}";
+static const char __pyx_k__23[] = " ";
 static const char __pyx_k_add[] = "__add__";
 static const char __pyx_k_cls[] = "cls";
 static const char __pyx_k_cmp[] = "cmp";
@@ -1688,7 +1895,6 @@ static const char __pyx_k_Hand___new___locals_lambda[] = "Hand.__new__.<locals>.
 static const char __pyx_k_cannot_compare_invalid_hands[] = "cannot compare invalid hands";
 static const char __pyx_k_Action___str___locals_genexpr[] = "Action.__str__.<locals>.genexpr";
 static const char __pyx_k_Incompatible_checksums_s_vs_0x54[] = "Incompatible checksums (%s vs 0x549b606 = (color, idx, number))";
-static PyObject *__pyx_kp_s_;
 static PyObject *__pyx_kp_s_10;
 static PyObject *__pyx_kp_s_2;
 static PyObject *__pyx_kp_s_3;
@@ -1749,9 +1955,10 @@ static PyObject *__pyx_n_s_Straight;
 static PyObject *__pyx_n_s_ThreePairs;
 static PyObject *__pyx_n_s_Triplet;
 static PyObject *__pyx_n_s_TwoTriplet;
-static PyObject *__pyx_kp_s__3;
-static PyObject *__pyx_kp_s__4;
-static PyObject *__pyx_kp_s__5;
+static PyObject *__pyx_kp_s__18;
+static PyObject *__pyx_kp_s__2;
+static PyObject *__pyx_kp_s__22;
+static PyObject *__pyx_kp_s__23;
 static PyObject *__pyx_n_s_add;
 static PyObject *__pyx_n_s_all_colors;
 static PyObject *__pyx_n_s_all_numbers;
@@ -1910,54 +2117,54 @@ static PyObject *__pyx_int_100;
 static PyObject *__pyx_int_10000;
 static PyObject *__pyx_int_88716806;
 static PyObject *__pyx_int_neg_1;
-static PyObject *__pyx_tuple__2;
-static PyObject *__pyx_tuple__6;
-static PyObject *__pyx_tuple__8;
-static PyObject *__pyx_tuple__9;
-static PyObject *__pyx_tuple__11;
-static PyObject *__pyx_tuple__13;
-static PyObject *__pyx_tuple__15;
+static PyObject *__pyx_codeobj_;
 static PyObject *__pyx_tuple__17;
-static PyObject *__pyx_tuple__19;
-static PyObject *__pyx_tuple__21;
-static PyObject *__pyx_tuple__23;
-static PyObject *__pyx_tuple__25;
 static PyObject *__pyx_tuple__27;
+static PyObject *__pyx_tuple__28;
 static PyObject *__pyx_tuple__29;
+static PyObject *__pyx_tuple__30;
 static PyObject *__pyx_tuple__31;
 static PyObject *__pyx_tuple__32;
+static PyObject *__pyx_tuple__33;
 static PyObject *__pyx_tuple__34;
+static PyObject *__pyx_tuple__35;
 static PyObject *__pyx_tuple__36;
+static PyObject *__pyx_tuple__37;
 static PyObject *__pyx_tuple__38;
 static PyObject *__pyx_tuple__39;
+static PyObject *__pyx_tuple__40;
 static PyObject *__pyx_tuple__41;
+static PyObject *__pyx_tuple__42;
 static PyObject *__pyx_tuple__43;
+static PyObject *__pyx_tuple__44;
 static PyObject *__pyx_tuple__45;
+static PyObject *__pyx_tuple__46;
 static PyObject *__pyx_tuple__47;
+static PyObject *__pyx_tuple__48;
 static PyObject *__pyx_tuple__49;
+static PyObject *__pyx_tuple__50;
+static PyObject *__pyx_codeobj__3;
+static PyObject *__pyx_codeobj__4;
+static PyObject *__pyx_codeobj__5;
+static PyObject *__pyx_codeobj__6;
 static PyObject *__pyx_codeobj__7;
+static PyObject *__pyx_codeobj__8;
+static PyObject *__pyx_codeobj__9;
 static PyObject *__pyx_codeobj__10;
+static PyObject *__pyx_codeobj__11;
 static PyObject *__pyx_codeobj__12;
+static PyObject *__pyx_codeobj__13;
 static PyObject *__pyx_codeobj__14;
+static PyObject *__pyx_codeobj__15;
 static PyObject *__pyx_codeobj__16;
-static PyObject *__pyx_codeobj__18;
+static PyObject *__pyx_codeobj__19;
 static PyObject *__pyx_codeobj__20;
-static PyObject *__pyx_codeobj__22;
+static PyObject *__pyx_codeobj__21;
 static PyObject *__pyx_codeobj__24;
+static PyObject *__pyx_codeobj__25;
 static PyObject *__pyx_codeobj__26;
-static PyObject *__pyx_codeobj__28;
-static PyObject *__pyx_codeobj__30;
-static PyObject *__pyx_codeobj__33;
-static PyObject *__pyx_codeobj__35;
-static PyObject *__pyx_codeobj__37;
-static PyObject *__pyx_codeobj__40;
-static PyObject *__pyx_codeobj__42;
-static PyObject *__pyx_codeobj__44;
-static PyObject *__pyx_codeobj__46;
-static PyObject *__pyx_codeobj__48;
-static PyObject *__pyx_codeobj__50;
 
-/* "core/cards_cython.pyx":23
+/* "core/cards_cython.pyx":26
  *     cdef public str color
  * 
  *     def __init__(self, number, color):             # <<<<<<<<<<<<<<
@@ -1996,11 +2203,11 @@ static int __pyx_pw_4core_12cards_cython_4Card_1__init__(PyObject *__pyx_v_self,
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_color)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 23, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 26, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 23, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 26, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2013,7 +2220,7 @@ static int __pyx_pw_4core_12cards_cython_4Card_1__init__(PyObject *__pyx_v_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 23, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 26, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Card.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2028,6 +2235,7 @@ static int __pyx_pw_4core_12cards_cython_4Card_1__init__(PyObject *__pyx_v_self,
 
 static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, PyObject *__pyx_v_number, PyObject *__pyx_v_color) {
   int __pyx_r;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -2035,18 +2243,19 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("__init__", 0);
+  __Pyx_TraceCall("__init__", __pyx_f[0], 26, 0, __PYX_ERR(0, 26, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":24
+  /* "core/cards_cython.pyx":27
  * 
  *     def __init__(self, number, color):
  *         if number == "BJ":             # <<<<<<<<<<<<<<
  *             self.idx = 52
  *         elif number == "RJ":
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_number, __pyx_n_s_BJ, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_number, __pyx_n_s_BJ, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 27, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "core/cards_cython.pyx":25
+    /* "core/cards_cython.pyx":28
  *     def __init__(self, number, color):
  *         if number == "BJ":
  *             self.idx = 52             # <<<<<<<<<<<<<<
@@ -2055,7 +2264,7 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
  */
     __pyx_v_self->idx = 52;
 
-    /* "core/cards_cython.pyx":24
+    /* "core/cards_cython.pyx":27
  * 
  *     def __init__(self, number, color):
  *         if number == "BJ":             # <<<<<<<<<<<<<<
@@ -2065,17 +2274,17 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
     goto __pyx_L3;
   }
 
-  /* "core/cards_cython.pyx":26
+  /* "core/cards_cython.pyx":29
  *         if number == "BJ":
  *             self.idx = 52
  *         elif number == "RJ":             # <<<<<<<<<<<<<<
  *             self.idx = 53
  *         else:
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_number, __pyx_n_s_RJ, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_number, __pyx_n_s_RJ, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 29, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "core/cards_cython.pyx":27
+    /* "core/cards_cython.pyx":30
  *             self.idx = 52
  *         elif number == "RJ":
  *             self.idx = 53             # <<<<<<<<<<<<<<
@@ -2084,7 +2293,7 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
  */
     __pyx_v_self->idx = 53;
 
-    /* "core/cards_cython.pyx":26
+    /* "core/cards_cython.pyx":29
  *         if number == "BJ":
  *             self.idx = 52
  *         elif number == "RJ":             # <<<<<<<<<<<<<<
@@ -2094,7 +2303,7 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
     goto __pyx_L3;
   }
 
-  /* "core/cards_cython.pyx":29
+  /* "core/cards_cython.pyx":32
  *             self.idx = 53
  *         else:
  *             self.idx = Card.numbers[number] * 4 + Card.colors[color]             # <<<<<<<<<<<<<<
@@ -2102,37 +2311,37 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
  *         self.color = color
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_numbers); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_numbers); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyObject_GetItem(__pyx_t_2, __pyx_v_number); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_3 = PyObject_GetItem(__pyx_t_2, __pyx_v_number); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_Multiply(__pyx_t_3, __pyx_int_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Multiply(__pyx_t_3, __pyx_int_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_colors); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_colors); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyObject_GetItem(__pyx_t_3, __pyx_v_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetItem(__pyx_t_3, __pyx_v_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 29, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_self->idx = __pyx_t_5;
   }
   __pyx_L3:;
 
-  /* "core/cards_cython.pyx":30
+  /* "core/cards_cython.pyx":33
  *         else:
  *             self.idx = Card.numbers[number] * 4 + Card.colors[color]
  *         self.number = number             # <<<<<<<<<<<<<<
  *         self.color = color
  * 
  */
-  if (!(likely(PyString_CheckExact(__pyx_v_number))||((__pyx_v_number) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_number)->tp_name), 0))) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (!(likely(PyString_CheckExact(__pyx_v_number))||((__pyx_v_number) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_number)->tp_name), 0))) __PYX_ERR(0, 33, __pyx_L1_error)
   __pyx_t_3 = __pyx_v_number;
   __Pyx_INCREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
@@ -2141,14 +2350,14 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
   __pyx_v_self->number = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "core/cards_cython.pyx":31
+  /* "core/cards_cython.pyx":34
  *             self.idx = Card.numbers[number] * 4 + Card.colors[color]
  *         self.number = number
  *         self.color = color             # <<<<<<<<<<<<<<
  * 
  *     cpdef get_idx(self):
  */
-  if (!(likely(PyString_CheckExact(__pyx_v_color))||((__pyx_v_color) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_color)->tp_name), 0))) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (!(likely(PyString_CheckExact(__pyx_v_color))||((__pyx_v_color) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_color)->tp_name), 0))) __PYX_ERR(0, 34, __pyx_L1_error)
   __pyx_t_3 = __pyx_v_color;
   __Pyx_INCREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
@@ -2157,7 +2366,7 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
   __pyx_v_self->color = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "core/cards_cython.pyx":23
+  /* "core/cards_cython.pyx":26
  *     cdef public str color
  * 
  *     def __init__(self, number, color):             # <<<<<<<<<<<<<<
@@ -2175,11 +2384,12 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
   __Pyx_AddTraceback("core.cards_cython.Card.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
+  __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":33
+/* "core/cards_cython.pyx":36
  *         self.color = color
  * 
  *     cpdef get_idx(self):             # <<<<<<<<<<<<<<
@@ -2190,143 +2400,21 @@ static int __pyx_pf_4core_12cards_cython_4Card___init__(struct __pyx_obj_4core_1
 static PyObject *__pyx_pw_4core_12cards_cython_4Card_3get_idx(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
 static PyObject *__pyx_f_4core_12cards_cython_4Card_get_idx(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("get_idx", 0);
+  __Pyx_TraceCall("get_idx", __pyx_f[0], 36, 0, __PYX_ERR(0, 36, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_4core_12cards_cython_4Card_3get_idx)) {
-      __Pyx_XDECREF(__pyx_r);
-      __Pyx_INCREF(__pyx_t_1);
-      __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_4);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
-        }
-      }
-      if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
-      }
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_r = __pyx_t_2;
-      __pyx_t_2 = 0;
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      goto __pyx_L0;
-    }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  }
-
-  /* "core/cards_cython.pyx":34
- * 
- *     cpdef get_idx(self):
- *         return self.idx             # <<<<<<<<<<<<<<
- * 
- *     cpdef is_joker(self):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "core/cards_cython.pyx":33
- *         self.color = color
- * 
- *     cpdef get_idx(self):             # <<<<<<<<<<<<<<
- *         return self.idx
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("core.cards_cython.Card.get_idx", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static PyObject *__pyx_pw_4core_12cards_cython_4Card_3get_idx(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_4core_12cards_cython_4Card_3get_idx(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("get_idx (wrapper)", 0);
-  __pyx_r = __pyx_pf_4core_12cards_cython_4Card_2get_idx(((struct __pyx_obj_4core_12cards_cython_Card *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_4core_12cards_cython_4Card_2get_idx(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("get_idx", 0);
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_get_idx(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("core.cards_cython.Card.get_idx", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "core/cards_cython.pyx":36
- *         return self.idx
- * 
- *     cpdef is_joker(self):             # <<<<<<<<<<<<<<
- *         # return self.number == "BJ" or self.number == "RJ"
- *         return self.idx > 51
- */
-
-static PyObject *__pyx_pw_4core_12cards_cython_4Card_5is_joker(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_4core_12cards_cython_4Card_is_joker(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, int __pyx_skip_dispatch) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  __Pyx_RefNannySetupContext("is_joker", 0);
-  /* Check if called by wrapper */
-  if (unlikely(__pyx_skip_dispatch)) ;
-  /* Check if overridden in Python */
-  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_joker); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_4core_12cards_cython_4Card_5is_joker)) {
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -2355,7 +2443,137 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_is_joker(struct __pyx_obj_4c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "core/cards_cython.pyx":38
+  /* "core/cards_cython.pyx":37
+ * 
+ *     cpdef get_idx(self):
+ *         return self.idx             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef is_joker(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "core/cards_cython.pyx":36
+ *         self.color = color
+ * 
+ *     cpdef get_idx(self):             # <<<<<<<<<<<<<<
+ *         return self.idx
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("core.cards_cython.Card.get_idx", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_4core_12cards_cython_4Card_3get_idx(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_4core_12cards_cython_4Card_3get_idx(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_idx (wrapper)", 0);
+  __pyx_r = __pyx_pf_4core_12cards_cython_4Card_2get_idx(((struct __pyx_obj_4core_12cards_cython_Card *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_4core_12cards_cython_4Card_2get_idx(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("get_idx", 0);
+  __Pyx_TraceCall("get_idx (wrapper)", __pyx_f[0], 36, 0, __PYX_ERR(0, 36, __pyx_L1_error));
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_get_idx(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("core.cards_cython.Card.get_idx", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "core/cards_cython.pyx":39
+ *         return self.idx
+ * 
+ *     cpdef is_joker(self):             # <<<<<<<<<<<<<<
+ *         # return self.number == "BJ" or self.number == "RJ"
+ *         return self.idx > 51
+ */
+
+static PyObject *__pyx_pw_4core_12cards_cython_4Card_5is_joker(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_4core_12cards_cython_4Card_is_joker(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  __Pyx_RefNannySetupContext("is_joker", 0);
+  __Pyx_TraceCall("is_joker", __pyx_f[0], 39, 0, __PYX_ERR(0, 39, __pyx_L1_error));
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_joker); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_4core_12cards_cython_4Card_5is_joker)) {
+      __Pyx_XDECREF(__pyx_r);
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_4)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_4);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (__pyx_t_4) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      } else {
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
+      }
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_r = __pyx_t_2;
+      __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      goto __pyx_L0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+
+  /* "core/cards_cython.pyx":41
  *     cpdef is_joker(self):
  *         # return self.number == "BJ" or self.number == "RJ"
  *         return self.idx > 51             # <<<<<<<<<<<<<<
@@ -2363,13 +2581,13 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_is_joker(struct __pyx_obj_4c
  *     def __eq__(self, Card other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_v_self->idx > 51)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_v_self->idx > 51)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":36
+  /* "core/cards_cython.pyx":39
  *         return self.idx
  * 
  *     cpdef is_joker(self):             # <<<<<<<<<<<<<<
@@ -2387,6 +2605,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_is_joker(struct __pyx_obj_4c
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -2406,11 +2625,13 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_5is_joker(PyObject *__pyx_v
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_4is_joker(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("is_joker", 0);
+  __Pyx_TraceCall("is_joker (wrapper)", __pyx_f[0], 39, 0, __PYX_ERR(0, 39, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_is_joker(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_is_joker(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2423,11 +2644,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_4is_joker(struct __pyx_obj_
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":40
+/* "core/cards_cython.pyx":43
  *         return self.idx > 51
  * 
  *     def __eq__(self, Card other):             # <<<<<<<<<<<<<<
@@ -2441,7 +2663,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_7__eq__(PyObject *__pyx_v_s
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__eq__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_4core_12cards_cython_Card, 1, "other", 0))) __PYX_ERR(0, 40, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_4core_12cards_cython_Card, 1, "other", 0))) __PYX_ERR(0, 43, __pyx_L1_error)
   __pyx_r = __pyx_pf_4core_12cards_cython_4Card_6__eq__(((struct __pyx_obj_4core_12cards_cython_Card *)__pyx_v_self), ((struct __pyx_obj_4core_12cards_cython_Card *)__pyx_v_other));
 
   /* function exit code */
@@ -2455,11 +2677,13 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_7__eq__(PyObject *__pyx_v_s
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_6__eq__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__eq__", 0);
+  __Pyx_TraceCall("__eq__", __pyx_f[0], 43, 0, __PYX_ERR(0, 43, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":41
+  /* "core/cards_cython.pyx":44
  * 
  *     def __eq__(self, Card other):
  *         return self.idx == other.idx             # <<<<<<<<<<<<<<
@@ -2467,13 +2691,13 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_6__eq__(struct __pyx_obj_4c
  *     def __hash__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_v_self->idx == __pyx_v_other->idx)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_v_self->idx == __pyx_v_other->idx)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":40
+  /* "core/cards_cython.pyx":43
  *         return self.idx > 51
  * 
  *     def __eq__(self, Card other):             # <<<<<<<<<<<<<<
@@ -2488,11 +2712,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_6__eq__(struct __pyx_obj_4c
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":43
+/* "core/cards_cython.pyx":46
  *         return self.idx == other.idx
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -2515,23 +2740,25 @@ static Py_hash_t __pyx_pw_4core_12cards_cython_4Card_9__hash__(PyObject *__pyx_v
 
 static Py_hash_t __pyx_pf_4core_12cards_cython_4Card_8__hash__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   Py_hash_t __pyx_r;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   Py_hash_t __pyx_t_4;
   __Pyx_RefNannySetupContext("__hash__", 0);
+  __Pyx_TraceCall("__hash__", __pyx_f[0], 46, 0, __PYX_ERR(0, 46, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":45
+  /* "core/cards_cython.pyx":48
  *     def __hash__(self):
  *         # return (self.number + self.color).__hash__()
  *         return self.idx.__hash__()             # <<<<<<<<<<<<<<
  * 
  *     cpdef seq(self):
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->idx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->idx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_hash); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_hash); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -2545,19 +2772,19 @@ static Py_hash_t __pyx_pf_4core_12cards_cython_4Card_8__hash__(struct __pyx_obj_
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyInt_AsHash_t(__pyx_t_1); if (unlikely((__pyx_t_4 == (Py_hash_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_AsHash_t(__pyx_t_1); if (unlikely((__pyx_t_4 == (Py_hash_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_4;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":43
+  /* "core/cards_cython.pyx":46
  *         return self.idx == other.idx
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -2574,11 +2801,12 @@ static Py_hash_t __pyx_pf_4core_12cards_cython_4Card_8__hash__(struct __pyx_obj_
   __pyx_r = -1;
   __pyx_L0:;
   if (unlikely(__pyx_r == -1) && !PyErr_Occurred()) __pyx_r = -2;
+  __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":47
+/* "core/cards_cython.pyx":50
  *         return self.idx.__hash__()
  * 
  *     cpdef seq(self):             # <<<<<<<<<<<<<<
@@ -2589,6 +2817,7 @@ static Py_hash_t __pyx_pf_4core_12cards_cython_4Card_8__hash__(struct __pyx_obj_
 static PyObject *__pyx_pw_4core_12cards_cython_4Card_11seq(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
 static PyObject *__pyx_f_4core_12cards_cython_4Card_seq(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -2596,11 +2825,12 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_seq(struct __pyx_obj_4core_1
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("seq", 0);
+  __Pyx_TraceCall("seq", __pyx_f[0], 50, 0, __PYX_ERR(0, 50, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_4core_12cards_cython_4Card_11seq)) {
       __Pyx_XDECREF(__pyx_r);
@@ -2616,10 +2846,10 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_seq(struct __pyx_obj_4core_1
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2631,7 +2861,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_seq(struct __pyx_obj_4core_1
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "core/cards_cython.pyx":49
+  /* "core/cards_cython.pyx":52
  *     cpdef seq(self):
  *         # return Card.all_numbers.index(self.number)
  *         if self.idx == 52: return 13             # <<<<<<<<<<<<<<
@@ -2646,7 +2876,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_seq(struct __pyx_obj_4core_1
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":50
+  /* "core/cards_cython.pyx":53
  *         # return Card.all_numbers.index(self.number)
  *         if self.idx == 52: return 13
  *         if self.idx == 53: return 14             # <<<<<<<<<<<<<<
@@ -2661,7 +2891,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_seq(struct __pyx_obj_4core_1
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":51
+  /* "core/cards_cython.pyx":54
  *         if self.idx == 52: return 13
  *         if self.idx == 53: return 14
  *         return self.idx // 4             # <<<<<<<<<<<<<<
@@ -2669,13 +2899,13 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_seq(struct __pyx_obj_4core_1
  *     cpdef color_seq(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_long(__Pyx_div_long(__pyx_v_self->idx, 4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__Pyx_div_long(__pyx_v_self->idx, 4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":47
+  /* "core/cards_cython.pyx":50
  *         return self.idx.__hash__()
  * 
  *     cpdef seq(self):             # <<<<<<<<<<<<<<
@@ -2693,6 +2923,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_seq(struct __pyx_obj_4core_1
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -2712,11 +2943,13 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_11seq(PyObject *__pyx_v_sel
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_10seq(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("seq", 0);
+  __Pyx_TraceCall("seq (wrapper)", __pyx_f[0], 50, 0, __PYX_ERR(0, 50, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_seq(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_seq(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2729,11 +2962,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_10seq(struct __pyx_obj_4cor
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":53
+/* "core/cards_cython.pyx":56
  *         return self.idx // 4
  * 
  *     cpdef color_seq(self):             # <<<<<<<<<<<<<<
@@ -2744,17 +2978,19 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_10seq(struct __pyx_obj_4cor
 static PyObject *__pyx_pw_4core_12cards_cython_4Card_13color_seq(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
 static PyObject *__pyx_f_4core_12cards_cython_4Card_color_seq(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("color_seq", 0);
+  __Pyx_TraceCall("color_seq", __pyx_f[0], 56, 0, __PYX_ERR(0, 56, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_color_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_color_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_4core_12cards_cython_4Card_13color_seq)) {
       __Pyx_XDECREF(__pyx_r);
@@ -2770,10 +3006,10 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_color_seq(struct __pyx_obj_4
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2785,7 +3021,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_color_seq(struct __pyx_obj_4
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "core/cards_cython.pyx":55
+  /* "core/cards_cython.pyx":58
  *     cpdef color_seq(self):
  *         # return Card.all_colors.index(self.color)
  *         return self.idx % 4             # <<<<<<<<<<<<<<
@@ -2793,13 +3029,13 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_color_seq(struct __pyx_obj_4
  *     cpdef total_seq(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_long(__Pyx_mod_long(__pyx_v_self->idx, 4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__Pyx_mod_long(__pyx_v_self->idx, 4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":53
+  /* "core/cards_cython.pyx":56
  *         return self.idx // 4
  * 
  *     cpdef color_seq(self):             # <<<<<<<<<<<<<<
@@ -2817,6 +3053,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_color_seq(struct __pyx_obj_4
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -2836,11 +3073,13 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_13color_seq(PyObject *__pyx
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_12color_seq(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("color_seq", 0);
+  __Pyx_TraceCall("color_seq (wrapper)", __pyx_f[0], 56, 0, __PYX_ERR(0, 56, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_color_seq(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_color_seq(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2853,11 +3092,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_12color_seq(struct __pyx_ob
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":57
+/* "core/cards_cython.pyx":60
  *         return self.idx % 4
  * 
  *     cpdef total_seq(self):             # <<<<<<<<<<<<<<
@@ -2870,6 +3110,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
   PyObject *__pyx_v_seq = NULL;
   PyObject *__pyx_v_color_seq = NULL;
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -2877,11 +3118,12 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("total_seq", 0);
+  __Pyx_TraceCall("total_seq", __pyx_f[0], 60, 0, __PYX_ERR(0, 60, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_total_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_total_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_4core_12cards_cython_4Card_15total_seq)) {
       __Pyx_XDECREF(__pyx_r);
@@ -2897,10 +3139,10 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2912,43 +3154,43 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "core/cards_cython.pyx":58
+  /* "core/cards_cython.pyx":61
  * 
  *     cpdef total_seq(self):
  *         seq = self.seq()             # <<<<<<<<<<<<<<
  *         if seq < 13:
  *             color_seq = self.color_seq()
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_self->__pyx_vtab)->seq(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_self->__pyx_vtab)->seq(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_seq = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":59
+  /* "core/cards_cython.pyx":62
  *     cpdef total_seq(self):
  *         seq = self.seq()
  *         if seq < 13:             # <<<<<<<<<<<<<<
  *             color_seq = self.color_seq()
  *             return seq * 4 + color_seq
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_seq, __pyx_int_13, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_seq, __pyx_int_13, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_5) {
 
-    /* "core/cards_cython.pyx":60
+    /* "core/cards_cython.pyx":63
  *         seq = self.seq()
  *         if seq < 13:
  *             color_seq = self.color_seq()             # <<<<<<<<<<<<<<
  *             return seq * 4 + color_seq
  *         else:
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_self->__pyx_vtab)->color_seq(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_self->__pyx_vtab)->color_seq(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_color_seq = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "core/cards_cython.pyx":61
+    /* "core/cards_cython.pyx":64
  *         if seq < 13:
  *             color_seq = self.color_seq()
  *             return seq * 4 + color_seq             # <<<<<<<<<<<<<<
@@ -2956,16 +3198,16 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
  *             return 52 + seq - 13
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = PyNumber_Multiply(__pyx_v_seq, __pyx_int_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Multiply(__pyx_v_seq, __pyx_int_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_v_color_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_v_color_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "core/cards_cython.pyx":59
+    /* "core/cards_cython.pyx":62
  *     cpdef total_seq(self):
  *         seq = self.seq()
  *         if seq < 13:             # <<<<<<<<<<<<<<
@@ -2974,7 +3216,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
  */
   }
 
-  /* "core/cards_cython.pyx":63
+  /* "core/cards_cython.pyx":66
  *             return seq * 4 + color_seq
  *         else:
  *             return 52 + seq - 13             # <<<<<<<<<<<<<<
@@ -2983,9 +3225,9 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyInt_AddCObj(__pyx_int_52, __pyx_v_seq, 52, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_AddCObj(__pyx_int_52, __pyx_v_seq, 52, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_t_2, __pyx_int_13, 13, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_t_2, __pyx_int_13, 13, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_r = __pyx_t_1;
@@ -2993,7 +3235,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":57
+  /* "core/cards_cython.pyx":60
  *         return self.idx % 4
  * 
  *     cpdef total_seq(self):             # <<<<<<<<<<<<<<
@@ -3013,6 +3255,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_total_seq(struct __pyx_obj_4
   __Pyx_XDECREF(__pyx_v_seq);
   __Pyx_XDECREF(__pyx_v_color_seq);
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3032,11 +3275,13 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_15total_seq(PyObject *__pyx
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_14total_seq(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("total_seq", 0);
+  __Pyx_TraceCall("total_seq (wrapper)", __pyx_f[0], 60, 0, __PYX_ERR(0, 60, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_total_seq(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_total_seq(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3049,11 +3294,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_14total_seq(struct __pyx_ob
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":67
+/* "core/cards_cython.pyx":70
  * 
  *     @staticmethod
  *     def static_seq(num):             # <<<<<<<<<<<<<<
@@ -3088,7 +3334,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_17static_seq(CYTHON_UNUSED 
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "static_seq") < 0)) __PYX_ERR(0, 67, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "static_seq") < 0)) __PYX_ERR(0, 70, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -3099,7 +3345,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_17static_seq(CYTHON_UNUSED 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("static_seq", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 67, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("static_seq", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 70, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Card.static_seq", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3114,12 +3360,15 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_17static_seq(CYTHON_UNUSED 
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_16static_seq(PyObject *__pyx_v_num) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj_)
   __Pyx_RefNannySetupContext("static_seq", 0);
+  __Pyx_TraceCall("static_seq", __pyx_f[0], 70, 0, __PYX_ERR(0, 70, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":69
+  /* "core/cards_cython.pyx":72
  *     def static_seq(num):
  *         # return Card.all_numbers.index(num)
  *         return Card.numbers[num]             # <<<<<<<<<<<<<<
@@ -3127,16 +3376,16 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_16static_seq(PyObject *__py
  *     cpdef cmp_number(self, Card other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_numbers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_numbers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_GetItem(__pyx_t_1, __pyx_v_num); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_2 = PyObject_GetItem(__pyx_t_1, __pyx_v_num); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":67
+  /* "core/cards_cython.pyx":70
  * 
  *     @staticmethod
  *     def static_seq(num):             # <<<<<<<<<<<<<<
@@ -3152,11 +3401,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_16static_seq(PyObject *__py
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":71
+/* "core/cards_cython.pyx":74
  *         return Card.numbers[num]
  * 
  *     cpdef cmp_number(self, Card other):             # <<<<<<<<<<<<<<
@@ -3167,6 +3417,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_16static_seq(PyObject *__py
 static PyObject *__pyx_pw_4core_12cards_cython_4Card_19cmp_number(PyObject *__pyx_v_self, PyObject *__pyx_v_other); /*proto*/
 static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_other, int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -3175,11 +3426,12 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
   PyObject *__pyx_t_5 = NULL;
   int __pyx_t_6;
   __Pyx_RefNannySetupContext("cmp_number", 0);
+  __Pyx_TraceCall("cmp_number", __pyx_f[0], 74, 0, __PYX_ERR(0, 74, __pyx_L1_error));
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cmp_number); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cmp_number); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_4core_12cards_cython_4Card_19cmp_number)) {
       __Pyx_XDECREF(__pyx_r);
@@ -3195,13 +3447,13 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -3209,19 +3461,19 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 71, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -3235,25 +3487,25 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "core/cards_cython.pyx":78
+  /* "core/cards_cython.pyx":81
  *         # else:
  *         #     return 1
  *         if self.seq() == other.seq():             # <<<<<<<<<<<<<<
  *             return 0
  *         elif self.seq() < other.seq():
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_self->__pyx_vtab)->seq(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_self->__pyx_vtab)->seq(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_other->__pyx_vtab)->seq(__pyx_v_other, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_other->__pyx_vtab)->seq(__pyx_v_other, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (__pyx_t_6) {
 
-    /* "core/cards_cython.pyx":79
+    /* "core/cards_cython.pyx":82
  *         #     return 1
  *         if self.seq() == other.seq():
  *             return 0             # <<<<<<<<<<<<<<
@@ -3265,7 +3517,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
     __pyx_r = __pyx_int_0;
     goto __pyx_L0;
 
-    /* "core/cards_cython.pyx":78
+    /* "core/cards_cython.pyx":81
  *         # else:
  *         #     return 1
  *         if self.seq() == other.seq():             # <<<<<<<<<<<<<<
@@ -3274,25 +3526,25 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
  */
   }
 
-  /* "core/cards_cython.pyx":80
+  /* "core/cards_cython.pyx":83
  *         if self.seq() == other.seq():
  *             return 0
  *         elif self.seq() < other.seq():             # <<<<<<<<<<<<<<
  *             return -1
  *         else:
  */
-  __pyx_t_3 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_self->__pyx_vtab)->seq(__pyx_v_self, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_3 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_self->__pyx_vtab)->seq(__pyx_v_self, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_other->__pyx_vtab)->seq(__pyx_v_other, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_4core_12cards_cython_Card *)__pyx_v_other->__pyx_vtab)->seq(__pyx_v_other, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_t_2, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_t_2, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_6) {
 
-    /* "core/cards_cython.pyx":81
+    /* "core/cards_cython.pyx":84
  *             return 0
  *         elif self.seq() < other.seq():
  *             return -1             # <<<<<<<<<<<<<<
@@ -3304,7 +3556,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
     __pyx_r = __pyx_int_neg_1;
     goto __pyx_L0;
 
-    /* "core/cards_cython.pyx":80
+    /* "core/cards_cython.pyx":83
  *         if self.seq() == other.seq():
  *             return 0
  *         elif self.seq() < other.seq():             # <<<<<<<<<<<<<<
@@ -3313,7 +3565,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
  */
   }
 
-  /* "core/cards_cython.pyx":83
+  /* "core/cards_cython.pyx":86
  *             return -1
  *         else:
  *             return 1             # <<<<<<<<<<<<<<
@@ -3327,7 +3579,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":71
+  /* "core/cards_cython.pyx":74
  *         return Card.numbers[num]
  * 
  *     cpdef cmp_number(self, Card other):             # <<<<<<<<<<<<<<
@@ -3346,6 +3598,7 @@ static PyObject *__pyx_f_4core_12cards_cython_4Card_cmp_number(struct __pyx_obj_
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3356,7 +3609,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_19cmp_number(PyObject *__py
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("cmp_number (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_4core_12cards_cython_Card, 1, "other", 0))) __PYX_ERR(0, 71, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_4core_12cards_cython_Card, 1, "other", 0))) __PYX_ERR(0, 74, __pyx_L1_error)
   __pyx_r = __pyx_pf_4core_12cards_cython_4Card_18cmp_number(((struct __pyx_obj_4core_12cards_cython_Card *)__pyx_v_self), ((struct __pyx_obj_4core_12cards_cython_Card *)__pyx_v_other));
 
   /* function exit code */
@@ -3370,11 +3623,13 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_19cmp_number(PyObject *__py
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_18cmp_number(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("cmp_number", 0);
+  __Pyx_TraceCall("cmp_number (wrapper)", __pyx_f[0], 74, 0, __PYX_ERR(0, 74, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_cmp_number(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4core_12cards_cython_4Card_cmp_number(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3387,11 +3642,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_18cmp_number(struct __pyx_o
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":85
+/* "core/cards_cython.pyx":88
  *             return 1
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -3414,6 +3670,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_21__str__(PyObject *__pyx_v
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -3425,8 +3682,9 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
   int __pyx_t_8;
   PyObject *__pyx_t_9 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
+  __Pyx_TraceCall("__str__", __pyx_f[0], 88, 0, __PYX_ERR(0, 88, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":87
+  /* "core/cards_cython.pyx":90
  *     def __str__(self):
  *         # return "[{},{}]".format(self.color, self.number)
  *         if self.idx == 52: return "[BJ]"             # <<<<<<<<<<<<<<
@@ -3441,7 +3699,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":88
+  /* "core/cards_cython.pyx":91
  *         # return "[{},{}]".format(self.color, self.number)
  *         if self.idx == 52: return "[BJ]"
  *         if self.idx == 53: return "[RJ]"             # <<<<<<<<<<<<<<
@@ -3456,7 +3714,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":89
+  /* "core/cards_cython.pyx":92
  *         if self.idx == 52: return "[BJ]"
  *         if self.idx == 53: return "[RJ]"
  *         return "[{}{}]".format(Card.all_colors[self.idx % 4], Card.all_numbers[self.idx // 4])             # <<<<<<<<<<<<<<
@@ -3464,18 +3722,18 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
  * class NotComparableError(RuntimeError):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s__2, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_all_colors); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_all_colors); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = __Pyx_mod_long(__pyx_v_self->idx, 4);
-  __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_all_numbers); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_4core_12cards_cython_Card), __pyx_n_s_all_numbers); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = __Pyx_div_long(__pyx_v_self->idx, 4);
-  __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_4, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_4, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -3493,7 +3751,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_6, __pyx_t_7};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -3503,7 +3761,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_6, __pyx_t_7};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -3511,7 +3769,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
   } else
   #endif
   {
-    __pyx_t_9 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -3522,7 +3780,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
     PyTuple_SET_ITEM(__pyx_t_9, 1+__pyx_t_8, __pyx_t_7);
     __pyx_t_6 = 0;
     __pyx_t_7 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
@@ -3531,7 +3789,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":85
+  /* "core/cards_cython.pyx":88
  *             return 1
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -3551,11 +3809,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_20__str__(struct __pyx_obj_
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":20
+/* "core/cards_cython.pyx":23
  * 
  *     cdef int idx
  *     cdef public str number             # <<<<<<<<<<<<<<
@@ -3578,16 +3837,22 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_6number_1__get__(PyObject *
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_6number___get__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_TraceCall("__get__", __pyx_f[0], 23, 0, __PYX_ERR(0, 23, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->number);
   __pyx_r = __pyx_v_self->number;
   goto __pyx_L0;
 
   /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("core.cards_cython.Card.number.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3607,10 +3872,12 @@ static int __pyx_pw_4core_12cards_cython_4Card_6number_3__set__(PyObject *__pyx_
 
 static int __pyx_pf_4core_12cards_cython_4Card_6number_2__set__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, PyObject *__pyx_v_value) {
   int __pyx_r;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__set__", 0);
-  if (!(likely(PyString_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(0, 20, __pyx_L1_error)
+  __Pyx_TraceCall("__set__", __pyx_f[0], 23, 0, __PYX_ERR(0, 23, __pyx_L1_error));
+  if (!(likely(PyString_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -3627,6 +3894,7 @@ static int __pyx_pf_4core_12cards_cython_4Card_6number_2__set__(struct __pyx_obj
   __Pyx_AddTraceback("core.cards_cython.Card.number.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
+  __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3646,8 +3914,10 @@ static int __pyx_pw_4core_12cards_cython_4Card_6number_5__del__(PyObject *__pyx_
 
 static int __pyx_pf_4core_12cards_cython_4Card_6number_4__del__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   int __pyx_r;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__", 0);
+  __Pyx_TraceCall("__del__", __pyx_f[0], 23, 0, __PYX_ERR(0, 23, __pyx_L1_error));
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
   __Pyx_GOTREF(__pyx_v_self->number);
@@ -3656,11 +3926,17 @@ static int __pyx_pf_4core_12cards_cython_4Card_6number_4__del__(struct __pyx_obj
 
   /* function exit code */
   __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("core.cards_cython.Card.number.__del__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":21
+/* "core/cards_cython.pyx":24
  *     cdef int idx
  *     cdef public str number
  *     cdef public str color             # <<<<<<<<<<<<<<
@@ -3683,16 +3959,22 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_5color_1__get__(PyObject *_
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_5color___get__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_TraceCall("__get__", __pyx_f[0], 24, 0, __PYX_ERR(0, 24, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->color);
   __pyx_r = __pyx_v_self->color;
   goto __pyx_L0;
 
   /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("core.cards_cython.Card.color.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3712,10 +3994,12 @@ static int __pyx_pw_4core_12cards_cython_4Card_5color_3__set__(PyObject *__pyx_v
 
 static int __pyx_pf_4core_12cards_cython_4Card_5color_2__set__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, PyObject *__pyx_v_value) {
   int __pyx_r;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__set__", 0);
-  if (!(likely(PyString_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(0, 21, __pyx_L1_error)
+  __Pyx_TraceCall("__set__", __pyx_f[0], 24, 0, __PYX_ERR(0, 24, __pyx_L1_error));
+  if (!(likely(PyString_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(0, 24, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -3732,6 +4016,7 @@ static int __pyx_pf_4core_12cards_cython_4Card_5color_2__set__(struct __pyx_obj_
   __Pyx_AddTraceback("core.cards_cython.Card.color.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
+  __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3751,8 +4036,10 @@ static int __pyx_pw_4core_12cards_cython_4Card_5color_5__del__(PyObject *__pyx_v
 
 static int __pyx_pf_4core_12cards_cython_4Card_5color_4__del__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self) {
   int __pyx_r;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__", 0);
+  __Pyx_TraceCall("__del__", __pyx_f[0], 24, 0, __PYX_ERR(0, 24, __pyx_L1_error));
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
   __Pyx_GOTREF(__pyx_v_self->color);
@@ -3761,6 +4048,12 @@ static int __pyx_pf_4core_12cards_cython_4Card_5color_4__del__(struct __pyx_obj_
 
   /* function exit code */
   __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("core.cards_cython.Card.color.__del__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3789,6 +4082,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_22__reduce_cython__(struct 
   PyObject *__pyx_v_state = NULL;
   PyObject *__pyx_v__dict = NULL;
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -3797,6 +4091,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_22__reduce_cython__(struct 
   int __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("__reduce_cython__", 0);
+  __Pyx_TraceCall("__reduce_cython__", __pyx_f[1], 1, 0, __PYX_ERR(1, 1, __pyx_L1_error));
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -4011,6 +4306,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_22__reduce_cython__(struct 
   __Pyx_XDECREF(__pyx_v_state);
   __Pyx_XDECREF(__pyx_v__dict);
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -4037,9 +4333,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Card_25__setstate_cython__(PyObj
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Card_24__setstate_cython__(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__setstate_cython__", 0);
+  __Pyx_TraceCall("__setstate_cython__", __pyx_f[1], 14, 0, __PYX_ERR(1, 14, __pyx_L1_error));
 
   /* "(tree fragment)":15
  *         return __pyx_unpickle_Card, (type(self), 0x549b606, state)
@@ -4067,11 +4365,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Card_24__setstate_cython__(struc
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":92
+/* "core/cards_cython.pyx":95
  * 
  * class NotComparableError(RuntimeError):
  *     def __init__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -4122,7 +4421,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_18NotComparableError_1__init__(Py
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t used_pos_args = (pos_args < 1) ? pos_args : 1;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, used_pos_args, "__init__") < 0)) __PYX_ERR(0, 92, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, used_pos_args, "__init__") < 0)) __PYX_ERR(0, 95, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) < 1) {
       goto __pyx_L5_argtuple_error;
@@ -4133,7 +4432,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_18NotComparableError_1__init__(Py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 92, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 95, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_args); __pyx_v_args = 0;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
@@ -4152,12 +4451,15 @@ static PyObject *__pyx_pw_4core_12cards_cython_18NotComparableError_1__init__(Py
 
 static PyObject *__pyx_pf_4core_12cards_cython_18NotComparableError___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__3)
   __Pyx_RefNannySetupContext("__init__", 0);
+  __Pyx_TraceCall("__init__", __pyx_f[0], 95, 0, __PYX_ERR(0, 95, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":93
+  /* "core/cards_cython.pyx":96
  * class NotComparableError(RuntimeError):
  *     def __init__(self, *args, **kwargs):
  *         super().__init__(*args, **kwargs)             # <<<<<<<<<<<<<<
@@ -4165,9 +4467,9 @@ static PyObject *__pyx_pf_4core_12cards_cython_18NotComparableError___init__(CYT
  * cdef extern from "cfunc.h":
  */
   __pyx_t_1 = __Pyx_CyFunction_GetClassObj(__pyx_self);
-  if (!__pyx_t_1) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 93, __pyx_L1_error) }
+  if (!__pyx_t_1) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 96, __pyx_L1_error) }
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -4175,18 +4477,18 @@ static PyObject *__pyx_pf_4core_12cards_cython_18NotComparableError___init__(CYT
   __Pyx_GIVEREF(__pyx_v_self);
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_self);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_v_args, __pyx_v_kwargs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_v_args, __pyx_v_kwargs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":92
+  /* "core/cards_cython.pyx":95
  * 
  * class NotComparableError(RuntimeError):
  *     def __init__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -4204,11 +4506,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_18NotComparableError___init__(CYT
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":101
+/* "core/cards_cython.pyx":104
  * class Hand(tuple):
  * 
  *     def __new__(cls, it):             # <<<<<<<<<<<<<<
@@ -4248,11 +4551,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_1__new__(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_it)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__new__", 1, 2, 2, 1); __PYX_ERR(0, 101, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__new__", 1, 2, 2, 1); __PYX_ERR(0, 104, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__new__") < 0)) __PYX_ERR(0, 101, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__new__") < 0)) __PYX_ERR(0, 104, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4265,7 +4568,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_1__new__(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__new__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 101, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__new__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 104, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Hand.__new__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4278,7 +4581,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_1__new__(PyObject *__pyx_se
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":102
+/* "core/cards_cython.pyx":105
  * 
  *     def __new__(cls, it):
  *         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))             # <<<<<<<<<<<<<<
@@ -4302,13 +4605,15 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_7__new___lambda(PyObject *_
 
 static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("lambda", 0);
+  __Pyx_TraceCall("lambda", __pyx_f[0], 105, 0, __PYX_ERR(0, 105, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_x, __pyx_n_s_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_x, __pyx_n_s_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -4321,10 +4626,10 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4341,11 +4646,12 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":101
+/* "core/cards_cython.pyx":104
  * class Hand(tuple):
  * 
  *     def __new__(cls, it):             # <<<<<<<<<<<<<<
@@ -4355,6 +4661,7 @@ static PyObject *__pyx_lambda_funcdef_lambda(CYTHON_UNUSED PyObject *__pyx_self,
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Hand___new__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_cls, PyObject *__pyx_v_it) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -4362,9 +4669,11 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand___new__(CYTHON_UNUSED PyObj
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   int __pyx_t_6;
+  __Pyx_TraceFrameInit(__pyx_codeobj__4)
   __Pyx_RefNannySetupContext("__new__", 0);
+  __Pyx_TraceCall("__new__", __pyx_f[0], 104, 0, __PYX_ERR(0, 104, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":102
+  /* "core/cards_cython.pyx":105
  * 
  *     def __new__(cls, it):
  *         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))             # <<<<<<<<<<<<<<
@@ -4372,24 +4681,24 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand___new__(CYTHON_UNUSED PyObj
  *     def __init__(self, it):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)(&PyTuple_Type)), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)(&PyTuple_Type)), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_it);
   __Pyx_GIVEREF(__pyx_v_it);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_it);
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_7__new___lambda, 0, __pyx_n_s_Hand___new___locals_lambda, NULL, __pyx_n_s_core_cards_cython, __pyx_d, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_7__new___lambda, 0, __pyx_n_s_Hand___new___locals_lambda, NULL, __pyx_n_s_core_cards_cython, __pyx_d, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_key, __pyx_t_5) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_key, __pyx_t_5) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PySequence_Tuple(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PySequence_Tuple(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -4407,7 +4716,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand___new__(CYTHON_UNUSED PyObj
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_cls, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -4416,14 +4725,14 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand___new__(CYTHON_UNUSED PyObj
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_cls, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else
   #endif
   {
-    __pyx_t_3 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -4434,7 +4743,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand___new__(CYTHON_UNUSED PyObj
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_6, __pyx_t_4);
     __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
@@ -4443,7 +4752,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand___new__(CYTHON_UNUSED PyObj
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":101
+  /* "core/cards_cython.pyx":104
  * class Hand(tuple):
  * 
  *     def __new__(cls, it):             # <<<<<<<<<<<<<<
@@ -4462,11 +4771,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand___new__(CYTHON_UNUSED PyObj
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":104
+/* "core/cards_cython.pyx":107
  *         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))
  * 
  *     def __init__(self, it):             # <<<<<<<<<<<<<<
@@ -4506,11 +4816,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_3__init__(PyObject *__pyx_s
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_it)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 104, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 107, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 104, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 107, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4523,7 +4833,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_3__init__(PyObject *__pyx_s
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 104, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 107, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Hand.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4538,13 +4848,16 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_3__init__(PyObject *__pyx_s
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Hand_2__init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_it) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__5)
   __Pyx_RefNannySetupContext("__init__", 0);
+  __Pyx_TraceCall("__init__", __pyx_f[0], 107, 0, __PYX_ERR(0, 107, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":105
+  /* "core/cards_cython.pyx":108
  * 
  *     def __init__(self, it):
  *         super().__init__()             # <<<<<<<<<<<<<<
@@ -4552,9 +4865,9 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_2__init__(CYTHON_UNUSED PyO
  * 
  */
   __pyx_t_2 = __Pyx_CyFunction_GetClassObj(__pyx_self);
-  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 105, __pyx_L1_error) }
+  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 108, __pyx_L1_error) }
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
@@ -4562,10 +4875,10 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_2__init__(CYTHON_UNUSED PyO
   __Pyx_GIVEREF(__pyx_v_self);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_self);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_init); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_init); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -4579,23 +4892,23 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_2__init__(CYTHON_UNUSED PyO
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":106
+  /* "core/cards_cython.pyx":109
  *     def __init__(self, it):
  *         super().__init__()
  *         self.classify()             # <<<<<<<<<<<<<<
  * 
  *     def __add__(self, it):
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_classify); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_classify); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_2 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -4608,16 +4921,16 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_2__init__(CYTHON_UNUSED PyO
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":104
+  /* "core/cards_cython.pyx":107
  *         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))
  * 
  *     def __init__(self, it):             # <<<<<<<<<<<<<<
@@ -4636,11 +4949,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_2__init__(CYTHON_UNUSED PyO
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":108
+/* "core/cards_cython.pyx":111
  *         self.classify()
  * 
  *     def __add__(self, it):             # <<<<<<<<<<<<<<
@@ -4680,11 +4994,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_5__add__(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_it)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__add__", 1, 2, 2, 1); __PYX_ERR(0, 108, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__add__", 1, 2, 2, 1); __PYX_ERR(0, 111, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__add__") < 0)) __PYX_ERR(0, 108, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__add__") < 0)) __PYX_ERR(0, 111, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4697,7 +5011,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_5__add__(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__add__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 108, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__add__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 111, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Hand.__add__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4710,7 +5024,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_5__add__(PyObject *__pyx_se
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":110
+/* "core/cards_cython.pyx":113
  *     def __add__(self, it):
  *         res = super().__add__(it)
  *         return Hand(sorted(res, key=lambda x: x.seq()))             # <<<<<<<<<<<<<<
@@ -4734,13 +5048,15 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_7__add___lambda1(PyObject *
 
 static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("lambda1", 0);
+  __Pyx_TraceCall("lambda1", __pyx_f[0], 113, 0, __PYX_ERR(0, 113, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_x, __pyx_n_s_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_x, __pyx_n_s_seq); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -4753,10 +5069,10 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4773,11 +5089,12 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":108
+/* "core/cards_cython.pyx":111
  *         self.classify()
  * 
  *     def __add__(self, it):             # <<<<<<<<<<<<<<
@@ -4788,15 +5105,18 @@ static PyObject *__pyx_lambda_funcdef_lambda1(CYTHON_UNUSED PyObject *__pyx_self
 static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_it) {
   PyObject *__pyx_v_res = NULL;
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__6)
   __Pyx_RefNannySetupContext("__add__", 0);
+  __Pyx_TraceCall("__add__", __pyx_f[0], 111, 0, __PYX_ERR(0, 111, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":109
+  /* "core/cards_cython.pyx":112
  * 
  *     def __add__(self, it):
  *         res = super().__add__(it)             # <<<<<<<<<<<<<<
@@ -4804,9 +5124,9 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
  * 
  */
   __pyx_t_2 = __Pyx_CyFunction_GetClassObj(__pyx_self);
-  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 109, __pyx_L1_error) }
+  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 112, __pyx_L1_error) }
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
@@ -4814,10 +5134,10 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
   __Pyx_GIVEREF(__pyx_v_self);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_self);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_add); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_add); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -4831,13 +5151,13 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_it); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_it); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_it};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -4845,19 +5165,19 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_it};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
       __Pyx_INCREF(__pyx_v_it);
       __Pyx_GIVEREF(__pyx_v_it);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_it);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -4866,7 +5186,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
   __pyx_v_res = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":110
+  /* "core/cards_cython.pyx":113
  *     def __add__(self, it):
  *         res = super().__add__(it)
  *         return Hand(sorted(res, key=lambda x: x.seq()))             # <<<<<<<<<<<<<<
@@ -4874,20 +5194,20 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
  *     def __eq__(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_Hand); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_Hand); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_v_res);
   __Pyx_GIVEREF(__pyx_v_res);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_res);
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_7__add___lambda1, 0, __pyx_n_s_Hand___add___locals_lambda, NULL, __pyx_n_s_core_cards_cython, __pyx_d, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_7__add___lambda1, 0, __pyx_n_s_Hand___add___locals_lambda, NULL, __pyx_n_s_core_cards_cython, __pyx_d, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_5) < 0) __PYX_ERR(0, 110, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_5) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4902,14 +5222,14 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_t_5};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -4918,20 +5238,20 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_t_5};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
       __Pyx_GIVEREF(__pyx_t_5);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -4941,7 +5261,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":108
+  /* "core/cards_cython.pyx":111
  *         self.classify()
  * 
  *     def __add__(self, it):             # <<<<<<<<<<<<<<
@@ -4961,11 +5281,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_4__add__(CYTHON_UNUSED PyOb
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_res);
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":112
+/* "core/cards_cython.pyx":115
  *         return Hand(sorted(res, key=lambda x: x.seq()))
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -5005,11 +5326,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_7__eq__(PyObject *__pyx_sel
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, 1); __PYX_ERR(0, 112, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, 1); __PYX_ERR(0, 115, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__eq__") < 0)) __PYX_ERR(0, 112, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__eq__") < 0)) __PYX_ERR(0, 115, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5022,7 +5343,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_7__eq__(PyObject *__pyx_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 112, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 115, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Hand.__eq__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5037,14 +5358,17 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_7__eq__(PyObject *__pyx_sel
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Hand_6__eq__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__7)
   __Pyx_RefNannySetupContext("__eq__", 0);
+  __Pyx_TraceCall("__eq__", __pyx_f[0], 115, 0, __PYX_ERR(0, 115, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":113
+  /* "core/cards_cython.pyx":116
  * 
  *     def __eq__(self, other):
  *         return super().__eq__(other)             # <<<<<<<<<<<<<<
@@ -5053,9 +5377,9 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_6__eq__(CYTHON_UNUSED PyObj
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_CyFunction_GetClassObj(__pyx_self);
-  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 113, __pyx_L1_error) }
+  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 116, __pyx_L1_error) }
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
@@ -5063,10 +5387,10 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_6__eq__(CYTHON_UNUSED PyObj
   __Pyx_GIVEREF(__pyx_v_self);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_self);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_eq); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_eq); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -5080,13 +5404,13 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_6__eq__(CYTHON_UNUSED PyObj
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_other};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -5094,19 +5418,19 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_6__eq__(CYTHON_UNUSED PyObj
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_other};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
       __Pyx_INCREF(__pyx_v_other);
       __Pyx_GIVEREF(__pyx_v_other);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_other);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -5116,7 +5440,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_6__eq__(CYTHON_UNUSED PyObj
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":112
+  /* "core/cards_cython.pyx":115
  *         return Hand(sorted(res, key=lambda x: x.seq()))
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -5134,11 +5458,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_6__eq__(CYTHON_UNUSED PyObj
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":115
+/* "core/cards_cython.pyx":118
  *         return super().__eq__(other)
  * 
  *     def __ne__(self, other):             # <<<<<<<<<<<<<<
@@ -5178,11 +5503,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_9__ne__(PyObject *__pyx_sel
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__ne__", 1, 2, 2, 1); __PYX_ERR(0, 115, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__ne__", 1, 2, 2, 1); __PYX_ERR(0, 118, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__ne__") < 0)) __PYX_ERR(0, 115, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__ne__") < 0)) __PYX_ERR(0, 118, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5195,7 +5520,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_9__ne__(PyObject *__pyx_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__ne__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 115, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__ne__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 118, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Hand.__ne__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5210,33 +5535,36 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_9__ne__(PyObject *__pyx_sel
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Hand_8__ne__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__8)
   __Pyx_RefNannySetupContext("__ne__", 0);
+  __Pyx_TraceCall("__ne__", __pyx_f[0], 118, 0, __PYX_ERR(0, 118, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":116
+  /* "core/cards_cython.pyx":119
  * 
  *     def __ne__(self, other):
  *         if self.type != other.type:             # <<<<<<<<<<<<<<
  *             return True
  *         else:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_NE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_NE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (__pyx_t_4) {
 
-    /* "core/cards_cython.pyx":117
+    /* "core/cards_cython.pyx":120
  *     def __ne__(self, other):
  *         if self.type != other.type:
  *             return True             # <<<<<<<<<<<<<<
@@ -5248,7 +5576,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_8__ne__(CYTHON_UNUSED PyObj
     __pyx_r = Py_True;
     goto __pyx_L0;
 
-    /* "core/cards_cython.pyx":116
+    /* "core/cards_cython.pyx":119
  * 
  *     def __ne__(self, other):
  *         if self.type != other.type:             # <<<<<<<<<<<<<<
@@ -5257,7 +5585,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_8__ne__(CYTHON_UNUSED PyObj
  */
   }
 
-  /* "core/cards_cython.pyx":119
+  /* "core/cards_cython.pyx":122
  *             return True
  *         else:
  *             return self.cmp(other) != 0             # <<<<<<<<<<<<<<
@@ -5266,7 +5594,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_8__ne__(CYTHON_UNUSED PyObj
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_cmp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_cmp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -5279,13 +5607,13 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_8__ne__(CYTHON_UNUSED PyObj
       }
     }
     if (!__pyx_t_1) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_v_other};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else
@@ -5293,32 +5621,32 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_8__ne__(CYTHON_UNUSED PyObj
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_v_other};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else
       #endif
       {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 119, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 122, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1); __pyx_t_1 = NULL;
         __Pyx_INCREF(__pyx_v_other);
         __Pyx_GIVEREF(__pyx_v_other);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_other);
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_int_0, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_int_0, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":115
+  /* "core/cards_cython.pyx":118
  *         return super().__eq__(other)
  * 
  *     def __ne__(self, other):             # <<<<<<<<<<<<<<
@@ -5336,11 +5664,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_8__ne__(CYTHON_UNUSED PyObj
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":121
+/* "core/cards_cython.pyx":124
  *             return self.cmp(other) != 0
  * 
  *     def __lt__(self, other):             # <<<<<<<<<<<<<<
@@ -5380,11 +5709,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_11__lt__(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__lt__", 1, 2, 2, 1); __PYX_ERR(0, 121, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__lt__", 1, 2, 2, 1); __PYX_ERR(0, 124, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__lt__") < 0)) __PYX_ERR(0, 121, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__lt__") < 0)) __PYX_ERR(0, 124, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5397,7 +5726,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_11__lt__(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__lt__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 121, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__lt__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 124, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Hand.__lt__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5412,180 +5741,22 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_11__lt__(PyObject *__pyx_se
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Hand_10__lt__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__9)
   __Pyx_RefNannySetupContext("__lt__", 0);
+  __Pyx_TraceCall("__lt__", __pyx_f[0], 124, 0, __PYX_ERR(0, 124, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":122
+  /* "core/cards_cython.pyx":125
  * 
  *     def __lt__(self, other):
  *         return self.cmp(other) == -1             # <<<<<<<<<<<<<<
  * 
  *     def __le__(self, other):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_cmp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_other};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_other};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-    } else
-    #endif
-    {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
-      __Pyx_INCREF(__pyx_v_other);
-      __Pyx_GIVEREF(__pyx_v_other);
-      PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_other);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_neg_1, -1L, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
-  goto __pyx_L0;
-
-  /* "core/cards_cython.pyx":121
- *             return self.cmp(other) != 0
- * 
- *     def __lt__(self, other):             # <<<<<<<<<<<<<<
- *         return self.cmp(other) == -1
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("core.cards_cython.Hand.__lt__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "core/cards_cython.pyx":124
- *         return self.cmp(other) == -1
- * 
- *     def __le__(self, other):             # <<<<<<<<<<<<<<
- *         return self.cmp(other) <= 0
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_4core_12cards_cython_4Hand_13__le__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4core_12cards_cython_4Hand_13__le__ = {"__le__", (PyCFunction)__pyx_pw_4core_12cards_cython_4Hand_13__le__, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4core_12cards_cython_4Hand_13__le__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_self = 0;
-  PyObject *__pyx_v_other = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__le__ (wrapper)", 0);
-  {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_other,0};
-    PyObject* values[2] = {0,0};
-    if (unlikely(__pyx_kwds)) {
-      Py_ssize_t kw_args;
-      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
-      switch (pos_args) {
-        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        CYTHON_FALLTHROUGH;
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      kw_args = PyDict_Size(__pyx_kwds);
-      switch (pos_args) {
-        case  0:
-        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_self)) != 0)) kw_args--;
-        else goto __pyx_L5_argtuple_error;
-        CYTHON_FALLTHROUGH;
-        case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__le__", 1, 2, 2, 1); __PYX_ERR(0, 124, __pyx_L3_error)
-        }
-      }
-      if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__le__") < 0)) __PYX_ERR(0, 124, __pyx_L3_error)
-      }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-    }
-    __pyx_v_self = values[0];
-    __pyx_v_other = values[1];
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__le__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 124, __pyx_L3_error)
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("core.cards_cython.Hand.__le__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4core_12cards_cython_4Hand_12__le__(__pyx_self, __pyx_v_self, __pyx_v_other);
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_4core_12cards_cython_4Hand_12__le__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  __Pyx_RefNannySetupContext("__le__", 0);
-
-  /* "core/cards_cython.pyx":125
- * 
- *     def __le__(self, other):
- *         return self.cmp(other) <= 0             # <<<<<<<<<<<<<<
- * 
- *     def __gt__(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_cmp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
@@ -5633,17 +5804,18 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_12__le__(CYTHON_UNUSED PyOb
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_0, Py_LE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_neg_1, -1L, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
   /* "core/cards_cython.pyx":124
- *         return self.cmp(other) == -1
+ *             return self.cmp(other) != 0
  * 
- *     def __le__(self, other):             # <<<<<<<<<<<<<<
- *         return self.cmp(other) <= 0
+ *     def __lt__(self, other):             # <<<<<<<<<<<<<<
+ *         return self.cmp(other) == -1
  * 
  */
 
@@ -5653,31 +5825,32 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_12__le__(CYTHON_UNUSED PyOb
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("core.cards_cython.Hand.__le__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("core.cards_cython.Hand.__lt__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
 /* "core/cards_cython.pyx":127
- *         return self.cmp(other) <= 0
+ *         return self.cmp(other) == -1
  * 
- *     def __gt__(self, other):             # <<<<<<<<<<<<<<
- *         return self.cmp(other) > 0
+ *     def __le__(self, other):             # <<<<<<<<<<<<<<
+ *         return self.cmp(other) <= 0
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4core_12cards_cython_4Hand_15__gt__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4core_12cards_cython_4Hand_15__gt__ = {"__gt__", (PyCFunction)__pyx_pw_4core_12cards_cython_4Hand_15__gt__, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4core_12cards_cython_4Hand_15__gt__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_4core_12cards_cython_4Hand_13__le__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_4core_12cards_cython_4Hand_13__le__ = {"__le__", (PyCFunction)__pyx_pw_4core_12cards_cython_4Hand_13__le__, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_4core_12cards_cython_4Hand_13__le__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_other = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__gt__ (wrapper)", 0);
+  __Pyx_RefNannySetupContext("__le__ (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_other,0};
     PyObject* values[2] = {0,0};
@@ -5701,11 +5874,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_15__gt__(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__gt__", 1, 2, 2, 1); __PYX_ERR(0, 127, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__le__", 1, 2, 2, 1); __PYX_ERR(0, 127, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__gt__") < 0)) __PYX_ERR(0, 127, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__le__") < 0)) __PYX_ERR(0, 127, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5718,34 +5891,37 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_15__gt__(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__gt__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 127, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__le__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 127, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("core.cards_cython.Hand.__gt__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("core.cards_cython.Hand.__le__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4core_12cards_cython_4Hand_14__gt__(__pyx_self, __pyx_v_self, __pyx_v_other);
+  __pyx_r = __pyx_pf_4core_12cards_cython_4Hand_12__le__(__pyx_self, __pyx_v_self, __pyx_v_other);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4core_12cards_cython_4Hand_14__gt__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
+static PyObject *__pyx_pf_4core_12cards_cython_4Hand_12__le__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  __Pyx_RefNannySetupContext("__gt__", 0);
+  __Pyx_TraceFrameInit(__pyx_codeobj__10)
+  __Pyx_RefNannySetupContext("__le__", 0);
+  __Pyx_TraceCall("__le__", __pyx_f[0], 127, 0, __PYX_ERR(0, 127, __pyx_L1_error));
 
   /* "core/cards_cython.pyx":128
  * 
- *     def __gt__(self, other):
- *         return self.cmp(other) > 0             # <<<<<<<<<<<<<<
+ *     def __le__(self, other):
+ *         return self.cmp(other) <= 0             # <<<<<<<<<<<<<<
  * 
- *     def __ge__(self, other):
+ *     def __gt__(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_cmp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
@@ -5793,17 +5969,17 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_14__gt__(CYTHON_UNUSED PyOb
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_0, Py_LE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
   /* "core/cards_cython.pyx":127
- *         return self.cmp(other) <= 0
+ *         return self.cmp(other) == -1
  * 
- *     def __gt__(self, other):             # <<<<<<<<<<<<<<
- *         return self.cmp(other) > 0
+ *     def __le__(self, other):             # <<<<<<<<<<<<<<
+ *         return self.cmp(other) <= 0
  * 
  */
 
@@ -5813,31 +5989,32 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_14__gt__(CYTHON_UNUSED PyOb
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("core.cards_cython.Hand.__gt__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("core.cards_cython.Hand.__le__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
 /* "core/cards_cython.pyx":130
- *         return self.cmp(other) > 0
+ *         return self.cmp(other) <= 0
  * 
- *     def __ge__(self, other):             # <<<<<<<<<<<<<<
- *         return self.cmp(other) >= 0
+ *     def __gt__(self, other):             # <<<<<<<<<<<<<<
+ *         return self.cmp(other) > 0
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4core_12cards_cython_4Hand_17__ge__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4core_12cards_cython_4Hand_17__ge__ = {"__ge__", (PyCFunction)__pyx_pw_4core_12cards_cython_4Hand_17__ge__, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4core_12cards_cython_4Hand_17__ge__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_4core_12cards_cython_4Hand_15__gt__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_4core_12cards_cython_4Hand_15__gt__ = {"__gt__", (PyCFunction)__pyx_pw_4core_12cards_cython_4Hand_15__gt__, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_4core_12cards_cython_4Hand_15__gt__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_other = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__ge__ (wrapper)", 0);
+  __Pyx_RefNannySetupContext("__gt__ (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_other,0};
     PyObject* values[2] = {0,0};
@@ -5861,11 +6038,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_17__ge__(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__ge__", 1, 2, 2, 1); __PYX_ERR(0, 130, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__gt__", 1, 2, 2, 1); __PYX_ERR(0, 130, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__ge__") < 0)) __PYX_ERR(0, 130, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__gt__") < 0)) __PYX_ERR(0, 130, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5878,34 +6055,37 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_17__ge__(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__ge__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 130, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__gt__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 130, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("core.cards_cython.Hand.__ge__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("core.cards_cython.Hand.__gt__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4core_12cards_cython_4Hand_16__ge__(__pyx_self, __pyx_v_self, __pyx_v_other);
+  __pyx_r = __pyx_pf_4core_12cards_cython_4Hand_14__gt__(__pyx_self, __pyx_v_self, __pyx_v_other);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4core_12cards_cython_4Hand_16__ge__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
+static PyObject *__pyx_pf_4core_12cards_cython_4Hand_14__gt__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  __Pyx_RefNannySetupContext("__ge__", 0);
+  __Pyx_TraceFrameInit(__pyx_codeobj__11)
+  __Pyx_RefNannySetupContext("__gt__", 0);
+  __Pyx_TraceCall("__gt__", __pyx_f[0], 130, 0, __PYX_ERR(0, 130, __pyx_L1_error));
 
   /* "core/cards_cython.pyx":131
  * 
- *     def __ge__(self, other):
- *         return self.cmp(other) >= 0             # <<<<<<<<<<<<<<
+ *     def __gt__(self, other):
+ *         return self.cmp(other) > 0             # <<<<<<<<<<<<<<
  * 
- *     def __hash__(self):
+ *     def __ge__(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_cmp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
@@ -5953,13 +6133,177 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_16__ge__(CYTHON_UNUSED PyOb
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_0, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
   /* "core/cards_cython.pyx":130
+ *         return self.cmp(other) <= 0
+ * 
+ *     def __gt__(self, other):             # <<<<<<<<<<<<<<
+ *         return self.cmp(other) > 0
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("core.cards_cython.Hand.__gt__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "core/cards_cython.pyx":133
+ *         return self.cmp(other) > 0
+ * 
+ *     def __ge__(self, other):             # <<<<<<<<<<<<<<
+ *         return self.cmp(other) >= 0
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_4core_12cards_cython_4Hand_17__ge__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_4core_12cards_cython_4Hand_17__ge__ = {"__ge__", (PyCFunction)__pyx_pw_4core_12cards_cython_4Hand_17__ge__, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_4core_12cards_cython_4Hand_17__ge__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_self = 0;
+  PyObject *__pyx_v_other = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__ge__ (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_other,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_self)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__ge__", 1, 2, 2, 1); __PYX_ERR(0, 133, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__ge__") < 0)) __PYX_ERR(0, 133, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+    }
+    __pyx_v_self = values[0];
+    __pyx_v_other = values[1];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("__ge__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 133, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("core.cards_cython.Hand.__ge__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_4core_12cards_cython_4Hand_16__ge__(__pyx_self, __pyx_v_self, __pyx_v_other);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_4core_12cards_cython_4Hand_16__ge__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__12)
+  __Pyx_RefNannySetupContext("__ge__", 0);
+  __Pyx_TraceCall("__ge__", __pyx_f[0], 133, 0, __PYX_ERR(0, 133, __pyx_L1_error));
+
+  /* "core/cards_cython.pyx":134
+ * 
+ *     def __ge__(self, other):
+ *         return self.cmp(other) >= 0             # <<<<<<<<<<<<<<
+ * 
+ *     def __hash__(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_cmp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  if (!__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_2)) {
+      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_other};
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_GOTREF(__pyx_t_1);
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_other};
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_GOTREF(__pyx_t_1);
+    } else
+    #endif
+    {
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 134, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
+      __Pyx_INCREF(__pyx_v_other);
+      __Pyx_GIVEREF(__pyx_v_other);
+      PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_other);
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    }
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_0, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "core/cards_cython.pyx":133
  *         return self.cmp(other) > 0
  * 
  *     def __ge__(self, other):             # <<<<<<<<<<<<<<
@@ -5977,11 +6321,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_16__ge__(CYTHON_UNUSED PyOb
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":133
+/* "core/cards_cython.pyx":136
  *         return self.cmp(other) >= 0
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -6005,13 +6350,16 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_19__hash__(PyObject *__pyx_
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Hand_18__hash__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__13)
   __Pyx_RefNannySetupContext("__hash__", 0);
+  __Pyx_TraceCall("__hash__", __pyx_f[0], 136, 0, __PYX_ERR(0, 136, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":134
+  /* "core/cards_cython.pyx":137
  * 
  *     def __hash__(self):
  *         return super().__hash__()             # <<<<<<<<<<<<<<
@@ -6020,9 +6368,9 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_18__hash__(CYTHON_UNUSED Py
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_CyFunction_GetClassObj(__pyx_self);
-  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 134, __pyx_L1_error) }
+  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 137, __pyx_L1_error) }
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
@@ -6030,10 +6378,10 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_18__hash__(CYTHON_UNUSED Py
   __Pyx_GIVEREF(__pyx_v_self);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_self);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_hash); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_hash); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -6047,10 +6395,10 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_18__hash__(CYTHON_UNUSED Py
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6058,7 +6406,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_18__hash__(CYTHON_UNUSED Py
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":133
+  /* "core/cards_cython.pyx":136
  *         return self.cmp(other) >= 0
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -6075,11 +6423,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_18__hash__(CYTHON_UNUSED Py
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":137
+/* "core/cards_cython.pyx":140
  * 
  *     @functools.lru_cache(10000)
  *     def get_class(self):             # <<<<<<<<<<<<<<
@@ -6107,6 +6456,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
   PyObject *__pyx_v_card = NULL;
   int __pyx_v_type;
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -6116,19 +6466,21 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
   PyObject *__pyx_t_6 = NULL;
   int __pyx_t_7;
   int __pyx_t_8;
+  __Pyx_TraceFrameInit(__pyx_codeobj__14)
   __Pyx_RefNannySetupContext("get_class", 0);
+  __Pyx_TraceCall("get_class", __pyx_f[0], 140, 0, __PYX_ERR(0, 140, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":139
+  /* "core/cards_cython.pyx":142
  *     def get_class(self):
  *         cdef cppmap[int, int] hand
  *         cdef int count = len(self)             # <<<<<<<<<<<<<<
  *         for card in self:
  *             hand[translate(card.get_idx())] += 1
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_self); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_self); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 142, __pyx_L1_error)
   __pyx_v_count = __pyx_t_1;
 
-  /* "core/cards_cython.pyx":140
+  /* "core/cards_cython.pyx":143
  *         cdef cppmap[int, int] hand
  *         cdef int count = len(self)
  *         for card in self:             # <<<<<<<<<<<<<<
@@ -6139,26 +6491,26 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
     __pyx_t_2 = __pyx_v_self; __Pyx_INCREF(__pyx_t_2); __pyx_t_1 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_1 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_1 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_3 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 143, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_1 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 140, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 143, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 143, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_1 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 140, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_1); __Pyx_INCREF(__pyx_t_4); __pyx_t_1++; if (unlikely(0 < 0)) __PYX_ERR(0, 143, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_1); __pyx_t_1++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 143, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -6168,7 +6520,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 140, __pyx_L1_error)
+          else __PYX_ERR(0, 143, __pyx_L1_error)
         }
         break;
       }
@@ -6177,14 +6529,14 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
     __Pyx_XDECREF_SET(__pyx_v_card, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "core/cards_cython.pyx":141
+    /* "core/cards_cython.pyx":144
  *         cdef int count = len(self)
  *         for card in self:
  *             hand[translate(card.get_idx())] += 1             # <<<<<<<<<<<<<<
  *         type = get_class_c(count, hand)
  *         return type
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_get_idx); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_get_idx); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -6197,19 +6549,19 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
       }
     }
     if (__pyx_t_6) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else {
-      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_8 = __pyx_f_4core_12cards_cython_translate(__pyx_t_7);
     (__pyx_v_hand[__pyx_t_8]) = ((__pyx_v_hand[__pyx_t_8]) + 1);
 
-    /* "core/cards_cython.pyx":140
+    /* "core/cards_cython.pyx":143
  *         cdef cppmap[int, int] hand
  *         cdef int count = len(self)
  *         for card in self:             # <<<<<<<<<<<<<<
@@ -6219,7 +6571,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "core/cards_cython.pyx":142
+  /* "core/cards_cython.pyx":145
  *         for card in self:
  *             hand[translate(card.get_idx())] += 1
  *         type = get_class_c(count, hand)             # <<<<<<<<<<<<<<
@@ -6228,7 +6580,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
  */
   __pyx_v_type = get_class_c(__pyx_v_count, __pyx_v_hand);
 
-  /* "core/cards_cython.pyx":143
+  /* "core/cards_cython.pyx":146
  *             hand[translate(card.get_idx())] += 1
  *         type = get_class_c(count, hand)
  *         return type             # <<<<<<<<<<<<<<
@@ -6236,13 +6588,13 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
  *     def classify(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":137
+  /* "core/cards_cython.pyx":140
  * 
  *     @functools.lru_cache(10000)
  *     def get_class(self):             # <<<<<<<<<<<<<<
@@ -6261,11 +6613,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_20get_class(CYTHON_UNUSED P
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_card);
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":145
+/* "core/cards_cython.pyx":148
  *         return type
  * 
  *     def classify(self):             # <<<<<<<<<<<<<<
@@ -6289,20 +6642,23 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_23classify(PyObject *__pyx_
 
 static PyObject *__pyx_pf_4core_12cards_cython_4Hand_22classify(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__15)
   __Pyx_RefNannySetupContext("classify", 0);
+  __Pyx_TraceCall("classify", __pyx_f[0], 148, 0, __PYX_ERR(0, 148, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":146
+  /* "core/cards_cython.pyx":149
  * 
  *     def classify(self):
  *         self.value = self.get_class()             # <<<<<<<<<<<<<<
  *         self.type = self.value // 100
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_get_class); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_get_class); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -6315,32 +6671,32 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_22classify(CYTHON_UNUSED Py
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_value, __pyx_t_1) < 0) __PYX_ERR(0, 146, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_value, __pyx_t_1) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":147
+  /* "core/cards_cython.pyx":150
  *     def classify(self):
  *         self.value = self.get_class()
  *         self.type = self.value // 100             # <<<<<<<<<<<<<<
  * 
  *     def cmp(self, other):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_1, __pyx_int_100, 0x64, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_1, __pyx_int_100, 0x64, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_type, __pyx_t_2) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_type, __pyx_t_2) < 0) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "core/cards_cython.pyx":145
+  /* "core/cards_cython.pyx":148
  *         return type
  * 
  *     def classify(self):             # <<<<<<<<<<<<<<
@@ -6359,11 +6715,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_22classify(CYTHON_UNUSED Py
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":149
+/* "core/cards_cython.pyx":152
  *         self.type = self.value // 100
  * 
  *     def cmp(self, other):             # <<<<<<<<<<<<<<
@@ -6403,11 +6760,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_25cmp(PyObject *__pyx_self,
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cmp", 1, 2, 2, 1); __PYX_ERR(0, 149, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cmp", 1, 2, 2, 1); __PYX_ERR(0, 152, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "cmp") < 0)) __PYX_ERR(0, 149, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "cmp") < 0)) __PYX_ERR(0, 152, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -6420,7 +6777,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_4Hand_25cmp(PyObject *__pyx_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("cmp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 149, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("cmp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 152, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Hand.cmp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6444,6 +6801,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
   long __pyx_v_Bomb;
   PyObject *__pyx_v_c = NULL;
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -6460,9 +6818,11 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
   PyObject *__pyx_t_13 = NULL;
   PyObject *__pyx_t_14 = NULL;
   int __pyx_t_15;
+  __Pyx_TraceFrameInit(__pyx_codeobj__16)
   __Pyx_RefNannySetupContext("cmp", 0);
+  __Pyx_TraceCall("cmp", __pyx_f[0], 152, 0, __PYX_ERR(0, 152, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":150
+  /* "core/cards_cython.pyx":153
  * 
  *     def cmp(self, other):
  *         Invalid = 0 #             # <<<<<<<<<<<<<<
@@ -6471,7 +6831,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   __pyx_v_Invalid = 0;
 
-  /* "core/cards_cython.pyx":151
+  /* "core/cards_cython.pyx":154
  *     def cmp(self, other):
  *         Invalid = 0 #
  *         Single = 100 #             # <<<<<<<<<<<<<<
@@ -6480,7 +6840,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   __pyx_v_Single = 0x64;
 
-  /* "core/cards_cython.pyx":152
+  /* "core/cards_cython.pyx":155
  *         Invalid = 0 #
  *         Single = 100 #
  *         Double = 200 #             # <<<<<<<<<<<<<<
@@ -6489,7 +6849,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   __pyx_v_Double = 0xC8;
 
-  /* "core/cards_cython.pyx":153
+  /* "core/cards_cython.pyx":156
  *         Single = 100 #
  *         Double = 200 #
  *         Triplet = 300 #             # <<<<<<<<<<<<<<
@@ -6498,7 +6858,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   __pyx_v_Triplet = 0x12C;
 
-  /* "core/cards_cython.pyx":154
+  /* "core/cards_cython.pyx":157
  *         Double = 200 #
  *         Triplet = 300 #
  *         Straight = 400 #             # <<<<<<<<<<<<<<
@@ -6507,7 +6867,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   __pyx_v_Straight = 0x190;
 
-  /* "core/cards_cython.pyx":155
+  /* "core/cards_cython.pyx":158
  *         Triplet = 300 #
  *         Straight = 400 #
  *         ThreePairs = 500 #             # <<<<<<<<<<<<<<
@@ -6516,7 +6876,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   __pyx_v_ThreePairs = 0x1F4;
 
-  /* "core/cards_cython.pyx":156
+  /* "core/cards_cython.pyx":159
  *         Straight = 400 #
  *         ThreePairs = 500 #
  *         TwoTriplet = 600 #             # <<<<<<<<<<<<<<
@@ -6525,7 +6885,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   __pyx_v_TwoTriplet = 0x258;
 
-  /* "core/cards_cython.pyx":157
+  /* "core/cards_cython.pyx":160
  *         ThreePairs = 500 #
  *         TwoTriplet = 600 #
  *         Bomb = 700 #             # <<<<<<<<<<<<<<
@@ -6534,50 +6894,50 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   __pyx_v_Bomb = 0x2BC;
 
-  /* "core/cards_cython.pyx":158
+  /* "core/cards_cython.pyx":161
  *         TwoTriplet = 600 #
  *         Bomb = 700 #
  *         if self.type == 0 or other.type == 0:             # <<<<<<<<<<<<<<
  *             raise NotImplementedError("cannot compare invalid hands")
  *         elif self.type == other.type and self.type != Bomb:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_2, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_2, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (!__pyx_t_4) {
   } else {
     __pyx_t_1 = __pyx_t_4;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = __pyx_t_4;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "core/cards_cython.pyx":159
+    /* "core/cards_cython.pyx":162
  *         Bomb = 700 #
  *         if self.type == 0 or other.type == 0:
  *             raise NotImplementedError("cannot compare invalid hands")             # <<<<<<<<<<<<<<
  *         elif self.type == other.type and self.type != Bomb:
  *             if self.value == other.value:
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_NotImplementedError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_NotImplementedError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 159, __pyx_L1_error)
+    __PYX_ERR(0, 162, __pyx_L1_error)
 
-    /* "core/cards_cython.pyx":158
+    /* "core/cards_cython.pyx":161
  *         TwoTriplet = 600 #
  *         Bomb = 700 #
  *         if self.type == 0 or other.type == 0:             # <<<<<<<<<<<<<<
@@ -6586,59 +6946,59 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   }
 
-  /* "core/cards_cython.pyx":160
+  /* "core/cards_cython.pyx":163
  *         if self.type == 0 or other.type == 0:
  *             raise NotImplementedError("cannot compare invalid hands")
  *         elif self.type == other.type and self.type != Bomb:             # <<<<<<<<<<<<<<
  *             if self.value == other.value:
  *                 return 0
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (__pyx_t_4) {
   } else {
     __pyx_t_1 = __pyx_t_4;
     goto __pyx_L6_bool_binop_done;
   }
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_Bomb); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_Bomb); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_5, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_5, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = __pyx_t_4;
   __pyx_L6_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "core/cards_cython.pyx":161
+    /* "core/cards_cython.pyx":164
  *             raise NotImplementedError("cannot compare invalid hands")
  *         elif self.type == other.type and self.type != Bomb:
  *             if self.value == other.value:             # <<<<<<<<<<<<<<
  *                 return 0
  *             elif self.value < other.value:
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_1) {
 
-      /* "core/cards_cython.pyx":162
+      /* "core/cards_cython.pyx":165
  *         elif self.type == other.type and self.type != Bomb:
  *             if self.value == other.value:
  *                 return 0             # <<<<<<<<<<<<<<
@@ -6650,7 +7010,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       __pyx_r = __pyx_int_0;
       goto __pyx_L0;
 
-      /* "core/cards_cython.pyx":161
+      /* "core/cards_cython.pyx":164
  *             raise NotImplementedError("cannot compare invalid hands")
  *         elif self.type == other.type and self.type != Bomb:
  *             if self.value == other.value:             # <<<<<<<<<<<<<<
@@ -6659,25 +7019,25 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
     }
 
-    /* "core/cards_cython.pyx":163
+    /* "core/cards_cython.pyx":166
  *             if self.value == other.value:
  *                 return 0
  *             elif self.value < other.value:             # <<<<<<<<<<<<<<
  *                 return -1
  *             else:
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = PyObject_RichCompare(__pyx_t_5, __pyx_t_3, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_2 = PyObject_RichCompare(__pyx_t_5, __pyx_t_3, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_1) {
 
-      /* "core/cards_cython.pyx":164
+      /* "core/cards_cython.pyx":167
  *                 return 0
  *             elif self.value < other.value:
  *                 return -1             # <<<<<<<<<<<<<<
@@ -6689,7 +7049,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       __pyx_r = __pyx_int_neg_1;
       goto __pyx_L0;
 
-      /* "core/cards_cython.pyx":163
+      /* "core/cards_cython.pyx":166
  *             if self.value == other.value:
  *                 return 0
  *             elif self.value < other.value:             # <<<<<<<<<<<<<<
@@ -6698,7 +7058,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
     }
 
-    /* "core/cards_cython.pyx":166
+    /* "core/cards_cython.pyx":169
  *                 return -1
  *             else:
  *                 return 1             # <<<<<<<<<<<<<<
@@ -6712,7 +7072,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       goto __pyx_L0;
     }
 
-    /* "core/cards_cython.pyx":160
+    /* "core/cards_cython.pyx":163
  *         if self.type == 0 or other.type == 0:
  *             raise NotImplementedError("cannot compare invalid hands")
  *         elif self.type == other.type and self.type != Bomb:             # <<<<<<<<<<<<<<
@@ -6721,54 +7081,54 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   }
 
-  /* "core/cards_cython.pyx":167
+  /* "core/cards_cython.pyx":170
  *             else:
  *                 return 1
  *         elif self.type == other.type and self.type == "bomb":             # <<<<<<<<<<<<<<
  *             if self.value == other.value:
  *                 return 0
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (__pyx_t_4) {
   } else {
     __pyx_t_1 = __pyx_t_4;
     goto __pyx_L9_bool_binop_done;
   }
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_bomb, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_bomb, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_1 = __pyx_t_4;
   __pyx_L9_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "core/cards_cython.pyx":168
+    /* "core/cards_cython.pyx":171
  *                 return 1
  *         elif self.type == other.type and self.type == "bomb":
  *             if self.value == other.value:             # <<<<<<<<<<<<<<
  *                 return 0
  *             elif self.value < other.value:
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = PyObject_RichCompare(__pyx_t_5, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __pyx_t_2 = PyObject_RichCompare(__pyx_t_5, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_1) {
 
-      /* "core/cards_cython.pyx":169
+      /* "core/cards_cython.pyx":172
  *         elif self.type == other.type and self.type == "bomb":
  *             if self.value == other.value:
  *                 return 0             # <<<<<<<<<<<<<<
@@ -6780,7 +7140,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       __pyx_r = __pyx_int_0;
       goto __pyx_L0;
 
-      /* "core/cards_cython.pyx":168
+      /* "core/cards_cython.pyx":171
  *                 return 1
  *         elif self.type == other.type and self.type == "bomb":
  *             if self.value == other.value:             # <<<<<<<<<<<<<<
@@ -6789,25 +7149,25 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
     }
 
-    /* "core/cards_cython.pyx":170
+    /* "core/cards_cython.pyx":173
  *             if self.value == other.value:
  *                 return 0
  *             elif self.value < other.value:             # <<<<<<<<<<<<<<
  *                 return -1
  *             else:
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_1) {
 
-      /* "core/cards_cython.pyx":171
+      /* "core/cards_cython.pyx":174
  *                 return 0
  *             elif self.value < other.value:
  *                 return -1             # <<<<<<<<<<<<<<
@@ -6819,7 +7179,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       __pyx_r = __pyx_int_neg_1;
       goto __pyx_L0;
 
-      /* "core/cards_cython.pyx":170
+      /* "core/cards_cython.pyx":173
  *             if self.value == other.value:
  *                 return 0
  *             elif self.value < other.value:             # <<<<<<<<<<<<<<
@@ -6828,7 +7188,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
     }
 
-    /* "core/cards_cython.pyx":173
+    /* "core/cards_cython.pyx":176
  *                 return -1
  *             else:
  *                 return 1             # <<<<<<<<<<<<<<
@@ -6842,7 +7202,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       goto __pyx_L0;
     }
 
-    /* "core/cards_cython.pyx":167
+    /* "core/cards_cython.pyx":170
  *             else:
  *                 return 1
  *         elif self.type == other.type and self.type == "bomb":             # <<<<<<<<<<<<<<
@@ -6851,7 +7211,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
   }
 
-  /* "core/cards_cython.pyx":175
+  /* "core/cards_cython.pyx":178
  *                 return 1
  *         else:
  *             if self.type == "bomb":             # <<<<<<<<<<<<<<
@@ -6859,13 +7219,13 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  *             elif other.type == "bomb":
  */
   /*else*/ {
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 178, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_bomb, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_bomb, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 178, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_1) {
 
-      /* "core/cards_cython.pyx":176
+      /* "core/cards_cython.pyx":179
  *         else:
  *             if self.type == "bomb":
  *                 return 1             # <<<<<<<<<<<<<<
@@ -6877,7 +7237,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       __pyx_r = __pyx_int_1;
       goto __pyx_L0;
 
-      /* "core/cards_cython.pyx":175
+      /* "core/cards_cython.pyx":178
  *                 return 1
  *         else:
  *             if self.type == "bomb":             # <<<<<<<<<<<<<<
@@ -6886,20 +7246,20 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
     }
 
-    /* "core/cards_cython.pyx":177
+    /* "core/cards_cython.pyx":180
  *             if self.type == "bomb":
  *                 return 1
  *             elif other.type == "bomb":             # <<<<<<<<<<<<<<
  *                 return -1
  *             else:
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 177, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_bomb, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 177, __pyx_L1_error)
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_bomb, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_1) {
 
-      /* "core/cards_cython.pyx":178
+      /* "core/cards_cython.pyx":181
  *                 return 1
  *             elif other.type == "bomb":
  *                 return -1             # <<<<<<<<<<<<<<
@@ -6911,7 +7271,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       __pyx_r = __pyx_int_neg_1;
       goto __pyx_L0;
 
-      /* "core/cards_cython.pyx":177
+      /* "core/cards_cython.pyx":180
  *             if self.type == "bomb":
  *                 return 1
  *             elif other.type == "bomb":             # <<<<<<<<<<<<<<
@@ -6920,7 +7280,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  */
     }
 
-    /* "core/cards_cython.pyx":180
+    /* "core/cards_cython.pyx":183
  *                 return -1
  *             else:
  *                 raise NotComparableError("self {} type: {}, other {} type: {}".format(''.join([str(c) for c in self]), self.value, ''.join([str(c) for c in other]), other.value))             # <<<<<<<<<<<<<<
@@ -6928,36 +7288,36 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
  * cdef int translate(int num):
  */
     /*else*/ {
-      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NotComparableError); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NotComparableError); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_self_type_other_type, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_self_type_other_type, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       if (likely(PyList_CheckExact(__pyx_v_self)) || PyTuple_CheckExact(__pyx_v_self)) {
         __pyx_t_8 = __pyx_v_self; __Pyx_INCREF(__pyx_t_8); __pyx_t_9 = 0;
         __pyx_t_10 = NULL;
       } else {
-        __pyx_t_9 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_v_self); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_9 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_v_self); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_10 = Py_TYPE(__pyx_t_8)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_10 = Py_TYPE(__pyx_t_8)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 183, __pyx_L1_error)
       }
       for (;;) {
         if (likely(!__pyx_t_10)) {
           if (likely(PyList_CheckExact(__pyx_t_8))) {
             if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_8)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_11 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_11); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 180, __pyx_L1_error)
+            __pyx_t_11 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_11); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 183, __pyx_L1_error)
             #else
-            __pyx_t_11 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 180, __pyx_L1_error)
+            __pyx_t_11 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 183, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_11);
             #endif
           } else {
             if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_8)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_11 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_11); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 180, __pyx_L1_error)
+            __pyx_t_11 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_11); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 183, __pyx_L1_error)
             #else
-            __pyx_t_11 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 180, __pyx_L1_error)
+            __pyx_t_11 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 183, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_11);
             #endif
           }
@@ -6967,7 +7327,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 180, __pyx_L1_error)
+              else __PYX_ERR(0, 183, __pyx_L1_error)
             }
             break;
           }
@@ -6975,49 +7335,49 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
         }
         __Pyx_XDECREF_SET(__pyx_v_c, __pyx_t_11);
         __pyx_t_11 = 0;
-        __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_INCREF(__pyx_v_c);
         __Pyx_GIVEREF(__pyx_v_c);
         PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_v_c);
-        __pyx_t_12 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_11, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_12 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_11, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_7, (PyObject*)__pyx_t_12))) __PYX_ERR(0, 180, __pyx_L1_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_7, (PyObject*)__pyx_t_12))) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_PyString_Join(__pyx_kp_s__3, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyString_Join(__pyx_kp_s__18, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_value); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_12 = PyList_New(0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_12 = PyList_New(0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       if (likely(PyList_CheckExact(__pyx_v_other)) || PyTuple_CheckExact(__pyx_v_other)) {
         __pyx_t_11 = __pyx_v_other; __Pyx_INCREF(__pyx_t_11); __pyx_t_9 = 0;
         __pyx_t_10 = NULL;
       } else {
-        __pyx_t_9 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_v_other); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_9 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_v_other); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_11);
-        __pyx_t_10 = Py_TYPE(__pyx_t_11)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_10 = Py_TYPE(__pyx_t_11)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 183, __pyx_L1_error)
       }
       for (;;) {
         if (likely(!__pyx_t_10)) {
           if (likely(PyList_CheckExact(__pyx_t_11))) {
             if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_11)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_13 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_9); __Pyx_INCREF(__pyx_t_13); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 180, __pyx_L1_error)
+            __pyx_t_13 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_9); __Pyx_INCREF(__pyx_t_13); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 183, __pyx_L1_error)
             #else
-            __pyx_t_13 = PySequence_ITEM(__pyx_t_11, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 180, __pyx_L1_error)
+            __pyx_t_13 = PySequence_ITEM(__pyx_t_11, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 183, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_13);
             #endif
           } else {
             if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_11)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_13 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_9); __Pyx_INCREF(__pyx_t_13); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 180, __pyx_L1_error)
+            __pyx_t_13 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_9); __Pyx_INCREF(__pyx_t_13); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 183, __pyx_L1_error)
             #else
-            __pyx_t_13 = PySequence_ITEM(__pyx_t_11, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 180, __pyx_L1_error)
+            __pyx_t_13 = PySequence_ITEM(__pyx_t_11, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 183, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_13);
             #endif
           }
@@ -7027,7 +7387,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 180, __pyx_L1_error)
+              else __PYX_ERR(0, 183, __pyx_L1_error)
             }
             break;
           }
@@ -7035,22 +7395,22 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
         }
         __Pyx_XDECREF_SET(__pyx_v_c, __pyx_t_13);
         __pyx_t_13 = 0;
-        __pyx_t_13 = PyTuple_New(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_13 = PyTuple_New(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_INCREF(__pyx_v_c);
         __Pyx_GIVEREF(__pyx_v_c);
         PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_v_c);
-        __pyx_t_14 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_13, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_14 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_13, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_14);
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_12, (PyObject*)__pyx_t_14))) __PYX_ERR(0, 180, __pyx_L1_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_12, (PyObject*)__pyx_t_14))) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
       }
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_PyString_Join(__pyx_kp_s__3, __pyx_t_12); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyString_Join(__pyx_kp_s__18, __pyx_t_12); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 180, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_value); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_14 = NULL;
       __pyx_t_15 = 0;
@@ -7067,7 +7427,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[5] = {__pyx_t_14, __pyx_t_8, __pyx_t_7, __pyx_t_11, __pyx_t_12};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_15, 4+__pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_15, 4+__pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -7079,7 +7439,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[5] = {__pyx_t_14, __pyx_t_8, __pyx_t_7, __pyx_t_11, __pyx_t_12};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_15, 4+__pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_15, 4+__pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -7089,7 +7449,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       } else
       #endif
       {
-        __pyx_t_13 = PyTuple_New(4+__pyx_t_15); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_13 = PyTuple_New(4+__pyx_t_15); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
         if (__pyx_t_14) {
           __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_14); __pyx_t_14 = NULL;
@@ -7106,7 +7466,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
         __pyx_t_7 = 0;
         __pyx_t_11 = 0;
         __pyx_t_12 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_13, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_13, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       }
@@ -7122,14 +7482,14 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
         }
       }
       if (!__pyx_t_6) {
-        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 183, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_5);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-          __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 183, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -7138,20 +7498,20 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-          __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 183, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         } else
         #endif
         {
-          __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 180, __pyx_L1_error)
+          __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 183, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_13);
           __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_6); __pyx_t_6 = NULL;
           __Pyx_GIVEREF(__pyx_t_2);
           PyTuple_SET_ITEM(__pyx_t_13, 0+1, __pyx_t_2);
           __pyx_t_2 = 0;
-          __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_13, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_13, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 183, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         }
@@ -7159,11 +7519,11 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_Raise(__pyx_t_5, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __PYX_ERR(0, 180, __pyx_L1_error)
+      __PYX_ERR(0, 183, __pyx_L1_error)
     }
   }
 
-  /* "core/cards_cython.pyx":149
+  /* "core/cards_cython.pyx":152
  *         self.type = self.value // 100
  * 
  *     def cmp(self, other):             # <<<<<<<<<<<<<<
@@ -7188,11 +7548,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_c);
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":182
+/* "core/cards_cython.pyx":185
  *                 raise NotComparableError("self {} type: {}, other {} type: {}".format(''.join([str(c) for c in self]), self.value, ''.join([str(c) for c in other]), other.value))
  * 
  * cdef int translate(int num):             # <<<<<<<<<<<<<<
@@ -7202,11 +7563,13 @@ static PyObject *__pyx_pf_4core_12cards_cython_4Hand_24cmp(CYTHON_UNUSED PyObjec
 
 static int __pyx_f_4core_12cards_cython_translate(int __pyx_v_num) {
   int __pyx_r;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("translate", 0);
+  __Pyx_TraceCall("translate", __pyx_f[0], 185, 0, __PYX_ERR(0, 185, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":183
+  /* "core/cards_cython.pyx":186
  * 
  * cdef int translate(int num):
  *     if (num < 52):             # <<<<<<<<<<<<<<
@@ -7216,7 +7579,7 @@ static int __pyx_f_4core_12cards_cython_translate(int __pyx_v_num) {
   __pyx_t_1 = ((__pyx_v_num < 52) != 0);
   if (__pyx_t_1) {
 
-    /* "core/cards_cython.pyx":184
+    /* "core/cards_cython.pyx":187
  * cdef int translate(int num):
  *     if (num < 52):
  *         return num / 4 + 3             # <<<<<<<<<<<<<<
@@ -7226,7 +7589,7 @@ static int __pyx_f_4core_12cards_cython_translate(int __pyx_v_num) {
     __pyx_r = (__Pyx_div_long(__pyx_v_num, 4) + 3);
     goto __pyx_L0;
 
-    /* "core/cards_cython.pyx":183
+    /* "core/cards_cython.pyx":186
  * 
  * cdef int translate(int num):
  *     if (num < 52):             # <<<<<<<<<<<<<<
@@ -7235,7 +7598,7 @@ static int __pyx_f_4core_12cards_cython_translate(int __pyx_v_num) {
  */
   }
 
-  /* "core/cards_cython.pyx":186
+  /* "core/cards_cython.pyx":189
  *         return num / 4 + 3
  *     else:
  *         return num - 36             # <<<<<<<<<<<<<<
@@ -7247,7 +7610,7 @@ static int __pyx_f_4core_12cards_cython_translate(int __pyx_v_num) {
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":182
+  /* "core/cards_cython.pyx":185
  *                 raise NotComparableError("self {} type: {}, other {} type: {}".format(''.join([str(c) for c in self]), self.value, ''.join([str(c) for c in other]), other.value))
  * 
  * cdef int translate(int num):             # <<<<<<<<<<<<<<
@@ -7256,12 +7619,16 @@ static int __pyx_f_4core_12cards_cython_translate(int __pyx_v_num) {
  */
 
   /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("core.cards_cython.translate", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_r = 0;
   __pyx_L0:;
+  __Pyx_TraceReturn(Py_None, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":188
+/* "core/cards_cython.pyx":191
  *         return num - 36
  * 
  * cpdef get_action_cwrapper(cs):             # <<<<<<<<<<<<<<
@@ -7286,6 +7653,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
   int __pyx_v_card;
   PyObject *__pyx_v_id = NULL;
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -7302,32 +7670,33 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
   int __pyx_t_13;
   int __pyx_t_14;
   __Pyx_RefNannySetupContext("get_action_cwrapper", 0);
+  __Pyx_TraceCall("get_action_cwrapper", __pyx_f[0], 191, 0, __PYX_ERR(0, 191, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":190
+  /* "core/cards_cython.pyx":193
  * cpdef get_action_cwrapper(cs):
  *     cdef vector[int] cards
  *     ids = {}             # <<<<<<<<<<<<<<
  *     actions = []
  *     for i, c in enumerate(cs):
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ids = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":191
+  /* "core/cards_cython.pyx":194
  *     cdef vector[int] cards
  *     ids = {}
  *     actions = []             # <<<<<<<<<<<<<<
  *     for i, c in enumerate(cs):
  *         idx = c.get_idx()
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_actions = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":192
+  /* "core/cards_cython.pyx":195
  *     ids = {}
  *     actions = []
  *     for i, c in enumerate(cs):             # <<<<<<<<<<<<<<
@@ -7340,26 +7709,26 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
     __pyx_t_2 = __pyx_v_cs; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_cs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_cs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_4)) {
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 195, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       } else {
         if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 195, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 192, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       }
@@ -7369,7 +7738,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 192, __pyx_L1_error)
+          else __PYX_ERR(0, 195, __pyx_L1_error)
         }
         break;
       }
@@ -7379,20 +7748,20 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
     __pyx_t_5 = 0;
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_1);
-    __pyx_t_5 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1);
     __pyx_t_1 = __pyx_t_5;
     __pyx_t_5 = 0;
 
-    /* "core/cards_cython.pyx":193
+    /* "core/cards_cython.pyx":196
  *     actions = []
  *     for i, c in enumerate(cs):
  *         idx = c.get_idx()             # <<<<<<<<<<<<<<
  *         cards.push_back(c.get_idx())
  *         ids[idx] = i
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_get_idx); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_get_idx); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -7405,24 +7774,24 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 196, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 196, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_XDECREF_SET(__pyx_v_idx, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "core/cards_cython.pyx":194
+    /* "core/cards_cython.pyx":197
  *     for i, c in enumerate(cs):
  *         idx = c.get_idx()
  *         cards.push_back(c.get_idx())             # <<<<<<<<<<<<<<
  *         ids[idx] = i
  *     hands = get_action_c(cards)
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_get_idx); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 194, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_get_idx); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -7435,32 +7804,32 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 194, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 197, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 194, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 197, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 194, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     try {
       __pyx_v_cards.push_back(__pyx_t_8);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 194, __pyx_L1_error)
+      __PYX_ERR(0, 197, __pyx_L1_error)
     }
 
-    /* "core/cards_cython.pyx":195
+    /* "core/cards_cython.pyx":198
  *         idx = c.get_idx()
  *         cards.push_back(c.get_idx())
  *         ids[idx] = i             # <<<<<<<<<<<<<<
  *     hands = get_action_c(cards)
  *     for hand in hands:
  */
-    if (unlikely(PyDict_SetItem(__pyx_v_ids, __pyx_v_idx, __pyx_v_i) < 0)) __PYX_ERR(0, 195, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_ids, __pyx_v_idx, __pyx_v_i) < 0)) __PYX_ERR(0, 198, __pyx_L1_error)
 
-    /* "core/cards_cython.pyx":192
+    /* "core/cards_cython.pyx":195
  *     ids = {}
  *     actions = []
  *     for i, c in enumerate(cs):             # <<<<<<<<<<<<<<
@@ -7471,7 +7840,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":196
+  /* "core/cards_cython.pyx":199
  *         cards.push_back(c.get_idx())
  *         ids[idx] = i
  *     hands = get_action_c(cards)             # <<<<<<<<<<<<<<
@@ -7480,7 +7849,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
  */
   __pyx_v_hands = get_action_c(__pyx_v_cards);
 
-  /* "core/cards_cython.pyx":197
+  /* "core/cards_cython.pyx":200
  *         ids[idx] = i
  *     hands = get_action_c(cards)
  *     for hand in hands:             # <<<<<<<<<<<<<<
@@ -7494,14 +7863,14 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
     ++__pyx_t_9;
     __pyx_v_hand = __pyx_t_10;
 
-    /* "core/cards_cython.pyx":198
+    /* "core/cards_cython.pyx":201
  *     hands = get_action_c(cards)
  *     for hand in hands:
  *         indices = [ids[card] for card in hand]             # <<<<<<<<<<<<<<
  *         handcards = [cs[id] for id in indices]
  *         action = Action(Hand(handcards), False, indices)
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 201, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_11 = __pyx_v_hand.begin();
     for (;;) {
@@ -7509,56 +7878,56 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
       __pyx_t_8 = *__pyx_t_11;
       ++__pyx_t_11;
       __pyx_v_card = __pyx_t_8;
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_card); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_card); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_ids, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 198, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_ids, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 201, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 198, __pyx_L1_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 201, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
     __Pyx_XDECREF_SET(__pyx_v_indices, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "core/cards_cython.pyx":199
+    /* "core/cards_cython.pyx":202
  *     for hand in hands:
  *         indices = [ids[card] for card in hand]
  *         handcards = [cs[id] for id in indices]             # <<<<<<<<<<<<<<
  *         action = Action(Hand(handcards), False, indices)
  *         actions.append(action)
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 202, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_5 = __pyx_v_indices; __Pyx_INCREF(__pyx_t_5); __pyx_t_3 = 0;
     for (;;) {
       if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_5)) break;
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 199, __pyx_L1_error)
+      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 202, __pyx_L1_error)
       #else
-      __pyx_t_2 = PySequence_ITEM(__pyx_t_5, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
+      __pyx_t_2 = PySequence_ITEM(__pyx_t_5, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 202, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       #endif
       __Pyx_XDECREF_SET(__pyx_v_id, __pyx_t_2);
       __pyx_t_2 = 0;
-      __pyx_t_2 = PyObject_GetItem(__pyx_v_cs, __pyx_v_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
+      __pyx_t_2 = PyObject_GetItem(__pyx_v_cs, __pyx_v_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 202, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 199, __pyx_L1_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 202, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_XDECREF_SET(__pyx_v_handcards, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "core/cards_cython.pyx":200
+    /* "core/cards_cython.pyx":203
  *         indices = [ids[card] for card in hand]
  *         handcards = [cs[id] for id in indices]
  *         action = Action(Hand(handcards), False, indices)             # <<<<<<<<<<<<<<
  *         actions.append(action)
  *     for act in actions:
  */
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_Action); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 200, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_Action); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 203, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_Hand); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 200, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_Hand); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 203, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
@@ -7571,13 +7940,13 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
       }
     }
     if (!__pyx_t_7) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_handcards); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_handcards); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_v_handcards};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else
@@ -7585,19 +7954,19 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_v_handcards};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else
       #endif
       {
-        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 200, __pyx_L1_error)
+        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_7); __pyx_t_7 = NULL;
         __Pyx_INCREF(__pyx_v_handcards);
         __Pyx_GIVEREF(__pyx_v_handcards);
         PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_v_handcards);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
@@ -7618,7 +7987,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[4] = {__pyx_t_6, __pyx_t_2, Py_False, __pyx_v_indices};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -7627,14 +7996,14 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[4] = {__pyx_t_6, __pyx_t_2, Py_False, __pyx_v_indices};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else
     #endif
     {
-      __pyx_t_12 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_12 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 203, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       if (__pyx_t_6) {
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -7648,7 +8017,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
       __Pyx_GIVEREF(__pyx_v_indices);
       PyTuple_SET_ITEM(__pyx_t_12, 2+__pyx_t_8, __pyx_v_indices);
       __pyx_t_2 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
@@ -7656,16 +8025,16 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
     __Pyx_XDECREF_SET(__pyx_v_action, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "core/cards_cython.pyx":201
+    /* "core/cards_cython.pyx":204
  *         handcards = [cs[id] for id in indices]
  *         action = Action(Hand(handcards), False, indices)
  *         actions.append(action)             # <<<<<<<<<<<<<<
  *     for act in actions:
  *         assert act.hand.type != 0, act
  */
-    __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_actions, __pyx_v_action); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 201, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_actions, __pyx_v_action); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(0, 204, __pyx_L1_error)
 
-    /* "core/cards_cython.pyx":197
+    /* "core/cards_cython.pyx":200
  *         ids[idx] = i
  *     hands = get_action_c(cards)
  *     for hand in hands:             # <<<<<<<<<<<<<<
@@ -7674,7 +8043,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
  */
   }
 
-  /* "core/cards_cython.pyx":202
+  /* "core/cards_cython.pyx":205
  *         action = Action(Hand(handcards), False, indices)
  *         actions.append(action)
  *     for act in actions:             # <<<<<<<<<<<<<<
@@ -7685,15 +8054,15 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
   for (;;) {
     if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 202, __pyx_L1_error)
+    __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 205, __pyx_L1_error)
     #else
-    __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 202, __pyx_L1_error)
+    __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_act, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "core/cards_cython.pyx":203
+    /* "core/cards_cython.pyx":206
  *         actions.append(action)
  *     for act in actions:
  *         assert act.hand.type != 0, act             # <<<<<<<<<<<<<<
@@ -7702,26 +8071,26 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
  */
     #ifndef CYTHON_WITHOUT_ASSERTIONS
     if (unlikely(!Py_OptimizeFlag)) {
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_act, __pyx_n_s_hand); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 203, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_act, __pyx_n_s_hand); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_type); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 203, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_type); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = PyObject_RichCompare(__pyx_t_12, __pyx_int_0, Py_NE); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 203, __pyx_L1_error)
+      __pyx_t_5 = PyObject_RichCompare(__pyx_t_12, __pyx_int_0, Py_NE); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_14 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_14 < 0)) __PYX_ERR(0, 203, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_14 < 0)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       if (unlikely(!__pyx_t_14)) {
-        __pyx_t_5 = PyTuple_Pack(1, __pyx_v_act); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 203, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_Pack(1, __pyx_v_act); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 206, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         PyErr_SetObject(PyExc_AssertionError, __pyx_t_5);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __PYX_ERR(0, 203, __pyx_L1_error)
+        __PYX_ERR(0, 206, __pyx_L1_error)
       }
     }
     #endif
 
-    /* "core/cards_cython.pyx":202
+    /* "core/cards_cython.pyx":205
  *         action = Action(Hand(handcards), False, indices)
  *         actions.append(action)
  *     for act in actions:             # <<<<<<<<<<<<<<
@@ -7731,7 +8100,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":204
+  /* "core/cards_cython.pyx":207
  *     for act in actions:
  *         assert act.hand.type != 0, act
  *     return actions             # <<<<<<<<<<<<<<
@@ -7743,7 +8112,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
   __pyx_r = __pyx_v_actions;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":188
+  /* "core/cards_cython.pyx":191
  *         return num - 36
  * 
  * cpdef get_action_cwrapper(cs):             # <<<<<<<<<<<<<<
@@ -7773,6 +8142,7 @@ static PyObject *__pyx_f_4core_12cards_cython_get_action_cwrapper(PyObject *__py
   __Pyx_XDECREF(__pyx_v_act);
   __Pyx_XDECREF(__pyx_v_id);
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -7792,11 +8162,13 @@ static PyObject *__pyx_pw_4core_12cards_cython_1get_action_cwrapper(PyObject *__
 
 static PyObject *__pyx_pf_4core_12cards_cython_get_action_cwrapper(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_cs) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("get_action_cwrapper", 0);
+  __Pyx_TraceCall("get_action_cwrapper (wrapper)", __pyx_f[0], 191, 0, __PYX_ERR(0, 191, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4core_12cards_cython_get_action_cwrapper(__pyx_v_cs, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4core_12cards_cython_get_action_cwrapper(__pyx_v_cs, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7809,11 +8181,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_get_action_cwrapper(CYTHON_UNUSED
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":207
+/* "core/cards_cython.pyx":210
  * 
  * class Action(object):
  *     def __init__(self, hand, is_pass, idx):             # <<<<<<<<<<<<<<
@@ -7859,23 +8232,23 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_1__init__(PyObject *__pyx
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_hand)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 1); __PYX_ERR(0, 207, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 1); __PYX_ERR(0, 210, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_is_pass)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 2); __PYX_ERR(0, 207, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 2); __PYX_ERR(0, 210, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_idx)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 3); __PYX_ERR(0, 207, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 3); __PYX_ERR(0, 210, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 207, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 210, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -7892,7 +8265,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_1__init__(PyObject *__pyx
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 207, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 210, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Action.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7907,42 +8280,45 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_1__init__(PyObject *__pyx
 
 static PyObject *__pyx_pf_4core_12cards_cython_6Action___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_hand, PyObject *__pyx_v_is_pass, PyObject *__pyx_v_idx) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__19)
   __Pyx_RefNannySetupContext("__init__", 0);
+  __Pyx_TraceCall("__init__", __pyx_f[0], 210, 0, __PYX_ERR(0, 210, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":208
+  /* "core/cards_cython.pyx":211
  * class Action(object):
  *     def __init__(self, hand, is_pass, idx):
  *         self.is_pass = is_pass             # <<<<<<<<<<<<<<
  *         # if type(idx) == type(tuple()):
  *         #     raise RuntimeError("who the fuck passed a tuple?")
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_is_pass, __pyx_v_is_pass) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_is_pass, __pyx_v_is_pass) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":211
+  /* "core/cards_cython.pyx":214
  *         # if type(idx) == type(tuple()):
  *         #     raise RuntimeError("who the fuck passed a tuple?")
  *         self.idx = list(idx)             # <<<<<<<<<<<<<<
  *         # assert(type(hand) == type(Hand))
  *         self.hand = Hand(hand)
  */
-  __pyx_t_1 = PySequence_List(__pyx_v_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_1 = PySequence_List(__pyx_v_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_idx, __pyx_t_1) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_idx, __pyx_t_1) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":213
+  /* "core/cards_cython.pyx":216
  *         self.idx = list(idx)
  *         # assert(type(hand) == type(Hand))
  *         self.hand = Hand(hand)             # <<<<<<<<<<<<<<
  * 
  *     def __eq__(self, other):
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Hand); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Hand); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -7955,13 +8331,13 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action___init__(CYTHON_UNUSED Py
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_hand); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_hand); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_hand};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -7969,28 +8345,28 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action___init__(CYTHON_UNUSED Py
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_hand};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 213, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_hand);
       __Pyx_GIVEREF(__pyx_v_hand);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_hand);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 213, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_hand, __pyx_t_1) < 0) __PYX_ERR(0, 213, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_hand, __pyx_t_1) < 0) __PYX_ERR(0, 216, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":207
+  /* "core/cards_cython.pyx":210
  * 
  * class Action(object):
  *     def __init__(self, hand, is_pass, idx):             # <<<<<<<<<<<<<<
@@ -8010,11 +8386,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action___init__(CYTHON_UNUSED Py
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":215
+/* "core/cards_cython.pyx":218
  *         self.hand = Hand(hand)
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -8054,11 +8431,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_3__eq__(PyObject *__pyx_s
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, 1); __PYX_ERR(0, 215, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, 1); __PYX_ERR(0, 218, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__eq__") < 0)) __PYX_ERR(0, 215, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__eq__") < 0)) __PYX_ERR(0, 218, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -8071,7 +8448,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_3__eq__(PyObject *__pyx_s
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 215, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 218, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Action.__eq__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8086,15 +8463,18 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_3__eq__(PyObject *__pyx_s
 
 static PyObject *__pyx_pf_4core_12cards_cython_6Action_2__eq__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   int __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__20)
   __Pyx_RefNannySetupContext("__eq__", 0);
+  __Pyx_TraceCall("__eq__", __pyx_f[0], 218, 0, __PYX_ERR(0, 218, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":216
+  /* "core/cards_cython.pyx":219
  * 
  *     def __eq__(self, other):
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand             # <<<<<<<<<<<<<<
@@ -8102,8 +8482,8 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_2__eq__(CYTHON_UNUSED PyO
  *         # print(self.idx)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_self)), ((PyObject *)Py_TYPE(__pyx_v_other)), Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_self)), ((PyObject *)Py_TYPE(__pyx_v_other)), Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 219, __pyx_L1_error)
   if (__pyx_t_3) {
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
@@ -8112,14 +8492,14 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_2__eq__(CYTHON_UNUSED PyO
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 219, __pyx_L1_error)
   if (__pyx_t_3) {
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
@@ -8128,11 +8508,11 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_2__eq__(CYTHON_UNUSED PyO
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_hand); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_hand); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_hand); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_hand); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_5, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_5, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_INCREF(__pyx_t_2);
@@ -8143,7 +8523,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_2__eq__(CYTHON_UNUSED PyO
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":215
+  /* "core/cards_cython.pyx":218
  *         self.hand = Hand(hand)
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -8161,11 +8541,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_2__eq__(CYTHON_UNUSED PyO
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":217
+/* "core/cards_cython.pyx":220
  *     def __eq__(self, other):
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -8188,7 +8569,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_5__str__(PyObject *__pyx_
 }
 static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "core/cards_cython.pyx":222
+/* "core/cards_cython.pyx":225
  *             return "[pass]"
  *         else:
  *             return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))             # <<<<<<<<<<<<<<
@@ -8205,7 +8586,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_7__str___genexpr(PyObject
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_4core_12cards_cython___pyx_scope_struct_1_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 222, __pyx_L1_error)
+    __PYX_ERR(0, 225, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -8213,7 +8594,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_7__str___genexpr(PyObject
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_4core_12cards_cython_6Action_7__str___2generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_Action___str___locals_genexpr, __pyx_n_s_core_cards_cython); if (unlikely(!gen)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_4core_12cards_cython_6Action_7__str___2generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_Action___str___locals_genexpr, __pyx_n_s_core_cards_cython); if (unlikely(!gen)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -8233,6 +8614,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
 {
   struct __pyx_obj_4core_12cards_cython___pyx_scope_struct_1_genexpr *__pyx_cur_scope = ((struct __pyx_obj_4core_12cards_cython___pyx_scope_struct_1_genexpr *)__pyx_generator->closure);
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
@@ -8243,22 +8625,24 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
   PyObject *(*__pyx_t_8)(PyObject *);
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("genexpr", 0);
+  __Pyx_TraceCall("genexpr", __pyx_f[0], 225, 0, __PYX_ERR(0, 225, __pyx_L1_error));
   switch (__pyx_generator->resume_label) {
     case 0: goto __pyx_L3_first_run;
     case 1: goto __pyx_L8_resume_from_yield;
     default: /* CPython raises the right error here */
+    __Pyx_TraceReturn(Py_None, 0);
     __Pyx_RefNannyFinishContext();
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 222, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 222, __pyx_L1_error) }
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self, __pyx_n_s_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 225, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 225, __pyx_L1_error) }
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self, __pyx_n_s_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 222, __pyx_L1_error) }
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self, __pyx_n_s_hand); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 225, __pyx_L1_error) }
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self, __pyx_n_s_hand); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -8266,16 +8650,16 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
   __pyx_t_1 = 0;
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
     __pyx_t_3 = __pyx_t_2; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 225, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
@@ -8283,17 +8667,17 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 225, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 225, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       }
@@ -8303,7 +8687,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 222, __pyx_L1_error)
+          else __PYX_ERR(0, 225, __pyx_L1_error)
         }
         break;
       }
@@ -8319,7 +8703,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 222, __pyx_L1_error)
+        __PYX_ERR(0, 225, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -8332,15 +8716,15 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_6);
       #else
-      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
+      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 222, __pyx_L1_error)
+      __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 225, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       #endif
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_7 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 222, __pyx_L1_error)
+      __pyx_t_7 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 225, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_8 = Py_TYPE(__pyx_t_7)->tp_iternext;
@@ -8348,7 +8732,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
       __Pyx_GOTREF(__pyx_t_1);
       index = 1; __pyx_t_6 = __pyx_t_8(__pyx_t_7); if (unlikely(!__pyx_t_6)) goto __pyx_L6_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_6);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_7), 2) < 0) __PYX_ERR(0, 222, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_7), 2) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
       __pyx_t_8 = NULL;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       goto __pyx_L7_unpacking_done;
@@ -8356,7 +8740,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 222, __pyx_L1_error)
+      __PYX_ERR(0, 225, __pyx_L1_error)
       __pyx_L7_unpacking_done:;
     }
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_i);
@@ -8367,15 +8751,15 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_card, __pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_6);
     __pyx_t_6 = 0;
-    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_cur_scope->__pyx_v_card);
     __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_card);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_cur_scope->__pyx_v_card);
-    __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i);
     __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i);
@@ -8383,7 +8767,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
     __Pyx_GIVEREF(__pyx_t_6);
     PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_6);
     __pyx_t_6 = 0;
-    __pyx_t_6 = PyObject_Repr(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_6 = PyObject_Repr(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_r = __pyx_t_6;
@@ -8393,6 +8777,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
     __pyx_cur_scope->__pyx_t_1 = __pyx_t_4;
     __pyx_cur_scope->__pyx_t_2 = __pyx_t_5;
     __Pyx_XGIVEREF(__pyx_r);
+    __Pyx_TraceReturn(__pyx_r, 0);
     __Pyx_RefNannyFinishContext();
     __Pyx_Coroutine_ResetAndClearException(__pyx_generator);
     /* return from generator, yielding value */
@@ -8404,7 +8789,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
     __Pyx_XGOTREF(__pyx_t_3);
     __pyx_t_4 = __pyx_cur_scope->__pyx_t_1;
     __pyx_t_5 = __pyx_cur_scope->__pyx_t_2;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 222, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 225, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
@@ -8424,11 +8809,12 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
   __Pyx_Coroutine_ResetAndClearException(__pyx_generator);
   __pyx_generator->resume_label = -1;
   __Pyx_Coroutine_clear((PyObject*)__pyx_generator);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":217
+/* "core/cards_cython.pyx":220
  *     def __eq__(self, other):
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -8439,6 +8825,7 @@ static PyObject *__pyx_gb_4core_12cards_cython_6Action_7__str___2generator(__pyx
 static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
   struct __pyx_obj_4core_12cards_cython___pyx_scope_struct____str__ *__pyx_cur_scope;
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_t_2;
@@ -8446,33 +8833,35 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED Py
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__21)
   __Pyx_RefNannySetupContext("__str__", 0);
   __pyx_cur_scope = (struct __pyx_obj_4core_12cards_cython___pyx_scope_struct____str__ *)__pyx_tp_new_4core_12cards_cython___pyx_scope_struct____str__(__pyx_ptype_4core_12cards_cython___pyx_scope_struct____str__, __pyx_empty_tuple, NULL);
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_4core_12cards_cython___pyx_scope_struct____str__ *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 217, __pyx_L1_error)
+    __PYX_ERR(0, 220, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
+  __Pyx_TraceCall("__str__", __pyx_f[0], 220, 0, __PYX_ERR(0, 220, __pyx_L1_error));
   __pyx_cur_scope->__pyx_v_self = __pyx_v_self;
   __Pyx_INCREF(__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_self);
 
-  /* "core/cards_cython.pyx":219
+  /* "core/cards_cython.pyx":222
  *     def __str__(self):
  *         # print(self.idx)
  *         if self.is_pass:             # <<<<<<<<<<<<<<
  *             return "[pass]"
  *         else:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "core/cards_cython.pyx":220
+    /* "core/cards_cython.pyx":223
  *         # print(self.idx)
  *         if self.is_pass:
  *             return "[pass]"             # <<<<<<<<<<<<<<
@@ -8484,7 +8873,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED Py
     __pyx_r = __pyx_kp_s_pass;
     goto __pyx_L0;
 
-    /* "core/cards_cython.pyx":219
+    /* "core/cards_cython.pyx":222
  *     def __str__(self):
  *         # print(self.idx)
  *         if self.is_pass:             # <<<<<<<<<<<<<<
@@ -8493,7 +8882,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED Py
  */
   }
 
-  /* "core/cards_cython.pyx":222
+  /* "core/cards_cython.pyx":225
  *             return "[pass]"
  *         else:
  *             return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))             # <<<<<<<<<<<<<<
@@ -8502,11 +8891,11 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED Py
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s__4, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s__22, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __pyx_pf_4core_12cards_cython_6Action_7__str___genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_4 = __pyx_pf_4core_12cards_cython_6Action_7__str___genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyString_Join(__pyx_kp_s__5, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyString_Join(__pyx_kp_s__23, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_4 = NULL;
@@ -8520,14 +8909,14 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED Py
       }
     }
     if (!__pyx_t_4) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -8536,20 +8925,20 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED Py
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else
       #endif
       {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 225, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_GIVEREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
@@ -8560,7 +8949,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED Py
     goto __pyx_L0;
   }
 
-  /* "core/cards_cython.pyx":217
+  /* "core/cards_cython.pyx":220
  *     def __eq__(self, other):
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -8580,11 +8969,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_4__str__(CYTHON_UNUSED Py
   __pyx_L0:;
   __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":224
+/* "core/cards_cython.pyx":227
  *             return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))
  * 
  *     def __add__(self, other):             # <<<<<<<<<<<<<<
@@ -8624,11 +9014,11 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_7__add__(PyObject *__pyx_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__add__", 1, 2, 2, 1); __PYX_ERR(0, 224, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__add__", 1, 2, 2, 1); __PYX_ERR(0, 227, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__add__") < 0)) __PYX_ERR(0, 224, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__add__") < 0)) __PYX_ERR(0, 227, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -8641,7 +9031,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_7__add__(PyObject *__pyx_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__add__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 224, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__add__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 227, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("core.cards_cython.Action.__add__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8656,6 +9046,7 @@ static PyObject *__pyx_pw_4core_12cards_cython_6Action_7__add__(PyObject *__pyx_
 
 static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -8666,9 +9057,11 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
   PyObject *__pyx_t_7 = NULL;
   PyObject *__pyx_t_8 = NULL;
   int __pyx_t_9;
+  __Pyx_TraceFrameInit(__pyx_codeobj__24)
   __Pyx_RefNannySetupContext("__add__", 0);
+  __Pyx_TraceCall("__add__", __pyx_f[0], 227, 0, __PYX_ERR(0, 227, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":225
+  /* "core/cards_cython.pyx":228
  * 
  *     def __add__(self, other):
  *         return Action(self.hand + other.hand, self.is_pass and other.is_pass, self.idx + other.idx)             # <<<<<<<<<<<<<<
@@ -8676,19 +9069,19 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
  * class CardDeck(list):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Action); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Action); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_hand); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_hand); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_hand); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_hand); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyNumber_Add(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Add(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 228, __pyx_L1_error)
   if (__pyx_t_6) {
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
@@ -8697,17 +9090,17 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_is_pass); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_t_3);
   __pyx_t_4 = __pyx_t_3;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_L3_bool_binop_done:;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_idx); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_idx); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_idx); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_idx); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = PyNumber_Add(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_8 = PyNumber_Add(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -8726,7 +9119,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_t_5, __pyx_t_4, __pyx_t_8};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -8737,7 +9130,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_t_5, __pyx_t_4, __pyx_t_8};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -8746,7 +9139,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
   } else
   #endif
   {
-    __pyx_t_3 = PyTuple_New(3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     if (__pyx_t_7) {
       __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -8760,7 +9153,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
     __pyx_t_5 = 0;
     __pyx_t_4 = 0;
     __pyx_t_8 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
@@ -8769,7 +9162,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "core/cards_cython.pyx":224
+  /* "core/cards_cython.pyx":227
  *             return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))
  * 
  *     def __add__(self, other):             # <<<<<<<<<<<<<<
@@ -8790,11 +9183,12 @@ static PyObject *__pyx_pf_4core_12cards_cython_6Action_6__add__(CYTHON_UNUSED Py
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "core/cards_cython.pyx":228
+/* "core/cards_cython.pyx":231
  * 
  * class CardDeck(list):
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -8817,21 +9211,24 @@ static PyObject *__pyx_pw_4core_12cards_cython_8CardDeck_1__init__(PyObject *__p
 
 static PyObject *__pyx_pf_4core_12cards_cython_8CardDeck___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
+  __Pyx_TraceFrameInit(__pyx_codeobj__25)
   __Pyx_RefNannySetupContext("__init__", 0);
+  __Pyx_TraceCall("__init__", __pyx_f[0], 231, 0, __PYX_ERR(0, 231, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":229
+  /* "core/cards_cython.pyx":232
  * class CardDeck(list):
  *     def __init__(self):
  *         super().__init__()             # <<<<<<<<<<<<<<
  */
   __pyx_t_2 = __Pyx_CyFunction_GetClassObj(__pyx_self);
-  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 229, __pyx_L1_error) }
+  if (!__pyx_t_2) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 232, __pyx_L1_error) }
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 232, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
@@ -8839,10 +9236,10 @@ static PyObject *__pyx_pf_4core_12cards_cython_8CardDeck___init__(CYTHON_UNUSED 
   __Pyx_GIVEREF(__pyx_v_self);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_self);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 232, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_init); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_init); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 232, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -8856,16 +9253,16 @@ static PyObject *__pyx_pf_4core_12cards_cython_8CardDeck___init__(CYTHON_UNUSED 
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":228
+  /* "core/cards_cython.pyx":231
  * 
  * class CardDeck(list):
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -8883,6 +9280,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_8CardDeck___init__(CYTHON_UNUSED 
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -8970,6 +9368,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_2__pyx_unpickle_Card(CYTHON_UNUSE
   PyObject *__pyx_v___pyx_PickleError = NULL;
   PyObject *__pyx_v___pyx_result = NULL;
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -8978,7 +9377,9 @@ static PyObject *__pyx_pf_4core_12cards_cython_2__pyx_unpickle_Card(CYTHON_UNUSE
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
   int __pyx_t_7;
+  __Pyx_TraceFrameInit(__pyx_codeobj__26)
   __Pyx_RefNannySetupContext("__pyx_unpickle_Card", 0);
+  __Pyx_TraceCall("__pyx_unpickle_Card", __pyx_f[1], 1, 0, __PYX_ERR(1, 1, __pyx_L1_error));
 
   /* "(tree fragment)":2
  * def __pyx_unpickle_Card(__pyx_type, long __pyx_checksum, __pyx_state):
@@ -9200,6 +9601,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_2__pyx_unpickle_Card(CYTHON_UNUSE
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
   __Pyx_XDECREF(__pyx_v___pyx_result);
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9214,6 +9616,7 @@ static PyObject *__pyx_pf_4core_12cards_cython_2__pyx_unpickle_Card(CYTHON_UNUSE
 
 static PyObject *__pyx_f_4core_12cards_cython___pyx_unpickle_Card__set_state(struct __pyx_obj_4core_12cards_cython_Card *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_t_2;
@@ -9226,6 +9629,7 @@ static PyObject *__pyx_f_4core_12cards_cython___pyx_unpickle_Card__set_state(str
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("__pyx_unpickle_Card__set_state", 0);
+  __Pyx_TraceCall("__pyx_unpickle_Card__set_state", __pyx_f[1], 9, 0, __PYX_ERR(1, 9, __pyx_L1_error));
 
   /* "(tree fragment)":10
  *     return __pyx_result
@@ -9384,6 +9788,7 @@ static PyObject *__pyx_f_4core_12cards_cython___pyx_unpickle_Card__set_state(str
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9791,7 +10196,6 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 0},
   {&__pyx_kp_s_10, __pyx_k_10, sizeof(__pyx_k_10), 0, 0, 1, 0},
   {&__pyx_kp_s_2, __pyx_k_2, sizeof(__pyx_k_2), 0, 0, 1, 0},
   {&__pyx_kp_s_3, __pyx_k_3, sizeof(__pyx_k_3), 0, 0, 1, 0},
@@ -9852,9 +10256,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ThreePairs, __pyx_k_ThreePairs, sizeof(__pyx_k_ThreePairs), 0, 0, 1, 1},
   {&__pyx_n_s_Triplet, __pyx_k_Triplet, sizeof(__pyx_k_Triplet), 0, 0, 1, 1},
   {&__pyx_n_s_TwoTriplet, __pyx_k_TwoTriplet, sizeof(__pyx_k_TwoTriplet), 0, 0, 1, 1},
-  {&__pyx_kp_s__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 0, 1, 0},
-  {&__pyx_kp_s__4, __pyx_k__4, sizeof(__pyx_k__4), 0, 0, 1, 0},
-  {&__pyx_kp_s__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 0, 1, 0},
+  {&__pyx_kp_s__18, __pyx_k__18, sizeof(__pyx_k__18), 0, 0, 1, 0},
+  {&__pyx_kp_s__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 0, 1, 0},
+  {&__pyx_kp_s__22, __pyx_k__22, sizeof(__pyx_k__22), 0, 0, 1, 0},
+  {&__pyx_kp_s__23, __pyx_k__23, sizeof(__pyx_k__23), 0, 0, 1, 0},
   {&__pyx_n_s_add, __pyx_k_add, sizeof(__pyx_k_add), 0, 0, 1, 1},
   {&__pyx_n_s_all_colors, __pyx_k_all_colors, sizeof(__pyx_k_all_colors), 0, 0, 1, 1},
   {&__pyx_n_s_all_numbers, __pyx_k_all_numbers, sizeof(__pyx_k_all_numbers), 0, 0, 1, 1},
@@ -9950,14 +10355,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 66, __pyx_L1_error)
-  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 91, __pyx_L1_error)
-  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 206, __pyx_L1_error)
-  __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 93, __pyx_L1_error)
-  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(0, 102, __pyx_L1_error)
-  __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 159, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 192, __pyx_L1_error)
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 222, __pyx_L1_error)
+  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 225, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -9967,298 +10372,298 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "core/cards_cython.pyx":159
+  /* "core/cards_cython.pyx":162
  *         Bomb = 700 #
  *         if self.type == 0 or other.type == 0:
  *             raise NotImplementedError("cannot compare invalid hands")             # <<<<<<<<<<<<<<
  *         elif self.type == other.type and self.type != Bomb:
  *             if self.value == other.value:
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_cannot_compare_invalid_hands); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 159, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__2);
-  __Pyx_GIVEREF(__pyx_tuple__2);
+  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_s_cannot_compare_invalid_hands); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__17);
+  __Pyx_GIVEREF(__pyx_tuple__17);
 
-  /* "core/cards_cython.pyx":67
+  /* "core/cards_cython.pyx":70
  * 
  *     @staticmethod
  *     def static_seq(num):             # <<<<<<<<<<<<<<
  *         # return Card.all_numbers.index(num)
  *         return Card.numbers[num]
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_num); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_static_seq, 67, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_n_s_num); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__27);
+  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_static_seq, 70, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 70, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":91
+  /* "core/cards_cython.pyx":94
  *         return "[{}{}]".format(Card.all_colors[self.idx % 4], Card.all_numbers[self.idx // 4])
  * 
  * class NotComparableError(RuntimeError):             # <<<<<<<<<<<<<<
  *     def __init__(self, *args, **kwargs):
  *         super().__init__(*args, **kwargs)
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_builtin_RuntimeError); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 91, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
+  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_builtin_RuntimeError); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__28);
+  __Pyx_GIVEREF(__pyx_tuple__28);
 
-  /* "core/cards_cython.pyx":92
+  /* "core/cards_cython.pyx":95
  * 
  * class NotComparableError(RuntimeError):
  *     def __init__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         super().__init__(*args, **kwargs)
  * 
  */
-  __pyx_tuple__9 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_kwargs); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 92, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__9);
-  __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARARGS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_init, 92, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_kwargs); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__29);
+  __Pyx_GIVEREF(__pyx_tuple__29);
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS|CO_VARARGS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_init, 95, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 95, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":101
+  /* "core/cards_cython.pyx":104
  * class Hand(tuple):
  * 
  *     def __new__(cls, it):             # <<<<<<<<<<<<<<
  *         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))
  * 
  */
-  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_n_s_cls, __pyx_n_s_it); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 101, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__11);
-  __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_new, 101, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_tuple__30 = PyTuple_Pack(2, __pyx_n_s_cls, __pyx_n_s_it); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__30);
+  __Pyx_GIVEREF(__pyx_tuple__30);
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_new, 104, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 104, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":104
+  /* "core/cards_cython.pyx":107
  *         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))
  * 
  *     def __init__(self, it):             # <<<<<<<<<<<<<<
  *         super().__init__()
  *         self.classify()
  */
-  __pyx_tuple__13 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_it); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 104, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__13);
-  __Pyx_GIVEREF(__pyx_tuple__13);
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_init, 104, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_tuple__31 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_it); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__31);
+  __Pyx_GIVEREF(__pyx_tuple__31);
+  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_init, 107, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 107, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":108
+  /* "core/cards_cython.pyx":111
  *         self.classify()
  * 
  *     def __add__(self, it):             # <<<<<<<<<<<<<<
  *         res = super().__add__(it)
  *         return Hand(sorted(res, key=lambda x: x.seq()))
  */
-  __pyx_tuple__15 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_it, __pyx_n_s_res); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 108, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__15);
-  __Pyx_GIVEREF(__pyx_tuple__15);
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_add, 108, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_tuple__32 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_it, __pyx_n_s_res); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__32);
+  __Pyx_GIVEREF(__pyx_tuple__32);
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_add, 111, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 111, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":112
+  /* "core/cards_cython.pyx":115
  *         return Hand(sorted(res, key=lambda x: x.seq()))
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
  *         return super().__eq__(other)
  * 
  */
-  __pyx_tuple__17 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 112, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
-  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_eq, 112, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_tuple__33 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__33);
+  __Pyx_GIVEREF(__pyx_tuple__33);
+  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_eq, 115, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 115, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":115
+  /* "core/cards_cython.pyx":118
  *         return super().__eq__(other)
  * 
  *     def __ne__(self, other):             # <<<<<<<<<<<<<<
  *         if self.type != other.type:
  *             return True
  */
-  __pyx_tuple__19 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 115, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
-  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_ne, 115, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_tuple__34 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__34);
+  __Pyx_GIVEREF(__pyx_tuple__34);
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_ne, 118, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 118, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":121
+  /* "core/cards_cython.pyx":124
  *             return self.cmp(other) != 0
  * 
  *     def __lt__(self, other):             # <<<<<<<<<<<<<<
  *         return self.cmp(other) == -1
  * 
  */
-  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 121, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__21);
-  __Pyx_GIVEREF(__pyx_tuple__21);
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_lt, 121, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_tuple__35 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__35);
+  __Pyx_GIVEREF(__pyx_tuple__35);
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_lt, 124, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 124, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":124
+  /* "core/cards_cython.pyx":127
  *         return self.cmp(other) == -1
  * 
  *     def __le__(self, other):             # <<<<<<<<<<<<<<
  *         return self.cmp(other) <= 0
  * 
  */
-  __pyx_tuple__23 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 124, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__23);
-  __Pyx_GIVEREF(__pyx_tuple__23);
-  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_le, 124, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_tuple__36 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__36);
+  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_le, 127, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 127, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":127
+  /* "core/cards_cython.pyx":130
  *         return self.cmp(other) <= 0
  * 
  *     def __gt__(self, other):             # <<<<<<<<<<<<<<
  *         return self.cmp(other) > 0
  * 
  */
-  __pyx_tuple__25 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 127, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__25);
-  __Pyx_GIVEREF(__pyx_tuple__25);
-  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_gt, 127, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_tuple__37 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__37);
+  __Pyx_GIVEREF(__pyx_tuple__37);
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_gt, 130, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 130, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":130
+  /* "core/cards_cython.pyx":133
  *         return self.cmp(other) > 0
  * 
  *     def __ge__(self, other):             # <<<<<<<<<<<<<<
  *         return self.cmp(other) >= 0
  * 
  */
-  __pyx_tuple__27 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 130, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__27);
-  __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_ge, 130, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_tuple__38 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__38);
+  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_ge, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 133, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":133
+  /* "core/cards_cython.pyx":136
  *         return self.cmp(other) >= 0
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
  *         return super().__hash__()
  * 
  */
-  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 133, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__29);
-  __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_hash, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_tuple__39 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__39);
+  __Pyx_GIVEREF(__pyx_tuple__39);
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_hash, 136, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 136, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":136
+  /* "core/cards_cython.pyx":139
  *         return super().__hash__()
  * 
  *     @functools.lru_cache(10000)             # <<<<<<<<<<<<<<
  *     def get_class(self):
  *         cdef cppmap[int, int] hand
  */
-  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_int_10000); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 136, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__31);
-  __Pyx_GIVEREF(__pyx_tuple__31);
+  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_int_10000); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__40);
+  __Pyx_GIVEREF(__pyx_tuple__40);
 
-  /* "core/cards_cython.pyx":137
+  /* "core/cards_cython.pyx":140
  * 
  *     @functools.lru_cache(10000)
  *     def get_class(self):             # <<<<<<<<<<<<<<
  *         cdef cppmap[int, int] hand
  *         cdef int count = len(self)
  */
-  __pyx_tuple__32 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_hand, __pyx_n_s_count, __pyx_n_s_card, __pyx_n_s_type); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 137, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__32);
-  __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_get_class, 137, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_tuple__41 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_hand, __pyx_n_s_count, __pyx_n_s_card, __pyx_n_s_type); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__41);
+  __Pyx_GIVEREF(__pyx_tuple__41);
+  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_get_class, 140, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 140, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":145
+  /* "core/cards_cython.pyx":148
  *         return type
  * 
  *     def classify(self):             # <<<<<<<<<<<<<<
  *         self.value = self.get_class()
  *         self.type = self.value // 100
  */
-  __pyx_tuple__34 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(0, 145, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__34);
-  __Pyx_GIVEREF(__pyx_tuple__34);
-  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_classify, 145, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_tuple__42 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__42);
+  __Pyx_GIVEREF(__pyx_tuple__42);
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_classify, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 148, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":149
+  /* "core/cards_cython.pyx":152
  *         self.type = self.value // 100
  * 
  *     def cmp(self, other):             # <<<<<<<<<<<<<<
  *         Invalid = 0 #
  *         Single = 100 #
  */
-  __pyx_tuple__36 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_other, __pyx_n_s_Invalid, __pyx_n_s_Single, __pyx_n_s_Double, __pyx_n_s_Triplet, __pyx_n_s_Straight, __pyx_n_s_ThreePairs, __pyx_n_s_TwoTriplet, __pyx_n_s_Bomb, __pyx_n_s_c); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__36);
-  __Pyx_GIVEREF(__pyx_tuple__36);
-  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(2, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_cmp, 149, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_tuple__43 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_other, __pyx_n_s_Invalid, __pyx_n_s_Single, __pyx_n_s_Double, __pyx_n_s_Triplet, __pyx_n_s_Straight, __pyx_n_s_ThreePairs, __pyx_n_s_TwoTriplet, __pyx_n_s_Bomb, __pyx_n_s_c); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(0, 152, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__43);
+  __Pyx_GIVEREF(__pyx_tuple__43);
+  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(2, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_cmp, 152, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 152, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":206
+  /* "core/cards_cython.pyx":209
  *     return actions
  * 
  * class Action(object):             # <<<<<<<<<<<<<<
  *     def __init__(self, hand, is_pass, idx):
  *         self.is_pass = is_pass
  */
-  __pyx_tuple__38 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(0, 206, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__38);
-  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_tuple__44 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__44);
+  __Pyx_GIVEREF(__pyx_tuple__44);
 
-  /* "core/cards_cython.pyx":207
+  /* "core/cards_cython.pyx":210
  * 
  * class Action(object):
  *     def __init__(self, hand, is_pass, idx):             # <<<<<<<<<<<<<<
  *         self.is_pass = is_pass
  *         # if type(idx) == type(tuple()):
  */
-  __pyx_tuple__39 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_hand, __pyx_n_s_is_pass, __pyx_n_s_idx); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(0, 207, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__39);
-  __Pyx_GIVEREF(__pyx_tuple__39);
-  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_init, 207, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_tuple__45 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_hand, __pyx_n_s_is_pass, __pyx_n_s_idx); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__45);
+  __Pyx_GIVEREF(__pyx_tuple__45);
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_init, 210, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 210, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":215
+  /* "core/cards_cython.pyx":218
  *         self.hand = Hand(hand)
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
  *     def __str__(self):
  */
-  __pyx_tuple__41 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 215, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__41);
-  __Pyx_GIVEREF(__pyx_tuple__41);
-  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_eq, 215, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_tuple__46 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__46);
+  __Pyx_GIVEREF(__pyx_tuple__46);
+  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_eq, 218, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 218, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":217
+  /* "core/cards_cython.pyx":220
  *     def __eq__(self, other):
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
  *     def __str__(self):             # <<<<<<<<<<<<<<
  *         # print(self.idx)
  *         if self.is_pass:
  */
-  __pyx_tuple__43 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(0, 217, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__43);
-  __Pyx_GIVEREF(__pyx_tuple__43);
-  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_str, 217, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_tuple__47 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__47);
+  __Pyx_GIVEREF(__pyx_tuple__47);
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_str, 220, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 220, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":224
+  /* "core/cards_cython.pyx":227
  *             return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))
  * 
  *     def __add__(self, other):             # <<<<<<<<<<<<<<
  *         return Action(self.hand + other.hand, self.is_pass and other.is_pass, self.idx + other.idx)
  * 
  */
-  __pyx_tuple__45 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(0, 224, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__45);
-  __Pyx_GIVEREF(__pyx_tuple__45);
-  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_add, 224, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_tuple__48 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__48);
+  __Pyx_GIVEREF(__pyx_tuple__48);
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__48, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_add, 227, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 227, __pyx_L1_error)
 
-  /* "core/cards_cython.pyx":228
+  /* "core/cards_cython.pyx":231
  * 
  * class CardDeck(list):
  *     def __init__(self):             # <<<<<<<<<<<<<<
  *         super().__init__()
  */
-  __pyx_tuple__47 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 228, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__47);
-  __Pyx_GIVEREF(__pyx_tuple__47);
-  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_init, 228, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 228, __pyx_L1_error)
+  __pyx_tuple__49 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__49)) __PYX_ERR(0, 231, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__49);
+  __Pyx_GIVEREF(__pyx_tuple__49);
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_core_cards_cython_pyx, __pyx_n_s_init, 231, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 231, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_Card(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     if __pyx_checksum != 0x549b606:
  *         from pickle import PickleError as __pyx_PickleError
  */
-  __pyx_tuple__49 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__49)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__49);
-  __Pyx_GIVEREF(__pyx_tuple__49);
-  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Card, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__50 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__50);
+  __Pyx_GIVEREF(__pyx_tuple__50);
+  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Card, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -10342,6 +10747,7 @@ static int __pyx_pymod_exec_cards_cython(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
+  __Pyx_TraceDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
@@ -10446,16 +10852,16 @@ static int __pyx_pymod_exec_cards_cython(PyObject *__pyx_pyinit_module)
   __pyx_vtable_4core_12cards_cython_Card.color_seq = (PyObject *(*)(struct __pyx_obj_4core_12cards_cython_Card *, int __pyx_skip_dispatch))__pyx_f_4core_12cards_cython_4Card_color_seq;
   __pyx_vtable_4core_12cards_cython_Card.total_seq = (PyObject *(*)(struct __pyx_obj_4core_12cards_cython_Card *, int __pyx_skip_dispatch))__pyx_f_4core_12cards_cython_4Card_total_seq;
   __pyx_vtable_4core_12cards_cython_Card.cmp_number = (PyObject *(*)(struct __pyx_obj_4core_12cards_cython_Card *, struct __pyx_obj_4core_12cards_cython_Card *, int __pyx_skip_dispatch))__pyx_f_4core_12cards_cython_4Card_cmp_number;
-  if (PyType_Ready(&__pyx_type_4core_12cards_cython_Card) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_4core_12cards_cython_Card) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
   __pyx_type_4core_12cards_cython_Card.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_4core_12cards_cython_Card.tp_dict, __pyx_vtabptr_4core_12cards_cython_Card) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "Card", (PyObject *)&__pyx_type_4core_12cards_cython_Card) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_4core_12cards_cython_Card) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_4core_12cards_cython_Card.tp_dict, __pyx_vtabptr_4core_12cards_cython_Card) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Card", (PyObject *)&__pyx_type_4core_12cards_cython_Card) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_4core_12cards_cython_Card) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
   __pyx_ptype_4core_12cards_cython_Card = &__pyx_type_4core_12cards_cython_Card;
-  if (PyType_Ready(&__pyx_type_4core_12cards_cython___pyx_scope_struct____str__) < 0) __PYX_ERR(0, 217, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_4core_12cards_cython___pyx_scope_struct____str__) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
   __pyx_type_4core_12cards_cython___pyx_scope_struct____str__.tp_print = 0;
   __pyx_ptype_4core_12cards_cython___pyx_scope_struct____str__ = &__pyx_type_4core_12cards_cython___pyx_scope_struct____str__;
-  if (PyType_Ready(&__pyx_type_4core_12cards_cython___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 222, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_4core_12cards_cython___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
   __pyx_type_4core_12cards_cython___pyx_scope_struct_1_genexpr.tp_print = 0;
   __pyx_ptype_4core_12cards_cython___pyx_scope_struct_1_genexpr = &__pyx_type_4core_12cards_cython___pyx_scope_struct_1_genexpr;
   /*--- Type import code ---*/
@@ -10465,38 +10871,40 @@ static int __pyx_pymod_exec_cards_cython(PyObject *__pyx_pyinit_module)
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
+  __Pyx_TraceCall("PyMODINIT_FUNC PyInit_cards_cython(void)", __pyx_f[0], 1, 0, __PYX_ERR(0, 1, __pyx_L1_error));
 
-  /* "core/cards_cython.pyx":2
- * # distutils: language=c++
+  /* "core/cards_cython.pyx":5
+ * 
+ * #remove later
  * import collections             # <<<<<<<<<<<<<<
  * import functools
  * from libcpp.map cimport map as cppmap
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_collections, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_collections, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_collections, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_collections, __pyx_t_1) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":3
- * # distutils: language=c++
+  /* "core/cards_cython.pyx":6
+ * #remove later
  * import collections
  * import functools             # <<<<<<<<<<<<<<
  * from libcpp.map cimport map as cppmap
  * from libcpp.vector cimport vector
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_functools, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_functools, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_functools, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_functools, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":8
+  /* "core/cards_cython.pyx":11
  * 
  * cdef class Card(object):
  *     all_numbers = [             # <<<<<<<<<<<<<<
  *         "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2", "BJ", "RJ"
  *     ]
  */
-  __pyx_t_1 = PyList_New(15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_kp_s_3);
   __Pyx_GIVEREF(__pyx_kp_s_3);
@@ -10543,28 +10951,28 @@ static int __pyx_pymod_exec_cards_cython(PyObject *__pyx_pyinit_module)
   __Pyx_INCREF(__pyx_n_s_RJ);
   __Pyx_GIVEREF(__pyx_n_s_RJ);
   PyList_SET_ITEM(__pyx_t_1, 14, __pyx_n_s_RJ);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_all_numbers, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_all_numbers, __pyx_t_1) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_4core_12cards_cython_Card);
 
-  /* "core/cards_cython.pyx":11
+  /* "core/cards_cython.pyx":14
  *         "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "2", "BJ", "RJ"
  *     ]
  *     MAX_VALID_SENITENIAL = 12             # <<<<<<<<<<<<<<
  *     all_colors = [
  *         "D", "S", "C", "H"
  */
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_MAX_VALID_SENITENIAL, __pyx_int_12) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_MAX_VALID_SENITENIAL, __pyx_int_12) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
   PyType_Modified(__pyx_ptype_4core_12cards_cython_Card);
 
-  /* "core/cards_cython.pyx":12
+  /* "core/cards_cython.pyx":15
  *     ]
  *     MAX_VALID_SENITENIAL = 12
  *     all_colors = [             # <<<<<<<<<<<<<<
  *         "D", "S", "C", "H"
  *     ]
  */
-  __pyx_t_1 = PyList_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_D);
   __Pyx_GIVEREF(__pyx_n_s_D);
@@ -10578,309 +10986,309 @@ static int __pyx_pymod_exec_cards_cython(PyObject *__pyx_pyinit_module)
   __Pyx_INCREF(__pyx_n_s_H);
   __Pyx_GIVEREF(__pyx_n_s_H);
   PyList_SET_ITEM(__pyx_t_1, 3, __pyx_n_s_H);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_all_colors, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_all_colors, __pyx_t_1) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_4core_12cards_cython_Card);
 
-  /* "core/cards_cython.pyx":16
+  /* "core/cards_cython.pyx":19
  *     ]
  * 
  *     numbers = {"3":0, "4":1, "5":2, "6":3, "7":4, "8":5, "9":6, "10":7, "J":8, "Q":9, "K":10, "A":11, "2":12, "BJ":13, "RJ":14}             # <<<<<<<<<<<<<<
  *     colors = {"D":0, "S":1, "C":2, "H":3}
  * 
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(15); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_3, __pyx_int_0) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_4, __pyx_int_1) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_5, __pyx_int_2) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_6, __pyx_int_3) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_7, __pyx_int_4) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_8, __pyx_int_5) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_9, __pyx_int_6) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_10, __pyx_int_7) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_J, __pyx_int_8) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_Q, __pyx_int_9) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_K, __pyx_int_10) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_A, __pyx_int_11) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_2, __pyx_int_12) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_BJ, __pyx_int_13) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_RJ, __pyx_int_14) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_numbers, __pyx_t_1) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_3, __pyx_int_0) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_4, __pyx_int_1) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_5, __pyx_int_2) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_6, __pyx_int_3) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_7, __pyx_int_4) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_8, __pyx_int_5) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_9, __pyx_int_6) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_10, __pyx_int_7) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_J, __pyx_int_8) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_Q, __pyx_int_9) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_K, __pyx_int_10) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_A, __pyx_int_11) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_s_2, __pyx_int_12) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_BJ, __pyx_int_13) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_RJ, __pyx_int_14) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_numbers, __pyx_t_1) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_4core_12cards_cython_Card);
 
-  /* "core/cards_cython.pyx":17
+  /* "core/cards_cython.pyx":20
  * 
  *     numbers = {"3":0, "4":1, "5":2, "6":3, "7":4, "8":5, "9":6, "10":7, "J":8, "Q":9, "K":10, "A":11, "2":12, "BJ":13, "RJ":14}
  *     colors = {"D":0, "S":1, "C":2, "H":3}             # <<<<<<<<<<<<<<
  * 
  *     cdef int idx
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_D, __pyx_int_0) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_S, __pyx_int_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_C, __pyx_int_2) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_H, __pyx_int_3) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_colors, __pyx_t_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_D, __pyx_int_0) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_S, __pyx_int_1) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_C, __pyx_int_2) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_H, __pyx_int_3) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_colors, __pyx_t_1) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_4core_12cards_cython_Card);
 
-  /* "core/cards_cython.pyx":67
+  /* "core/cards_cython.pyx":70
  * 
  *     @staticmethod
  *     def static_seq(num):             # <<<<<<<<<<<<<<
  *         # return Card.all_numbers.index(num)
  *         return Card.numbers[num]
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Card_17static_seq, NULL, __pyx_n_s_core_cards_cython); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Card_17static_seq, NULL, __pyx_n_s_core_cards_cython); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_static_seq, __pyx_t_1) < 0) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_static_seq, __pyx_t_1) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_4core_12cards_cython_Card);
 
-  /* "core/cards_cython.pyx":66
+  /* "core/cards_cython.pyx":69
  *         # return self.idx
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def static_seq(num):
  *         # return Card.all_numbers.index(num)
  */
-  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_4core_12cards_cython_Card, __pyx_n_s_static_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_4core_12cards_cython_Card, __pyx_n_s_static_seq); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_staticmethod, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_static_seq, __pyx_t_1) < 0) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_4core_12cards_cython_Card->tp_dict, __pyx_n_s_static_seq, __pyx_t_1) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_4core_12cards_cython_Card);
 
-  /* "core/cards_cython.pyx":91
+  /* "core/cards_cython.pyx":94
  *         return "[{}{}]".format(Card.all_colors[self.idx % 4], Card.all_numbers[self.idx // 4])
  * 
  * class NotComparableError(RuntimeError):             # <<<<<<<<<<<<<<
  *     def __init__(self, *args, **kwargs):
  *         super().__init__(*args, **kwargs)
  */
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_tuple__8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_tuple__28); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_tuple__8, __pyx_n_s_NotComparableError, __pyx_n_s_NotComparableError, (PyObject *) NULL, __pyx_n_s_core_cards_cython, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_tuple__28, __pyx_n_s_NotComparableError, __pyx_n_s_NotComparableError, (PyObject *) NULL, __pyx_n_s_core_cards_cython, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "core/cards_cython.pyx":92
+  /* "core/cards_cython.pyx":95
  * 
  * class NotComparableError(RuntimeError):
  *     def __init__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         super().__init__(*args, **kwargs)
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_18NotComparableError_1__init__, 0, __pyx_n_s_NotComparableError___init, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_18NotComparableError_1__init__, 0, __pyx_n_s_NotComparableError___init, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_t_4);
   PyList_Append(__pyx_t_3, __pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 92, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "core/cards_cython.pyx":91
+  /* "core/cards_cython.pyx":94
  *         return "[{}{}]".format(Card.all_colors[self.idx % 4], Card.all_numbers[self.idx // 4])
  * 
  * class NotComparableError(RuntimeError):             # <<<<<<<<<<<<<<
  *     def __init__(self, *args, **kwargs):
  *         super().__init__(*args, **kwargs)
  */
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_NotComparableError, __pyx_tuple__8, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_NotComparableError, __pyx_tuple__28, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_CyFunction_InitClassCell(__pyx_t_3, __pyx_t_4) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
+  if (__Pyx_CyFunction_InitClassCell(__pyx_t_3, __pyx_t_4) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_NotComparableError, __pyx_t_4) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_NotComparableError, __pyx_t_4) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":99
+  /* "core/cards_cython.pyx":102
  *     vector[vector[int]] get_action_c(vector[int])
  * 
  * class Hand(tuple):             # <<<<<<<<<<<<<<
  * 
  *     def __new__(cls, it):
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject *)(&PyTuple_Type)));
   __Pyx_GIVEREF(((PyObject *)(&PyTuple_Type)));
   PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)(&PyTuple_Type)));
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_Hand, __pyx_n_s_Hand, (PyObject *) NULL, __pyx_n_s_core_cards_cython, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_Hand, __pyx_n_s_Hand, (PyObject *) NULL, __pyx_n_s_core_cards_cython, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
 
-  /* "core/cards_cython.pyx":101
+  /* "core/cards_cython.pyx":104
  * class Hand(tuple):
  * 
  *     def __new__(cls, it):             # <<<<<<<<<<<<<<
  *         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_1__new__, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_Hand___new, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_1__new__, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_Hand___new, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_new, __pyx_t_6) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_new, __pyx_t_6) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":104
+  /* "core/cards_cython.pyx":107
  *         return tuple.__new__(cls, tuple(sorted(it, key=lambda x: x.seq())))
  * 
  *     def __init__(self, it):             # <<<<<<<<<<<<<<
  *         super().__init__()
  *         self.classify()
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_3__init__, 0, __pyx_n_s_Hand___init, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_3__init__, 0, __pyx_n_s_Hand___init, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_t_6);
   PyList_Append(__pyx_t_5, __pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_init, __pyx_t_6) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_init, __pyx_t_6) < 0) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":108
+  /* "core/cards_cython.pyx":111
  *         self.classify()
  * 
  *     def __add__(self, it):             # <<<<<<<<<<<<<<
  *         res = super().__add__(it)
  *         return Hand(sorted(res, key=lambda x: x.seq()))
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_5__add__, 0, __pyx_n_s_Hand___add, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_5__add__, 0, __pyx_n_s_Hand___add, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_t_6);
   PyList_Append(__pyx_t_5, __pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_add, __pyx_t_6) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_add, __pyx_t_6) < 0) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":112
+  /* "core/cards_cython.pyx":115
  *         return Hand(sorted(res, key=lambda x: x.seq()))
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
  *         return super().__eq__(other)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_7__eq__, 0, __pyx_n_s_Hand___eq, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_7__eq__, 0, __pyx_n_s_Hand___eq, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_t_6);
   PyList_Append(__pyx_t_5, __pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_eq, __pyx_t_6) < 0) __PYX_ERR(0, 112, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_eq, __pyx_t_6) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":115
+  /* "core/cards_cython.pyx":118
  *         return super().__eq__(other)
  * 
  *     def __ne__(self, other):             # <<<<<<<<<<<<<<
  *         if self.type != other.type:
  *             return True
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_9__ne__, 0, __pyx_n_s_Hand___ne, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_9__ne__, 0, __pyx_n_s_Hand___ne, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_ne, __pyx_t_6) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_ne, __pyx_t_6) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":121
+  /* "core/cards_cython.pyx":124
  *             return self.cmp(other) != 0
  * 
  *     def __lt__(self, other):             # <<<<<<<<<<<<<<
  *         return self.cmp(other) == -1
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_11__lt__, 0, __pyx_n_s_Hand___lt, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_11__lt__, 0, __pyx_n_s_Hand___lt, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_lt, __pyx_t_6) < 0) __PYX_ERR(0, 121, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_lt, __pyx_t_6) < 0) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":124
+  /* "core/cards_cython.pyx":127
  *         return self.cmp(other) == -1
  * 
  *     def __le__(self, other):             # <<<<<<<<<<<<<<
  *         return self.cmp(other) <= 0
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_13__le__, 0, __pyx_n_s_Hand___le, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_13__le__, 0, __pyx_n_s_Hand___le, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_le, __pyx_t_6) < 0) __PYX_ERR(0, 124, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_le, __pyx_t_6) < 0) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":127
+  /* "core/cards_cython.pyx":130
  *         return self.cmp(other) <= 0
  * 
  *     def __gt__(self, other):             # <<<<<<<<<<<<<<
  *         return self.cmp(other) > 0
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_15__gt__, 0, __pyx_n_s_Hand___gt, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_15__gt__, 0, __pyx_n_s_Hand___gt, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_gt, __pyx_t_6) < 0) __PYX_ERR(0, 127, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_gt, __pyx_t_6) < 0) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":130
+  /* "core/cards_cython.pyx":133
  *         return self.cmp(other) > 0
  * 
  *     def __ge__(self, other):             # <<<<<<<<<<<<<<
  *         return self.cmp(other) >= 0
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_17__ge__, 0, __pyx_n_s_Hand___ge, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_17__ge__, 0, __pyx_n_s_Hand___ge, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_ge, __pyx_t_6) < 0) __PYX_ERR(0, 130, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_ge, __pyx_t_6) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":133
+  /* "core/cards_cython.pyx":136
  *         return self.cmp(other) >= 0
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
  *         return super().__hash__()
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_19__hash__, 0, __pyx_n_s_Hand___hash, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_19__hash__, 0, __pyx_n_s_Hand___hash, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_t_6);
   PyList_Append(__pyx_t_5, __pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_hash, __pyx_t_6) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_hash, __pyx_t_6) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":136
+  /* "core/cards_cython.pyx":139
  *         return super().__hash__()
  * 
  *     @functools.lru_cache(10000)             # <<<<<<<<<<<<<<
  *     def get_class(self):
  *         cdef cppmap[int, int] hand
  */
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_functools); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_functools); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_lru_cache); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_lru_cache); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__31, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "core/cards_cython.pyx":137
+  /* "core/cards_cython.pyx":140
  * 
  *     @functools.lru_cache(10000)
  *     def get_class(self):             # <<<<<<<<<<<<<<
  *         cdef cppmap[int, int] hand
  *         cdef int count = len(self)
  */
-  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_21get_class, 0, __pyx_n_s_Hand_get_class, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_21get_class, 0, __pyx_n_s_Hand_get_class, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_9 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
@@ -10893,14 +11301,14 @@ static int __pyx_pymod_exec_cards_cython(PyObject *__pyx_pyinit_module)
     }
   }
   if (!__pyx_t_9) {
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_6);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_7)) {
       PyObject *__pyx_temp[2] = {__pyx_t_9, __pyx_t_8};
-      __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 139, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -10909,188 +11317,188 @@ static int __pyx_pymod_exec_cards_cython(PyObject *__pyx_pyinit_module)
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
       PyObject *__pyx_temp[2] = {__pyx_t_9, __pyx_t_8};
-      __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 139, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 136, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 139, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9); __pyx_t_9 = NULL;
       __Pyx_GIVEREF(__pyx_t_8);
       PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_8);
       __pyx_t_8 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 139, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_get_class, __pyx_t_6) < 0) __PYX_ERR(0, 137, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_get_class, __pyx_t_6) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":145
+  /* "core/cards_cython.pyx":148
  *         return type
  * 
  *     def classify(self):             # <<<<<<<<<<<<<<
  *         self.value = self.get_class()
  *         self.type = self.value // 100
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_23classify, 0, __pyx_n_s_Hand_classify, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_23classify, 0, __pyx_n_s_Hand_classify, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_classify, __pyx_t_6) < 0) __PYX_ERR(0, 145, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_classify, __pyx_t_6) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":149
+  /* "core/cards_cython.pyx":152
  *         self.type = self.value // 100
  * 
  *     def cmp(self, other):             # <<<<<<<<<<<<<<
  *         Invalid = 0 #
  *         Single = 100 #
  */
-  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_25cmp, 0, __pyx_n_s_Hand_cmp, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_4Hand_25cmp, 0, __pyx_n_s_Hand_cmp, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_cmp, __pyx_t_6) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_cmp, __pyx_t_6) < 0) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "core/cards_cython.pyx":99
+  /* "core/cards_cython.pyx":102
  *     vector[vector[int]] get_action_c(vector[int])
  * 
  * class Hand(tuple):             # <<<<<<<<<<<<<<
  * 
  *     def __new__(cls, it):
  */
-  __pyx_t_6 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_Hand, __pyx_t_1, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_Hand, __pyx_t_1, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_CyFunction_InitClassCell(__pyx_t_5, __pyx_t_6) < 0) __PYX_ERR(0, 99, __pyx_L1_error)
+  if (__Pyx_CyFunction_InitClassCell(__pyx_t_5, __pyx_t_6) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Hand, __pyx_t_6) < 0) __PYX_ERR(0, 99, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Hand, __pyx_t_6) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":206
+  /* "core/cards_cython.pyx":209
  *     return actions
  * 
  * class Action(object):             # <<<<<<<<<<<<<<
  *     def __init__(self, hand, is_pass, idx):
  *         self.is_pass = is_pass
  */
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_tuple__38); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_tuple__44); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_tuple__38, __pyx_n_s_Action, __pyx_n_s_Action, (PyObject *) NULL, __pyx_n_s_core_cards_cython, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_tuple__44, __pyx_n_s_Action, __pyx_n_s_Action, (PyObject *) NULL, __pyx_n_s_core_cards_cython, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "core/cards_cython.pyx":207
+  /* "core/cards_cython.pyx":210
  * 
  * class Action(object):
  *     def __init__(self, hand, is_pass, idx):             # <<<<<<<<<<<<<<
  *         self.is_pass = is_pass
  *         # if type(idx) == type(tuple()):
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_6Action_1__init__, 0, __pyx_n_s_Action___init, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_6Action_1__init__, 0, __pyx_n_s_Action___init, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 210, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 207, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 210, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "core/cards_cython.pyx":215
+  /* "core/cards_cython.pyx":218
  *         self.hand = Hand(hand)
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
  *     def __str__(self):
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_6Action_3__eq__, 0, __pyx_n_s_Action___eq, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_6Action_3__eq__, 0, __pyx_n_s_Action___eq, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_eq, __pyx_t_4) < 0) __PYX_ERR(0, 215, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_eq, __pyx_t_4) < 0) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "core/cards_cython.pyx":217
+  /* "core/cards_cython.pyx":220
  *     def __eq__(self, other):
  *         return type(self) == type(other) and self.is_pass == other.is_pass and self.hand == other.hand
  *     def __str__(self):             # <<<<<<<<<<<<<<
  *         # print(self.idx)
  *         if self.is_pass:
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_6Action_5__str__, 0, __pyx_n_s_Action___str, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__44)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_6Action_5__str__, 0, __pyx_n_s_Action___str, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_str, __pyx_t_4) < 0) __PYX_ERR(0, 217, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_str, __pyx_t_4) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "core/cards_cython.pyx":224
+  /* "core/cards_cython.pyx":227
  *             return "{}".format(" ".join(repr((i, str(card))) for i, card in zip(self.idx, self.hand)))
  * 
  *     def __add__(self, other):             # <<<<<<<<<<<<<<
  *         return Action(self.hand + other.hand, self.is_pass and other.is_pass, self.idx + other.idx)
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_6Action_7__add__, 0, __pyx_n_s_Action___add, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_6Action_7__add__, 0, __pyx_n_s_Action___add, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_add, __pyx_t_4) < 0) __PYX_ERR(0, 224, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_add, __pyx_t_4) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "core/cards_cython.pyx":206
+  /* "core/cards_cython.pyx":209
  *     return actions
  * 
  * class Action(object):             # <<<<<<<<<<<<<<
  *     def __init__(self, hand, is_pass, idx):
  *         self.is_pass = is_pass
  */
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_Action, __pyx_tuple__38, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_Action, __pyx_tuple__44, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Action, __pyx_t_4) < 0) __PYX_ERR(0, 206, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Action, __pyx_t_4) < 0) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "core/cards_cython.pyx":227
+  /* "core/cards_cython.pyx":230
  *         return Action(self.hand + other.hand, self.is_pass and other.is_pass, self.idx + other.idx)
  * 
  * class CardDeck(list):             # <<<<<<<<<<<<<<
  *     def __init__(self):
  *         super().__init__()
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject *)(&PyList_Type)));
   __Pyx_GIVEREF(((PyObject *)(&PyList_Type)));
   PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)(&PyList_Type)));
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_CardDeck, __pyx_n_s_CardDeck, (PyObject *) NULL, __pyx_n_s_core_cards_cython, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_CardDeck, __pyx_n_s_CardDeck, (PyObject *) NULL, __pyx_n_s_core_cards_cython, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
 
-  /* "core/cards_cython.pyx":228
+  /* "core/cards_cython.pyx":231
  * 
  * class CardDeck(list):
  *     def __init__(self):             # <<<<<<<<<<<<<<
  *         super().__init__()
  */
-  __pyx_t_7 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_8CardDeck_1__init__, 0, __pyx_n_s_CardDeck___init, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 228, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4core_12cards_cython_8CardDeck_1__init__, 0, __pyx_n_s_CardDeck___init, NULL, __pyx_n_s_core_cards_cython, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_t_7);
   PyList_Append(__pyx_t_6, __pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_7);
-  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_init, __pyx_t_7) < 0) __PYX_ERR(0, 228, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_4, __pyx_n_s_init, __pyx_t_7) < 0) __PYX_ERR(0, 231, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "core/cards_cython.pyx":227
+  /* "core/cards_cython.pyx":230
  *         return Action(self.hand + other.hand, self.is_pass and other.is_pass, self.idx + other.idx)
  * 
  * class CardDeck(list):             # <<<<<<<<<<<<<<
  *     def __init__(self):
  *         super().__init__()
  */
-  __pyx_t_7 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_CardDeck, __pyx_t_1, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_CardDeck, __pyx_t_1, __pyx_t_4, NULL, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (__Pyx_CyFunction_InitClassCell(__pyx_t_6, __pyx_t_7) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
+  if (__Pyx_CyFunction_InitClassCell(__pyx_t_6, __pyx_t_7) < 0) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CardDeck, __pyx_t_7) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CardDeck, __pyx_t_7) < 0) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -11108,13 +11516,14 @@ static int __pyx_pymod_exec_cards_cython(PyObject *__pyx_pyinit_module)
 
   /* "core/cards_cython.pyx":1
  * # distutils: language=c++             # <<<<<<<<<<<<<<
- * import collections
- * import functools
+ * # cython: profile=True
+ * 
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_TraceReturn(Py_None, 0);
 
   /*--- Wrapped vars code ---*/
 
@@ -11322,6 +11731,99 @@ invalid_keyword:
 bad:
     return -1;
 }
+
+/* Profile */
+#if CYTHON_PROFILE
+static int __Pyx_TraceSetupAndCall(PyCodeObject** code,
+                                   PyFrameObject** frame,
+                                   PyThreadState* tstate,
+                                   const char *funcname,
+                                   const char *srcfile,
+                                   int firstlineno) {
+    PyObject *type, *value, *traceback;
+    int retval;
+    if (*frame == NULL || !CYTHON_PROFILE_REUSE_FRAME) {
+        if (*code == NULL) {
+            *code = __Pyx_createFrameCodeObject(funcname, srcfile, firstlineno);
+            if (*code == NULL) return 0;
+        }
+        *frame = PyFrame_New(
+            tstate,                          /*PyThreadState *tstate*/
+            *code,                           /*PyCodeObject *code*/
+            __pyx_d,                  /*PyObject *globals*/
+            0                                /*PyObject *locals*/
+        );
+        if (*frame == NULL) return 0;
+        if (CYTHON_TRACE && (*frame)->f_trace == NULL) {
+            Py_INCREF(Py_None);
+            (*frame)->f_trace = Py_None;
+        }
+#if PY_VERSION_HEX < 0x030400B1
+    } else {
+        (*frame)->f_tstate = tstate;
+#endif
+    }
+      __Pyx_PyFrame_SetLineNumber(*frame, firstlineno);
+    retval = 1;
+    tstate->tracing++;
+    tstate->use_tracing = 0;
+    PyErr_Fetch(&type, &value, &traceback);
+    #if CYTHON_TRACE
+    if (tstate->c_tracefunc)
+        retval = tstate->c_tracefunc(tstate->c_traceobj, *frame, PyTrace_CALL, NULL) == 0;
+    if (retval && tstate->c_profilefunc)
+    #endif
+        retval = tstate->c_profilefunc(tstate->c_profileobj, *frame, PyTrace_CALL, NULL) == 0;
+    tstate->use_tracing = (tstate->c_profilefunc ||
+                           (CYTHON_TRACE && tstate->c_tracefunc));
+    tstate->tracing--;
+    if (retval) {
+        PyErr_Restore(type, value, traceback);
+        return tstate->use_tracing && retval;
+    } else {
+        Py_XDECREF(type);
+        Py_XDECREF(value);
+        Py_XDECREF(traceback);
+        return -1;
+    }
+}
+static PyCodeObject *__Pyx_createFrameCodeObject(const char *funcname, const char *srcfile, int firstlineno) {
+    PyObject *py_srcfile = 0;
+    PyObject *py_funcname = 0;
+    PyCodeObject *py_code = 0;
+    #if PY_MAJOR_VERSION < 3
+    py_funcname = PyString_FromString(funcname);
+    py_srcfile = PyString_FromString(srcfile);
+    #else
+    py_funcname = PyUnicode_FromString(funcname);
+    py_srcfile = PyUnicode_FromString(srcfile);
+    #endif
+    if (!py_funcname | !py_srcfile) goto bad;
+    py_code = PyCode_New(
+        0,
+        #if PY_MAJOR_VERSION >= 3
+        0,
+        #endif
+        0,
+        0,
+        CO_OPTIMIZED | CO_NEWLOCALS,
+        __pyx_empty_bytes,     /*PyObject *code,*/
+        __pyx_empty_tuple,     /*PyObject *consts,*/
+        __pyx_empty_tuple,     /*PyObject *names,*/
+        __pyx_empty_tuple,     /*PyObject *varnames,*/
+        __pyx_empty_tuple,     /*PyObject *freevars,*/
+        __pyx_empty_tuple,     /*PyObject *cellvars,*/
+        py_srcfile,       /*PyObject *filename,*/
+        py_funcname,      /*PyObject *name,*/
+        firstlineno,
+        __pyx_empty_bytes      /*PyObject *lnotab*/
+    );
+bad:
+    Py_XDECREF(py_srcfile);
+    Py_XDECREF(py_funcname);
+    return py_code;
+}
+#endif
 
 /* BytesEquals */
 static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals) {
@@ -13170,6 +13672,48 @@ static CYTHON_INLINE PyObject* __Pyx_PyBytes_Join(PyObject* sep, PyObject* value
     return PyObject_CallMethodObjArgs(sep, __pyx_n_s_join, values, NULL);
 }
 #endif
+
+/* WriteUnraisableException */
+        static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+#ifdef _MSC_VER
+    else state = (PyGILState_STATE)-1;
+#endif
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
+    }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
+}
 
 /* PyIntBinop */
         #if !CYTHON_COMPILING_IN_PYPY

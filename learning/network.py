@@ -111,9 +111,12 @@ class DeepLearner(object):
     #     card_indices = self.get_action(net_out)
     #     return card_indices
     def estimate_leaf_prior_value(self, private_state, required_mask):
+        
         try:
             idx = self.keys.index(private_state)
+            #print("hit", private_state.x, private_state.whos_turn, private_state.last_dealt_hand)
         except:
+            #print("miss", private_state.x, private_state.whos_turn, private_state.last_dealt_hand)
             net_in = self._gen_input(private_state)
             net_in = np.expand_dims(net_in, axis=0)
             net_in = Variable(torch.from_numpy(net_in).float(), volatile=True)
