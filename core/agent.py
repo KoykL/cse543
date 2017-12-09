@@ -80,9 +80,9 @@ class MctsAgent(BaseAgent):
                 #ps.print_stats()
                 #print(s.getvalue())
                 choice = max(self.t.root.children, key=lambda x: x.play_count)
-                #print("agent {} count {}".format(str(self.id), ", ".join(
-                #    repr(((c.play_count), str(core.mcts.tree.Tree.ucb_val(c))[:6], str(c.state.state.last_dealt_hand))) for c in
-                #    self.t.root.children)))
+                print("agent {} count {}".format(str(self.id), ", ".join(
+                    repr(((c.play_count), str(core.mcts.tree.Tree.ucb_val(c))[:6], str(c.state.state.last_dealt_hand))) for c in
+                    self.t.root.children)))
                 action_idx = self.t.root.children.index(choice)
                 self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
 
