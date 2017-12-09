@@ -14,12 +14,12 @@ class Node(object):
         self.state = info_set
 
         self.empirical_reward = 0
-        self.play_count = 1
+        self.play_count = 0
 
         self.availability_count = 0
-
-        self.children_prior = []
-        # self.prior = 0
+        self.initialized = False
+        #self.children_prior = []
+        self.prior = 0
 
 class InformationSet:
     def __init__(self, private_state):
@@ -74,7 +74,8 @@ class Tree(object):
     @staticmethod
     def net_val_without_node(empirical_reward, play_count, availability_count, prior, noise=None):
         #noise = np.random.dirichlet((0.03,))
-        epsilon = 0.25
+        #epsilon = 0.25
+        epsilon = 0
         if noise is not None:
             return empirical_reward / play_count + ((1 - 0.25) * prior + 0.25*noise) * math.sqrt(availability_count) / play_count
         else:
@@ -120,7 +121,8 @@ class Tree(object):
             states_mask = list(map(lambda x: not check_in_children(x, curr_node), states))
             new_states = list(map(lambda c: c[1], filter(lambda c: states_mask[c[0]], enumerate(states))))
             new_actions = list(map(lambda c: c[1], filter(lambda c: states_mask[c[0]], enumerate(actions))))
-
+            #total_noises = np.ones((len(curr_node.children) + len(new_actions)))
+            #total_noises /= total_noises.sum()
             total_noises = np.random.dirichlet(tuple([0.03]*(len(curr_node.children)+len(new_actions)) ))
             children_vals = [(i, Tree.net_val(c, total_noises[i])) for i, c in filter(lambda c: available_children_mask[c[0]], enumerate(curr_node.children))]
             if len(children_vals) > 0:
@@ -157,7 +159,8 @@ class Tree(object):
                         prior = priors[-1]
                         new_priors.append(prior)
                 new_priors = np.array(new_priors)
-                new_priors /= new_priors.sum()
+                if new_priors.sum() != 0:
+                    new_priors /= new_priors.sum()
                 new_nodes_val = [Tree.net_val_without_node(0, 1, 1, p, total_noises[len(curr_node.children) + i]) for i, p in enumerate(new_priors)]
                 chosen_new_node = max(enumerate(new_nodes_val), key=lambda x:x[1])
                 chosen_new_node_val = chosen_new_node[1]
@@ -193,6 +196,7 @@ class Tree(object):
             new_s = candidate_states[chosen_new_node]
             new_c = Node(new_s, curr_node)
             new_c.prior = new_priors[chosen_new_node]
+            new_c.net_value = net_value
             curr_node.actions.append(candidate_actions[chosen_new_node])
             curr_node.children.append(new_c)
             states = [curr_node.state.getNewState(act) for act in actions]
@@ -205,8 +209,10 @@ class Tree(object):
             while curr_node != None:
                 #not correct
 #                print(curr_node.state.state.whos_turn, leaf_node_player)
-                if curr_node.state.state.whos_turn == leaf_node_player:
+                if curr_node.state.state.whos_turn == (leaf_node_player + 1)%3:
                     curr_node.empirical_reward += net_value
+                else:
+                    curr_node.empirical_reward -= net_value
                 curr_node.play_count += 1
                 #print(len(cached_available_nodes))
                 curr_node = curr_node.parent

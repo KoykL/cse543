@@ -34,8 +34,8 @@ class DeepLearner(object):
     def __init__(self, model):
         self.model = model
         self.model = self.model.train(False)
-        self.cache = deque(maxlen=100)
-        self.keys = deque(maxlen=100)
+        self.cache = deque(maxlen=1000)
+        self.keys = deque(maxlen=1000)
     def _gen_last_dealt_hand(self, private_state):
         dealt_hand = np.zeros((1, 54))
         if private_state.last_dealt_hand is not None:

@@ -45,14 +45,14 @@ if __name__ == "__main__":
             agents.insert(args.human_player, HumanAgent(args.human_player))
         # agents.insert(2, RandomAgent())
         platform = Platform(agents)
-
+        #print(args.human_player)
         # start game
         platform.deal()
         if args.human_player is None:
             for i, a_s in enumerate(platform.game_state.agent_states):
                 print("agent {} has card: {}".format(i, a_s.get_cards_str()))
-            else:
-                print("you have card: {}".format(platform.game_state.agent_states[args.human_player]))
+        else:
+            print("you have card: {}".format(platform.game_state.agent_states[args.human_player]))
         while not platform.game_state.isTerminal():
             agent_playing = platform.game_state.whos_turn
             action = platform.turn()

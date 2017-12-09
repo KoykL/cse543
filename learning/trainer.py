@@ -116,8 +116,10 @@ class DQLOptimizer(object):
         self.optimizer.step(closure)
         priors, value = self.model(state_batch)
         priors = torch.nn.functional.log_softmax(priors)
-        loss = torch.sum(torch.pow((torch.squeeze(value) - reward_batch), 2)) - torch.sum(priors_batch * priors)
-        return loss
+        loss_val = torch.sum(torch.pow((torch.squeeze(value) - reward_batch), 2))
+        loss_dist = - torch.sum(priors_batch * priors)
+        loss = loss_val + loss_dist
+        return loss, loss_val, loss_dist
 
 class DQLTrainer(object):
     def __init__(self, model_path, optimizer_path, memory_path):
@@ -199,8 +201,8 @@ class DQLTrainer(object):
         self.save_memory()
         for i in range(1000):
             print("optimization iteration", i)
-            loss = self.optimizer.run_iter(self.memory)
-            print("loss", loss)
+            loss, loss_val, loss_dist = self.optimizer.run_iter(self.memory)
+            print("loss", loss, loss_val, loss_dist)
 
         save_model(self.optimizer.model, self.model_path)
         self.optimizer.save_optimizer()

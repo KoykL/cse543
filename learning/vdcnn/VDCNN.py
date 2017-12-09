@@ -159,29 +159,33 @@ class VDCNN(nn.Module):
 
         if last_pooling_layer == 'k-max-pooling':
             layers.append(nn.AdaptiveMaxPool1d(8))
+            fc_layers.extend([torch.nn.Dropout()])
             fc_layers.extend([nn.Linear(8 * 512, n_fc_neurons), nn.ReLU()])
         elif last_pooling_layer == 'max-pooling':
             layers.append(nn.MaxPool1d(kernel_size=8, stride=2, padding=0))
+            fc_layers.extend([torch.nn.Dropout()])
             fc_layers.extend([nn.Linear(61 * 512, n_fc_neurons), nn.ReLU()])
         else:
             raise NotImplementedError()
-
+        fc_layers.extend([torch.nn.Dropout()])
         fc_layers.extend([nn.Linear(n_fc_neurons, n_fc_neurons), nn.ReLU()])
+        fc_layers.extend([torch.nn.Dropout()])
         fc_layers.extend([nn.Linear(n_fc_neurons, n_classes)])
 
         fc_layers2 = []
 
         if last_pooling_layer == 'k-max-pooling':
             layers.append(nn.AdaptiveMaxPool1d(8))
-            fc_layers2.extend([nn.Linear(8 * 512, n_fc_neurons), nn.ReLU()])
+            fc_layers2.extend([torch.nn.Dropout()])
+            fc_layers2.extend([nn.Linear(8 * 512, 256), nn.ReLU()])
         elif last_pooling_layer == 'max-pooling':
             layers.append(nn.MaxPool1d(kernel_size=8, stride=2, padding=0))
-            fc_layers2.extend([nn.Linear(61 * 512, n_fc_neurons), nn.ReLU()])
+            fc_layers2.extend([torch.nn.Dropout()])
+            fc_layers2.extend([nn.Linear(61 * 512, 256), nn.ReLU()])
         else:
             raise NotImplementedError()
-
-        fc_layers2.extend([nn.Linear(n_fc_neurons, n_fc_neurons), nn.ReLU()])
-        fc_layers2.extend([nn.Linear(n_fc_neurons, 1)])
+        fc_layers2.extend([torch.nn.Dropout()])
+        fc_layers2.extend([nn.Linear(256, 1)])
         fc_layers2.extend([nn.Tanh()])
         self.layers = nn.Sequential(*layers)
         self.fc_layers = nn.Sequential(*fc_layers)

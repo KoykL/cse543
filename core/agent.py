@@ -171,7 +171,14 @@ class DQLAgent(BaseAgent):
                     if self.is_training:
                         if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
                             print("using optimal: ", self.use_optimal)
-                            print("agent {} count {}".format(str(self.id), "-".join(repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children)))
+                            for i, c in enumerate(self.t.root.children):
+                                print("{}th: agent {} count {}".format(i, str(self.id), repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn))))
+                                for c in c.children:
+                                    print("because these children:", repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn)))
+                                    for c in c.children:
+                                        print("because these grandchildren:", repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn)))
+                                        for c in c.children:
+                                            print("because these grandgrandchildren:", repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn)))
                         if not self.use_optimal:
                             play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
                             play_counts /= play_counts.sum()
@@ -184,8 +191,8 @@ class DQLAgent(BaseAgent):
                             play_counts /= play_counts.sum()
                             action_idx = np.argmax(play_counts)
                             self.states.put(self.t.root)
-                            print("agent {} played because of these children: ".format(str(self.id)))
-                            print("-".join(repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children[action_idx].children))
+                            #print("agent {} played because of these children: ".format(str(self.id)))
+                            #print("-".join(repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand))) for c in self.t.root.children[action_idx].children))
                             self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
                     else:
                         play_counts = np.array([c.play_count for c in self.t.root.children], dtype="float")
