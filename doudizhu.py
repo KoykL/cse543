@@ -36,9 +36,9 @@ if __name__ == "__main__":
         ai_nums = list(range(0, 3))
         if args.human_player is not None:
             ai_nums.remove(args.human_player)
-        
-        agents = [DQLAgent(i, "data/model.pth", turns=15) for i in ai_nums]
-        
+
+        agents = [MctsAgent(i) for i in ai_nums]
+
         for agent in agents:
             agent.start()
         if args.human_player is not None:
