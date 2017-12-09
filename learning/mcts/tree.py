@@ -14,13 +14,13 @@ class Node(object):
         self.state = info_set
 
         self.empirical_reward = 0
-        self.play_count = 0
+        self.play_count = 1
 
         self.availability_count = 0
         self.initialized = False
         #self.children_prior = []
         self.prior = 0
-
+        self.proped_vals = []
 class InformationSet:
     def __init__(self, private_state):
         self.state = private_state
@@ -148,6 +148,7 @@ class Tree(object):
                         mask[-1] = True
                              
                 priors, net_value = self.learner.estimate_leaf_prior_value(curr_player_states, mask)
+                #curr_node.net_value = net_value
                 reverse_map = PrivateGameState.getAllActionsReverseMap(curr_player_states.agent_num_cards[curr_player_states.whos_turn])
                 new_priors = []
                 for i, action in enumerate(new_actions):
@@ -175,7 +176,7 @@ class Tree(object):
                     break
             
         # expansion
-        leaf_node_player = curr_node.state.state.whos_turn
+        inner_node_player = curr_node.state.state.whos_turn
         if not curr_node.state.is_terminal():
              # priors, net_value = self.learner.estimate_leaf_prior_value(curr_player_states)
             # # print(priors, net_value)
@@ -196,7 +197,6 @@ class Tree(object):
             new_s = candidate_states[chosen_new_node]
             new_c = Node(new_s, curr_node)
             new_c.prior = new_priors[chosen_new_node]
-            new_c.net_value = net_value
             curr_node.actions.append(candidate_actions[chosen_new_node])
             curr_node.children.append(new_c)
             states = [curr_node.state.getNewState(act) for act in actions]
@@ -204,15 +204,33 @@ class Tree(object):
             cached_available_nodes[-1] = available_children_mask
             curr_node = new_c
             curr_determined_state = curr_determined_state.getNewState(candidate_actions[chosen_new_node])
+
+            mask_length = sum(PrivateGameState.max_combinations())+1
+            mask = np.zeros(mask_length, dtype=np.bool)
+            mask[0] = True
+            priors, net_value = self.learner.estimate_leaf_prior_value(curr_node.state.state, mask)
+            curr_node.net_value = net_value
+            
             # bp
             curr_available_children_idx = -1
+            #print("start node: ", curr_node.state.state.whos_turn)
             while curr_node != None:
                 #not correct
 #                print(curr_node.state.state.whos_turn, leaf_node_player)
-                if curr_node.state.state.whos_turn == (leaf_node_player + 1)%3:
+                #print(curr_node.state.state.whos_turn, (inner_node_player + 1)%3)
+                other_player = -1
+                #it's already next turn
+                for i in range(3):
+                    if i != curr_node.state.state.whos_turn and i != 1:
+                        other_player = i
+                        break
+                    
+                if curr_node.state.state.whos_turn == (inner_node_player + 2)%3 or (curr_node.state.state.whos_turn != 1 and other_player == (inner_node_player + 2) % 3):
                     curr_node.empirical_reward += net_value
+                    curr_node.proped_vals.append(net_value)
                 else:
                     curr_node.empirical_reward -= net_value
+                    curr_node.proped_vals.append(-net_value)
                 curr_node.play_count += 1
                 #print(len(cached_available_nodes))
                 curr_node = curr_node.parent
@@ -235,8 +253,10 @@ class Tree(object):
             while curr_node != None:
                 if (curr_node.state.state.whos_turn == 1 and winner == 0) or (not curr_node.state.state.whos_turn == 1 and (winner == 1 or winner == 2)):
                     curr_node.empirical_reward += 1
+                    curr_node.proped_vals.append(1)
                 else:
                     curr_node.empirical_reward -= 1
+                    curr_node.proped_vals.append(-1)
                 curr_node.play_count += 1
                 #print(len(cached_available_nodes))
                 curr_node = curr_node.parent

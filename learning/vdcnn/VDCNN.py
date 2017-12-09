@@ -185,6 +185,8 @@ class VDCNN(nn.Module):
         else:
             raise NotImplementedError()
         fc_layers2.extend([torch.nn.Dropout()])
+        fc_layers2.extend([nn.Linear(256, 256)])
+        fc_layers2.extend([torch.nn.Dropout()])
         fc_layers2.extend([nn.Linear(256, 1)])
         fc_layers2.extend([nn.Tanh()])
         self.layers = nn.Sequential(*layers)

@@ -143,7 +143,7 @@ class DQLTrainer(object):
                 self.memory = pickle.load(f)
     def run_iter(self):
         print("running one iteration")
-        turns = 15
+        turns = 5
         agents = [DQLAgent(i, self.model_path, True, turns=turns) for i in range(3)]
         for agent in agents:
             agent.start()
