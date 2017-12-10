@@ -18,7 +18,7 @@ Tensor = FloatTensor
 
 def get_model(recover_path=None):
     classes = sum(PrivateGameState.max_combinations()) + 1
-    model = VDCNN(n_classes=classes, input_dim=9, depth=29, shortcut=False)
+    model = VDCNN(n_classes=classes, input_dim=9, depth=29, shortcut=True)
     if use_cuda:
         model.cuda()
     if recover_path is not None and os.path.exists(recover_path):
