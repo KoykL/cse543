@@ -62,6 +62,6 @@ if __name__ == "__main__":
                     print("agent {} has card: {}".format(i, a_s.get_cards_str()))
             else:
                 print("you have card: {}".format(platform.game_state.agent_states[args.human_player]))
-
+        print("agent {} won!".format(platform.game_state.who_wins()))
         for agent in agents:
             agent.terminate()

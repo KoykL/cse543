@@ -97,10 +97,7 @@ class MctsAgent(BaseAgent):
         # for act in actions:
         #     print(act)
         while True:
-            import time
-            t = time.time()
             state, decision = self.decision.get()
-            print(time.time() - t)
             if state == private_state:
                 print("agent {} got {} rounds of thought".format(self.id, counter))
                 counter += 1
