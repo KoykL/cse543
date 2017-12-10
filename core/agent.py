@@ -105,11 +105,11 @@ class MctsAgent(BaseAgent):
                 print("agent {} got {} rounds of thought".format(self.id, counter))
                 counter += 1
                 if self.init:
-                    if counter > 100:
+                    if counter > 15:
                         self.init = False
                         break
                 else:
-                    if counter > 60:
+                    if counter > 15:
                         break
                         # else:
                         # print("old thougts")
