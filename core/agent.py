@@ -181,8 +181,8 @@ class DQLAgent(BaseAgent):
                     if self.is_training:
                         if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
                             print("using optimal: ", self.use_optimal)
-                            # for i, c in enumerate(self.t.root.children):
-                                # print("{}th: agent {} count {}".format(i, str(self.id), repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn, c.proped_vals))))
+                            for i, c in enumerate(self.t.root.children):
+                                print("{}th: agent {} count {}".format(i, str(self.id), repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn, c.proped_vals))))
                                 # for c in c.children:
                                 #     print("because these children:", repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn, c.proped_vals)))
                                 #     for c in c.children:

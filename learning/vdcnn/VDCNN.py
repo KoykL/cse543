@@ -184,8 +184,8 @@ class VDCNN(nn.Module):
             fc_layers2.extend([nn.Linear(61 * 512, 256), nn.ReLU()])
         else:
             raise NotImplementedError()
-        fc_layers2.extend([torch.nn.Dropout()])
-        fc_layers2.extend([nn.Linear(256, 256)])
+#        fc_layers2.extend([torch.nn.Dropout()])
+#        fc_layers2.extend([nn.Linear(256, 256)])
         fc_layers2.extend([torch.nn.Dropout()])
         fc_layers2.extend([nn.Linear(256, 1)])
         fc_layers2.extend([nn.Tanh()])
