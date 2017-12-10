@@ -143,61 +143,61 @@ class DQLTrainer(object):
                 self.memory = pickle.load(f)
     def run_iter(self):
         print("running one iteration")
-        for _ in range(5):
-            print("running one game")
-            turns = 5
-            agents = [DQLAgent(i, self.model_path, True, turns=turns) for i in range(3)]
-            for agent in agents:
-                agent.start()
-                platform = Platform(agents)
+        # for _ in range(5):
+        #     print("running one game")
+        #     turns = 5
+        #     agents = [DQLAgent(i, self.model_path, True, turns=turns) for i in range(3)]
+        #     for agent in agents:
+        #         agent.start()
+        #         platform = Platform(agents)
 
-            platform.deal()
-            history = GameHistoryFactory()
-            while not platform.game_state.isTerminal():
-                agent_playing = platform.game_state.whos_turn
-                state = platform.game_state.getPrivateStateForAgentX(platform.game_state.whos_turn)
-                agent = platform.agents[platform.game_state.whos_turn]
-                action = platform.agents[platform.game_state.whos_turn].getAction(state)
-                counter = 0
-                while True:
-                    newroot = agent.states.get()
-                    #print("back", " ".join(str(c) for c in root.state.state.agent_state.cards))
-                    print(counter)
-                    if newroot.state.state == state:
-                        root = newroot
-                        counter += 1
-                        if counter >= turns:
-                            break                
-                        #print(" ".join(str(c) for c in root.state.state.agent_state.cards))
-                        #print(" ".join(str(c) for c in state.agent_state.cards))
+        #     platform.deal()
+        #     history = GameHistoryFactory()
+        #     while not platform.game_state.isTerminal():
+        #         agent_playing = platform.game_state.whos_turn
+        #         state = platform.game_state.getPrivateStateForAgentX(platform.game_state.whos_turn)
+        #         agent = platform.agents[platform.game_state.whos_turn]
+        #         action = platform.agents[platform.game_state.whos_turn].getAction(state)
+        #         counter = 0
+        #         while True:
+        #             newroot = agent.states.get()
+        #             #print("back", " ".join(str(c) for c in root.state.state.agent_state.cards))
+        #             print(counter)
+        #             if newroot.state.state == state:
+        #                 root = newroot
+        #                 counter += 1
+        #                 if counter >= turns:
+        #                     break                
+        #                 #print(" ".join(str(c) for c in root.state.state.agent_state.cards))
+        #                 #print(" ".join(str(c) for c in state.agent_state.cards))
             
-                if root.state.state == state:
-                    reverse_map = PrivateGameState.getAllActionsReverseMap(len(root.state.state.agent_state.cards))
-                    all_action_nums = sum(PrivateGameState.max_combinations())
-                    print(all_action_nums)
-                    all_actions = np.zeros(all_action_nums + 1)
-                    for a, c in zip(root.actions, root.children):
-                        if not a.is_pass:
-                            action_tuple = tuple(sorted(a.idx))
-                            all_actions[reverse_map[action_tuple]] = c.play_count
-                        else:
-                            all_actions[-1] = c.play_count
-                    all_actions = np.array(all_actions)
-                    all_actions /= all_actions.sum()
-                    history.append_step(state, all_actions)
-                    print("apend, state", state)
-                platform.game_state = platform.game_state.getNewState(action)
-                for agent in platform.agents:
-                    agent.postAction(action)
-                print("agent {} played: {}".format(agent_playing, action))
-                for i, a_s in enumerate(platform.game_state.agent_states):
-                    print("agent {} has card: {}".format(i, a_s.get_cards_str()))
-            history.winner = platform.game_state.who_wins()
-            history.append_memories(self.memory)
-            print(len(self.memory))
-            for agent in agents:
-                agent.terminate()
-            self.save_memory()
+        #         if root.state.state == state:
+        #             reverse_map = PrivateGameState.getAllActionsReverseMap(len(root.state.state.agent_state.cards))
+        #             all_action_nums = sum(PrivateGameState.max_combinations())
+        #             print(all_action_nums)
+        #             all_actions = np.zeros(all_action_nums + 1)
+        #             for a, c in zip(root.actions, root.children):
+        #                 if not a.is_pass:
+        #                     action_tuple = tuple(sorted(a.idx))
+        #                     all_actions[reverse_map[action_tuple]] = c.play_count
+        #                 else:
+        #                     all_actions[-1] = c.play_count
+        #             all_actions = np.array(all_actions)
+        #             all_actions /= all_actions.sum()
+        #             history.append_step(state, all_actions)
+        #             print("apend, state", state)
+        #         platform.game_state = platform.game_state.getNewState(action)
+        #         for agent in platform.agents:
+        #             agent.postAction(action)
+        #         print("agent {} played: {}".format(agent_playing, action))
+        #         for i, a_s in enumerate(platform.game_state.agent_states):
+        #             print("agent {} has card: {}".format(i, a_s.get_cards_str()))
+        #     history.winner = platform.game_state.who_wins()
+        #     history.append_memories(self.memory)
+        #     print(len(self.memory))
+        #     for agent in agents:
+        #         agent.terminate()
+        #     self.save_memory()
 
         for i in range(1000):
             print("optimization iteration", i)

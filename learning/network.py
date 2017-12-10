@@ -18,12 +18,18 @@ Tensor = FloatTensor
 
 def get_model(recover_path=None):
     classes = sum(PrivateGameState.max_combinations()) + 1
-    model = VDCNN(n_classes=classes, input_dim=9, depth=29, shortcut=True)
+    model = VDCNN(n_classes=classes, input_dim=9, depth=29, shortcut=False)
     if use_cuda:
         model.cuda()
     if recover_path is not None and os.path.exists(recover_path):
         print("loading model", recover_path)
         model.load_state_dict(torch.load(recover_path))
+    else:
+        pretrained_dict = torch.load("data/pretrained.pkl")
+        model_dict = model.state_dict()
+        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+        model_dict.update(pretrained_dict)
+        model.load_state_dict(pretrained_dict)
     return model
 
 

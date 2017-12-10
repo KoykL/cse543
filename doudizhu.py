@@ -33,11 +33,11 @@ if __name__ == "__main__":
             trainer.run_iter()
     else:
         # initialize
-        ai_nums = list(range(0, 3))
+        ai_nums = list(range(1, 3))
         if args.human_player is not None:
             ai_nums.remove(args.human_player)
 
-        agents = [MctsAgent(i) for i in ai_nums]
+        agents = [DQLAgent(0, "data/model.pth", turns=15)] + [MctsAgent(i) for i in ai_nums]
 
         for agent in agents:
             agent.start()

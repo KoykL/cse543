@@ -58,14 +58,14 @@ class MctsAgent(BaseAgent):
                         info_set = info_set.getNewState(data)
                         for n in self.t.root.children:
                             if info_set == n.state:
-                                print("agent {} reuse".format(self.id))
+                                #print("agent {} reuse".format(self.id))
                                 self.t = core.mcts.tree.Tree()
                                 self.t.root = n
                                 self.t.root.parent = None
                                 break
                     elif event == 0 and self.t.root.state.state != data:
                         self.t = core.mcts.tree.Tree(data)
-                        print("agent {} recov".format(self.id))
+                        #print("agent {} recov".format(self.id))
             if self.t is not None:
                 #pr = cProfile.Profile()
                 #pr.enable()
@@ -80,9 +80,9 @@ class MctsAgent(BaseAgent):
                 #ps.print_stats()
                 #print(s.getvalue())
                 choice = max(self.t.root.children, key=lambda x: x.play_count)
-                print("agent {} count {}".format(str(self.id), ", ".join(
-                    repr(((c.play_count), str(core.mcts.tree.Tree.ucb_val(c))[:6], str(c.state.state.last_dealt_hand))) for c in
-                    self.t.root.children)))
+                #print("agent {} count {}".format(str(self.id), ", ".join(
+                #    repr(((c.play_count), str(core.mcts.tree.Tree.ucb_val(c))[:6], str(c.state.state.last_dealt_hand))) for c in
+                #    self.t.root.children)))
                 action_idx = self.t.root.children.index(choice)
                 self.decision.put((self.t.root.state.state, self.t.root.actions[action_idx]))
 
@@ -99,7 +99,7 @@ class MctsAgent(BaseAgent):
         while True:
             state, decision = self.decision.get()
             if state == private_state:
-                print("agent {} got {} rounds of thought".format(self.id, counter))
+                #print("agent {} got {} rounds of thought".format(self.id, counter))
                 counter += 1
                 if self.init:
                     if counter > 15:
@@ -110,7 +110,7 @@ class MctsAgent(BaseAgent):
                         break
                         # else:
                         # print("old thougts")
-        print("agent {} returned after {} rounds of thought".format(self.id, counter))
+        #print("agent {} returned after {} rounds of thought".format(self.id, counter))
         return decision
 
     # def isWinnable(self, hand):
@@ -133,13 +133,13 @@ class DQLAgent(BaseAgent):
         while True:
             try:
                 event, data = self.input_status.get(False)
-                print("agent {} event {}".format(self.id, event))
+                #print("agent {} event {}".format(self.id, event))
             except queue.Empty:
                 event = None
             else:
                 if self.t is None:
                     if event == 0:
-                        print("initialize tree")
+                        #print("initialize tree")
                         self.t = learning.mcts.tree.Tree(self.learner, data)  # private_state
                 else:
                     info_set = self.t.root.state
@@ -158,11 +158,11 @@ class DQLAgent(BaseAgent):
                                 print(self.id, "reusing", self.t.root.state.state.last_dealt_hand)
                                 break
                     elif event == 0 and self.t.root.state.state != data:
-                        print("agent {} recov".format(self.id))
-                        print("r1", data.last_dealt_hand)
-                        print("r2", self.t.root.state.state.last_dealt_hand)
-                        print("r", " ".join(str(c) for c in data.agent_state.cards))
-                        print("r", " ".join(str(c) for c in self.t.root.state.state.agent_state.cards))
+                        #print("agent {} recov".format(self.id))
+                        #print("r1", data.last_dealt_hand)
+                        #print("r2", self.t.root.state.state.last_dealt_hand)
+                        #print("r", " ".join(str(c) for c in data.agent_state.cards))
+                        #print("r", " ".join(str(c) for c in self.t.root.state.state.agent_state.cards))
                         self.t = learning.mcts.tree.Tree(self.learner, data)
             if self.t is not None:
 #                pr = cProfile.Profile()
@@ -176,10 +176,10 @@ class DQLAgent(BaseAgent):
 #                print(s.getvalue())
                 if event is not None and event == 0:
                     if self.is_training:
-                        if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
-                            print("using optimal: ", self.use_optimal)
-                            for i, c in enumerate(self.t.root.children):
-                                print("{}th: agent {} count {}".format(i, str(self.id), repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn, c.proped_vals))))
+                        #if self.t.root.state.state.x == self.t.root.state.state.whos_turn:
+                            #print("using optimal: ", self.use_optimal)
+                            #for i, c in enumerate(self.t.root.children):
+                                #print("{}th: agent {} count {}".format(i, str(self.id), repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn, c.proped_vals))))
                                 # for c in c.children:
                                 #     print("because these children:", repr((c.play_count, c.empirical_reward, c.empirical_reward/c.play_count, learning.mcts.tree.Tree.net_val(c), str(c.state.state.last_dealt_hand), c.net_value, c.state.state.whos_turn, c.proped_vals)))
                                 #     for c in c.children:
@@ -218,13 +218,13 @@ class DQLAgent(BaseAgent):
             self.input_status.put((0, private_state))
             state, decision = self.decision.get()
             if state == private_state:
-                print("agent {} got {} rounds of thought".format(self.id, counter))
+                #print("agent {} got {} rounds of thought".format(self.id, counter))
                 counter += 1
                 if counter >= self.turns:
                     break
                     # else:
                     # print("old thougts")
-        print("agent {} returned after {} rounds of thought".format(self.id, counter))
+        #print("agent {} returned after {} rounds of thought".format(self.id, counter))
         return decision
 
 class HumanAgent(BaseAgent):
