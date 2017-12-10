@@ -106,3 +106,5 @@ ENV/
 data
 nohup.out
 nohup*
+
+core/cards_cython.cpp
